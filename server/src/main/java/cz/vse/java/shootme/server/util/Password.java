@@ -1,4 +1,4 @@
-package cz.vse.java.shootme.client.util;
+package cz.vse.java.shootme.server.util;
 
 import org.mindrot.jbcrypt.BCrypt;
 
