@@ -1,0 +1,7 @@
+.idea/
+.vscode/
+.settings/
+target/
+out/
+.attach*
+database.sqlite
