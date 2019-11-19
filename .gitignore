@@ -4,4 +4,7 @@
 target/
 out/
 .attach*
+*.iml
+.classpath
+.project
 database.sqlite
