@@ -62,15 +62,17 @@ public class SceneManager {
      * @param name
      * @throws IOException
      */
-    public void activate(String name) throws IOException {
+    public void activate(String name) {
+        LazyScrene screen = screnes.get(name);
 
+        try {
+            scene.setRoot(screen.get());
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
 
-        LazyScrene screne = screnes.get(name);
-
-        scene.setRoot(screne.get());
-        screne.controller.initialize();
-
-
+        screen.controller.initialize();
     }
 
     private SceneManager() {
@@ -135,6 +137,5 @@ public class SceneManager {
 
             return root;
         }
-
     }
 }

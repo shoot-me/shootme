@@ -1,5 +1,6 @@
 package cz.vse.java.shootme.client;
 
+import cz.vse.java.shootme.client.gui.controllers.OverviewController;
 import cz.vse.java.shootme.client.gui.controllers.SigninController;
 import cz.vse.java.shootme.client.services.SceneManager;
 import javafx.application.Application;
@@ -15,8 +16,12 @@ public class Main extends Application {
 
         SceneManager.get().setScene(scene);
         SceneManager.get().newScreen("signin", "gui/fxml/signin.fxml", new SigninController());
+        SceneManager.get().newScreen("overview", "gui/fxml/overview.fxml", new OverviewController());
         SceneManager.get().activate("signin");
 
+        primaryStage.setResizable(false);
+        primaryStage.setWidth(1280);
+        primaryStage.setHeight(720);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

@@ -1,12 +1,14 @@
 package cz.vse.java.shootme.server;
 
 import cz.vse.java.shootme.common.requests.LoginRequest;
+import cz.vse.java.shootme.common.requests.OverviewRequest;
 import cz.vse.java.shootme.common.requests.RegisterRequest;
+import cz.vse.java.shootme.server.handlers.GetOverview;
 import cz.vse.java.shootme.server.handlers.LoginUser;
-import jeda00.db.Migrations;
 import cz.vse.java.shootme.common.EventBus;
 import cz.vse.java.shootme.server.handlers.RegisterUser;
 import cz.vse.java.shootme.server.net.Server;
+import jeda00.db.Migrations;
 
 import java.io.IOException;
 
@@ -20,6 +22,7 @@ public class Main {
 
         EventBus.get().subscribe(RegisterRequest.class, RegisterUser::new);
         EventBus.get().subscribe(LoginRequest.class, LoginUser::new);
+        EventBus.get().subscribe(OverviewRequest.class, GetOverview::new);
 
         Server server = new Server(8080);
 
