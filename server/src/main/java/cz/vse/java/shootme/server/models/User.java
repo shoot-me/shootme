@@ -20,6 +20,14 @@ public class User extends Model<Integer> {
         setString("password", password);
     }
 
+    public String getToken() {
+        return getString("token");
+    }
+
+    public void setToken(String token) {
+        setString("token", token);
+    }
+
     public static Query<User> query() {
         return new Query<>(User.class);
     }

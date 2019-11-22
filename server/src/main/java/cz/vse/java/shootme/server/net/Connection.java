@@ -31,8 +31,14 @@ public class Connection extends Thread {
 
                 EventBus.get().emit(request);
             } catch (Exception e) {
-                return;
+                break;
             }
+        }
+
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

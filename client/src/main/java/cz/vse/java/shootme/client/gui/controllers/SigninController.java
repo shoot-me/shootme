@@ -5,6 +5,8 @@ import cz.vse.java.shootme.client.net.Client;
 import cz.vse.java.shootme.common.requests.LoginRequest;
 import cz.vse.java.shootme.common.requests.RegisterRequest;
 import cz.vse.java.shootme.common.responses.ErrorResponse;
+import cz.vse.java.shootme.common.responses.LoginSuccessfulResponse;
+import cz.vse.java.shootme.common.responses.OkResponse;
 import cz.vse.java.shootme.common.responses.Response;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -36,6 +38,10 @@ public class SigninController implements Controller {
         if (response instanceof ErrorResponse) {
             Util.showErrorMessage(response.getMessage());
             return;
+        } else if (response instanceof LoginSuccessfulResponse) {
+            String token = ((LoginSuccessfulResponse) response).token;
+            Client.get().setToken(token);
+            Util.showSuccessMessage("Login successful - " + token);
         }
     }
 
@@ -48,6 +54,8 @@ public class SigninController implements Controller {
         if (response instanceof ErrorResponse) {
             Util.showErrorMessage(response.getMessage());
             return;
+        } else if (response instanceof OkResponse) {
+            Util.showSuccessMessage("Register successful.");
         }
     }
 }

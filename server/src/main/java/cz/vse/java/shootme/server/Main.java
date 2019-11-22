@@ -13,6 +13,8 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) throws IOException {
+        System.out.println("Server initialization.");
+
         Migrations migrations = new Migrations(Database.getConnection());
         migrations.runMigrations();
 
@@ -21,6 +23,10 @@ public class Main {
 
         Server server = new Server(8080);
 
+        System.out.println("Server initialized.");
+
         server.start();
+
+        System.out.println("Server terminated.");
     }
 }

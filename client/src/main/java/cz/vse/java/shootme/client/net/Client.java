@@ -16,6 +16,8 @@ public class Client {
 
     private ObjectInputStream objectInputStream;
 
+    private String token;
+
     private Client(String address, int port) throws IOException {
         socket = new Socket(address, port);
 
@@ -45,6 +47,14 @@ public class Client {
 
     public ObjectInputStream getObjectInputStream() {
         return objectInputStream;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public static void connect(String address, int port) {
