@@ -4,12 +4,12 @@ import jeda00.db.Query;
 
 public class User extends Model<Integer> {
 
-    public String getName() {
-        return getString("name");
+    public String getUsername() {
+        return getString("username");
     }
 
-    public void setName(String name) {
-        setString("name", name);
+    public void setUsername(String username) {
+        setString("username", username);
     }
 
     public String getPassword() {

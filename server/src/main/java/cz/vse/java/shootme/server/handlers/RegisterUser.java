@@ -1,22 +1,21 @@
 package cz.vse.java.shootme.server.handlers;
 
-import cz.vse.java.shootme.common.requests.Registration;
-import cz.vse.java.shootme.common.responses.Error;
-import cz.vse.java.shootme.common.responses.Ok;
+import cz.vse.java.shootme.common.requests.RegisterRequest;
+import cz.vse.java.shootme.common.responses.ErrorResponse;
+import cz.vse.java.shootme.common.responses.OkResponse;
 import cz.vse.java.shootme.server.models.User;
 
 public class RegisterUser {
 
-    public RegisterUser(Registration register) {
+    public RegisterUser(RegisterRequest register) {
         User user = new User();
-        user.setName(register.name);
+        user.setUsername(register.username);
         user.setPassword(register.password);
-        boolean ok = user.save();
 
-        if (ok) {
-            register.respond(new Ok());
+        if (user.save()) {
+            register.respondOk();
         } else {
-            register.respond(new Error("Error"));
+            register.respondError("Registration error!");
         }
     }
 

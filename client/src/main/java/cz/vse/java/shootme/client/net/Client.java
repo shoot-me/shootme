@@ -47,14 +47,28 @@ public class Client {
         return objectInputStream;
     }
 
-    public static Client get() {
-        if (client == null) {
+    public static void connect(String address, int port) {
+        if (client != null) {
             try {
-                client = new Client("localhost", 8080);
+                client.socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
                 System.exit(1);
             }
+        }
+
+        try {
+            client = new Client(address, port);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    public static Client get() {
+        if (client == null) {
+            System.err.println("No connection to server!");
+            System.exit(1);
         }
 
         return client;

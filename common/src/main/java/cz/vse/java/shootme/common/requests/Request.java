@@ -1,5 +1,7 @@
 package cz.vse.java.shootme.common.requests;
 
+import cz.vse.java.shootme.common.responses.ErrorResponse;
+import cz.vse.java.shootme.common.responses.OkResponse;
 import cz.vse.java.shootme.common.responses.Response;
 
 import java.io.IOException;
@@ -19,6 +21,14 @@ public abstract class Request implements Serializable {
         }
 
         return true;
+    }
+
+    public boolean respondOk() {
+        return respond(new OkResponse());
+    }
+
+    public boolean respondError(String message) {
+        return respond(new ErrorResponse(message));
     }
 
     public void setObjectOutputStream(ObjectOutputStream objectOutputStream) {

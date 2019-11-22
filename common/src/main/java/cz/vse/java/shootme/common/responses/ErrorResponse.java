@@ -1,10 +1,10 @@
 package cz.vse.java.shootme.common.responses;
 
-public class Error extends Response {
+public class ErrorResponse extends Response {
 
     private String message;
 
-    public Error(String message) {
+    public ErrorResponse(String message) {
         this.message = message;
     }
 

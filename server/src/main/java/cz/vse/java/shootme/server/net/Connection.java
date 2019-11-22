@@ -24,18 +24,14 @@ public class Connection extends Thread {
     @Override
     public void run() {
         while (true) {
-            if (socket.isClosed()) return;
-
             try {
                 Request request = (Request) objectInputStream.readObject();
 
                 request.setObjectOutputStream(objectOutputStream);
 
                 EventBus.get().emit(request);
-            } catch (EOFException e) {
-                return;
             } catch (Exception e) {
-                e.printStackTrace();
+                return;
             }
         }
     }

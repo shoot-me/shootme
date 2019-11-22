@@ -1,6 +1,8 @@
 package cz.vse.java.shootme.server;
 
-import cz.vse.java.shootme.common.requests.Registration;
+import cz.vse.java.shootme.common.requests.LoginRequest;
+import cz.vse.java.shootme.common.requests.RegisterRequest;
+import cz.vse.java.shootme.server.handlers.LoginUser;
 import jeda00.db.Migrations;
 import cz.vse.java.shootme.common.EventBus;
 import cz.vse.java.shootme.server.handlers.RegisterUser;
@@ -14,7 +16,8 @@ public class Main {
         Migrations migrations = new Migrations(Database.getConnection());
         migrations.runMigrations();
 
-        EventBus.get().subscribe(Registration.class, RegisterUser::new);
+        EventBus.get().subscribe(RegisterRequest.class, RegisterUser::new);
+        EventBus.get().subscribe(LoginRequest.class, LoginUser::new);
 
         Server server = new Server(8080);
 
