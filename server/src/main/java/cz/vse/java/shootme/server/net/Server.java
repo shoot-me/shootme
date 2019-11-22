@@ -1,8 +1,5 @@
 package cz.vse.java.shootme.server.net;
 
-import cz.vse.java.shootme.server.models.User;
-
-import javax.jws.soap.SOAPBinding;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
