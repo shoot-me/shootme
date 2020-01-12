@@ -21,7 +21,6 @@ public class Main extends Application {
         SceneManager.get().newScreen("game", "gui/fxml/game.fxml", new GameController());
         SceneManager.get().activate("game");
 
-        primaryStage.setResizable(false);
         primaryStage.setWidth(1280);
         primaryStage.setHeight(720);
         primaryStage.setScene(scene);

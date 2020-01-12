@@ -67,6 +67,14 @@ public class Map {
             offsetY = height * TILE_SIZE - sceneHeight;
         }
 
+        if (sceneWidth > width * TILE_SIZE) {
+            offsetX = offsetX / 2;
+        }
+
+        if (sceneHeight > height * TILE_SIZE) {
+            offsetY = offsetY / 2;
+        }
+
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 Image image = getTile(x, y).getImage();
