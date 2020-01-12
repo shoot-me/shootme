@@ -1,5 +1,6 @@
-package cz.vse.java.shootme.client.game;
+package cz.vse.java.shootme.client.game.entities;
 
+import cz.vse.java.shootme.client.game.Map;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -14,6 +15,8 @@ public abstract class Entity {
 
     protected final Image image;
 
+    private int lifetime;
+
     private double x;
 
     private double y;
@@ -24,7 +27,7 @@ public abstract class Entity {
     }
 
     public void update() {
-
+        this.lifetime++;
     }
 
     public ImageView render() {
@@ -42,6 +45,10 @@ public abstract class Entity {
 
     public Image getImage() {
         return image;
+    }
+
+    public int getLifetime() {
+        return lifetime;
     }
 
     public double getX() {
@@ -70,5 +77,13 @@ public abstract class Entity {
         } else {
             this.y = y;
         }
+    }
+
+    public double getCenterX() {
+        return getX() + image.getWidth() / 2;
+    }
+
+    public double getCenterY() {
+        return getY() + image.getHeight() / 2;
     }
 }

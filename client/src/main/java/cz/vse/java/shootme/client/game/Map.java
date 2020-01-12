@@ -1,5 +1,7 @@
 package cz.vse.java.shootme.client.game;
 
+import cz.vse.java.shootme.client.game.entities.Entity;
+import cz.vse.java.shootme.client.game.entities.Player;
 import cz.vse.java.shootme.client.services.SceneManager;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,6 +25,10 @@ public class Map {
 
     private Player player;
 
+    private List<Entity> entities;
+
+    private List<Entity> removedEntities;
+
     private List<Tile> tiles;
 
     public Map(int width, int height) {
@@ -30,6 +36,8 @@ public class Map {
         this.height = height;
 
         this.activeKeys = new HashSet<>();
+        this.entities = new ArrayList<>();
+        this.removedEntities = new ArrayList<>();
         this.tiles = new ArrayList<>();
 
         SceneManager.get().getScene().setOnKeyPressed(keyEvent -> activeKeys.add(keyEvent.getCode()));
@@ -41,7 +49,14 @@ public class Map {
     }
 
     public void update() {
+        entities.removeAll(removedEntities);
+        removedEntities.clear();
+
         player.update();
+
+        for (Entity entity : entities) {
+            entity.update();
+        }
     }
 
     public void render(Pane pane) {
@@ -92,6 +107,22 @@ public class Map {
         playerImageView.setY(playerImageView.getY() - offsetY);
 
         pane.getChildren().add(playerImageView);
+
+        for (Entity entity : entities) {
+            ImageView entityImageView = entity.render();
+            entityImageView.setX(entityImageView.getX() - offsetX);
+            entityImageView.setY(entityImageView.getY() - offsetY);
+
+            pane.getChildren().add(entityImageView);
+        }
+    }
+
+    public void addEntity(Entity entity) {
+        entities.add(entity);
+    }
+
+    public void removeEntity(Entity entity) {
+        removedEntities.add(entity);
     }
 
     public void setPlayer(Player player) {

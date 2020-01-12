@@ -1,7 +1,7 @@
 package cz.vse.java.shootme.client.gui.controllers;
 
 import cz.vse.java.shootme.client.game.Map;
-import cz.vse.java.shootme.client.game.Player;
+import cz.vse.java.shootme.client.game.entities.Player;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -22,7 +22,7 @@ public class GameController implements Controller {
 
     @Override
     public void initialize() {
-        map = new Map(30, 20);
+        map = new Map(10, 10);
         player = new Player(map, new Image("img/players/player_1.png"), "Winty");
 
         map.setPlayer(player);
