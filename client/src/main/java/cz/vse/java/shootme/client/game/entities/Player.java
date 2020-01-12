@@ -85,6 +85,6 @@ public class Player extends Entity {
 
         daggerCooldown = 0;
 
-        map.addEntity(new Dagger(map, getCenterX(), getCenterY(), 10 * x, 10 * y));
+        // map.addEntity(new Dagger(map, getCenterX(), getCenterY(), 10 * x, 10 * y));
     }
 }

@@ -25,7 +25,7 @@ public class Dagger extends Entity {
         super.update();
 
         if(getLifetime() > 200) {
-            map.removeEntity(this);
+            //map.removeEntity(this);
         }
 
         setX(getX() + speedX);

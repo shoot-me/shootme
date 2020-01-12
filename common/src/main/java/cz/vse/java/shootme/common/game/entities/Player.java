@@ -1,21 +1,26 @@
 package cz.vse.java.shootme.common.game.entities;
 
+import cz.vse.java.shootme.common.game.util.Vector;
+import javafx.scene.image.Image;
+
 public class Player extends Entity {
 
-    public String name;
+    public final String name;
 
-    public int hp;
+    public Player(String image, Vector pos, Vector speed, String name) {
+        super(image, pos, speed);
 
-    public int x;
-
-    public int y;
-
-    public Player(String name) {
         this.name = name;
-
-        hp = 100;
-        x = 0;
-        y = 0;
     }
 
+    @Override
+    public String toString() {
+        return "Player{" +
+                "name='" + name + '\'' +
+                ", id='" + id + '\'' +
+                ", image='" + image + '\'' +
+                ", pos=" + pos +
+                ", speed=" + speed +
+                '}';
+    }
 }

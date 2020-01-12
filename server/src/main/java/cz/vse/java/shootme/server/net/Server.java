@@ -22,6 +22,8 @@ public class Server extends Thread {
         serverSocket = new ServerSocket(port);
         connections = new ConcurrentHashMap<>();
         games = new ConcurrentHashMap<>();
+
+        games.put("default", new Game("default"));
     }
 
     @Override

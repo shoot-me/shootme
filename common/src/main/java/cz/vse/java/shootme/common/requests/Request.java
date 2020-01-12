@@ -15,6 +15,7 @@ public abstract class Request implements Serializable {
     public boolean respond(Response response) {
         try {
             objectOutputStream.writeObject(response);
+            objectOutputStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
             return false;

@@ -31,6 +31,7 @@ public class Client {
 
     public Response sendSync(Request request) throws IOException {
         objectOutputStream.writeObject(request);
+        objectOutputStream.flush();
 
         try {
             return (Response) objectInputStream.readObject();

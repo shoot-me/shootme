@@ -1,8 +1,8 @@
 package cz.vse.java.shootme.client.game;
 
-import cz.vse.java.shootme.client.game.entities.Entity;
-import cz.vse.java.shootme.client.game.entities.Player;
 import cz.vse.java.shootme.client.services.SceneManager;
+import cz.vse.java.shootme.common.game.entities.Entity;
+import cz.vse.java.shootme.common.game.entities.Player;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -49,14 +49,7 @@ public class Map {
     }
 
     public void update() {
-        entities.removeAll(removedEntities);
-        removedEntities.clear();
 
-        player.update();
-
-        for (Entity entity : entities) {
-            entity.update();
-        }
     }
 
     public void render(Pane pane) {
@@ -66,16 +59,16 @@ public class Map {
         double sceneWidth = SceneManager.get().getScene().getWidth();
         double sceneHeight = SceneManager.get().getScene().getHeight();
 
-        if (player.getX() + player.getImage().getWidth() / 2 > sceneWidth / 2) {
-            offsetX = (player.getX() + player.getImage().getWidth() / 2) - (sceneWidth / 2);
+        if (player.pos.x + player.getImage().getWidth() / 2 > sceneWidth / 2) {
+            offsetX = (player.pos.x + player.getImage().getWidth() / 2) - (sceneWidth / 2);
         }
 
         if (offsetX > width * TILE_SIZE - sceneWidth) {
             offsetX = width * TILE_SIZE - sceneWidth;
         }
 
-        if (player.getY() + player.getImage().getHeight() / 2 > sceneHeight / 2) {
-            offsetY = (player.getY() + player.getImage().getHeight() / 2) - (sceneHeight / 2);
+        if (player.pos.y + player.getImage().getHeight() / 2 > sceneHeight / 2) {
+            offsetY = (player.pos.y + player.getImage().getHeight() / 2) - (sceneHeight / 2);
         }
 
         if (offsetY > height * TILE_SIZE - sceneHeight) {
@@ -119,6 +112,10 @@ public class Map {
 
     public void addEntity(Entity entity) {
         entities.add(entity);
+    }
+
+    public void clearEntities() {
+        entities.clear();
     }
 
     public void removeEntity(Entity entity) {
