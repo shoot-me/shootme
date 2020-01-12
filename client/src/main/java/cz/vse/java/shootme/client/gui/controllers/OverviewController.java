@@ -32,7 +32,7 @@ public class OverviewController implements Controller {
     }
 
     public void onNewGame() {
-
+        SceneManager.get().activate("game");
     }
 
     public void onRefresh() {

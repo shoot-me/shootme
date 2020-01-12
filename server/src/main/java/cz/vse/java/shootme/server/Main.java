@@ -24,12 +24,8 @@ public class Main {
         EventBus.get().subscribe(LoginRequest.class, LoginUser::new);
         EventBus.get().subscribe(OverviewRequest.class, GetOverview::new);
 
-        Server server = new Server(8080);
+        Server.get().start();
 
         System.out.println("Server initialized.");
-
-        server.start();
-
-        System.out.println("Server terminated.");
     }
 }

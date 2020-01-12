@@ -37,6 +37,15 @@ public class SceneManager {
     private HashMap<String, LazyScrene> screnes;
 
     /**
+     * Vrati hlavni scenu
+     *
+     * @return
+     */
+    public Scene getScene() {
+        return scene;
+    }
+
+    /**
      * Nastavi hlavni scenu. Je nutne zavolat pred aktivaci prvni obrazovky.
      *
      * @param scene

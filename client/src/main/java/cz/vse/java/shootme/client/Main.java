@@ -1,5 +1,6 @@
 package cz.vse.java.shootme.client;
 
+import cz.vse.java.shootme.client.gui.controllers.GameController;
 import cz.vse.java.shootme.client.gui.controllers.OverviewController;
 import cz.vse.java.shootme.client.gui.controllers.SigninController;
 import cz.vse.java.shootme.client.services.SceneManager;
@@ -17,7 +18,8 @@ public class Main extends Application {
         SceneManager.get().setScene(scene);
         SceneManager.get().newScreen("signin", "gui/fxml/signin.fxml", new SigninController());
         SceneManager.get().newScreen("overview", "gui/fxml/overview.fxml", new OverviewController());
-        SceneManager.get().activate("signin");
+        SceneManager.get().newScreen("game", "gui/fxml/game.fxml", new GameController());
+        SceneManager.get().activate("game");
 
         primaryStage.setResizable(false);
         primaryStage.setWidth(1280);
