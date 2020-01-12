@@ -11,7 +11,7 @@ public class GameUpdateResponse extends Response {
     public final State state;
 
     public GameUpdateResponse(State state) {
-        this.state = new State(state);
+        this.state = state.clone();
     }
 
 }

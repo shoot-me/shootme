@@ -1,12 +1,15 @@
 package cz.vse.java.shootme.common.game.util;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 public class Vector implements Serializable {
 
-    public final double x;
+    public final String id = UUID.randomUUID().toString();
 
-    public final double y;
+    public double x;
+
+    public double y;
 
     public Vector(double x, double y) {
         this.x = x;
@@ -14,9 +17,20 @@ public class Vector implements Serializable {
     }
 
     @Override
+    public Vector clone() {
+        return new Vector(x, y);
+    }
+
+    public void add(Vector vector) {
+        x += vector.x;
+        y += vector.y;
+    }
+
+    @Override
     public String toString() {
         return "Vector{" +
-                "x=" + x +
+                "id='" + id + '\'' +
+                ", x=" + x +
                 ", y=" + y +
                 '}';
     }

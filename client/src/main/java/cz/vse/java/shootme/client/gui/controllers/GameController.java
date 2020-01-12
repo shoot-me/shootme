@@ -3,6 +3,8 @@ package cz.vse.java.shootme.client.gui.controllers;
 import cz.vse.java.shootme.client.game.Map;
 import cz.vse.java.shootme.client.net.Client;
 import cz.vse.java.shootme.common.game.State;
+import cz.vse.java.shootme.common.game.actions.Action;
+import cz.vse.java.shootme.common.game.actions.KeyPressAction;
 import cz.vse.java.shootme.common.game.entities.Entity;
 import cz.vse.java.shootme.common.game.entities.Player;
 import cz.vse.java.shootme.common.requests.GameUpdateRequest;
@@ -14,11 +16,13 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class GameController implements Controller {
@@ -50,15 +54,33 @@ public class GameController implements Controller {
         }
 
         map = new Map(10, 10);
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), this::update));
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(20), this::update));
 
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
 
     private void update(ActionEvent actionEvent) {
+        List<Action> actions = new ArrayList<>();
+
+        if (map.isActiveKey(KeyCode.W)) {
+            actions.add(new KeyPressAction("W"));
+        }
+
+        if (map.isActiveKey(KeyCode.A)) {
+            actions.add(new KeyPressAction("A"));
+        }
+
+        if (map.isActiveKey(KeyCode.S)) {
+            actions.add(new KeyPressAction("S"));
+        }
+
+        if (map.isActiveKey(KeyCode.D)) {
+            actions.add(new KeyPressAction("D"));
+        }
+
         try {
-            GameUpdateResponse response = (GameUpdateResponse) Client.get().sendSync(new GameUpdateRequest("default", playerName, new ArrayList<>()));
+            GameUpdateResponse response = (GameUpdateResponse) Client.get().sendSync(new GameUpdateRequest("default", playerName, actions));
 
             System.out.println(response.id);
 

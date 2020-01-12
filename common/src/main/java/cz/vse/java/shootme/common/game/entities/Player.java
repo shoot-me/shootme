@@ -14,6 +14,11 @@ public class Player extends Entity {
     }
 
     @Override
+    public Player clone() {
+        return new Player(image, pos.clone(), speed.clone(), name);
+    }
+
+    @Override
     public String toString() {
         return "Player{" +
                 "name='" + name + '\'' +

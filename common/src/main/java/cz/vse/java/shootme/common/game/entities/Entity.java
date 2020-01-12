@@ -11,11 +11,11 @@ public abstract class Entity implements Serializable {
 
     public final String id = UUID.randomUUID().toString();
 
-    public final String image;
+    public String image;
 
-    public final Vector pos;
+    public Vector pos;
 
-    public final Vector speed;
+    public Vector speed;
 
     public Entity(String image, Vector pos, Vector speed) {
         this.image = image;
@@ -35,6 +35,8 @@ public abstract class Entity implements Serializable {
     public Image getImage() {
         return new Image(image);
     }
+
+    public abstract Entity clone();
 
     @Override
     public String toString() {
