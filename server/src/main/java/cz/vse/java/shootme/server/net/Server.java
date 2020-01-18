@@ -1,5 +1,6 @@
 package cz.vse.java.shootme.server.net;
 
+import cz.vse.java.shootme.server.game.Configuration;
 import cz.vse.java.shootme.server.game.Game;
 
 import java.io.IOException;
@@ -23,7 +24,8 @@ public class Server extends Thread {
         connections = new ConcurrentHashMap<>();
         games = new ConcurrentHashMap<>();
 
-        Game defaultGame = new Game("default");
+        Configuration configuration = new Configuration("default", 30, 30);
+        Game defaultGame = new Game(configuration);
         defaultGame.start();
 
         games.put("default", defaultGame);

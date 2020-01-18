@@ -2,6 +2,7 @@ package cz.vse.java.shootme.client.gui.controllers;
 
 import cz.vse.java.shootme.client.game.Map;
 import cz.vse.java.shootme.client.net.Client;
+import cz.vse.java.shootme.server.game.Configuration;
 import cz.vse.java.shootme.server.game.State;
 import cz.vse.java.shootme.server.game.actions.Action;
 import cz.vse.java.shootme.server.game.actions.KeyPressAction;
@@ -10,6 +11,7 @@ import cz.vse.java.shootme.server.game.entities.Player;
 import cz.vse.java.shootme.server.net.requests.GameUpdateRequest;
 import cz.vse.java.shootme.server.net.requests.JoinGameRequest;
 import cz.vse.java.shootme.server.net.responses.GameUpdateResponse;
+import cz.vse.java.shootme.server.net.responses.JoinGameResponse;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -28,6 +30,8 @@ public class GameController extends Controller {
     @FXML
     public Pane pane;
 
+    private Configuration configuration;
+
     private State state;
 
     private Map map;
@@ -35,8 +39,9 @@ public class GameController extends Controller {
     @Override
     public void mounted() {
         try {
-            GameUpdateResponse response = (GameUpdateResponse) Client.get().send(new JoinGameRequest("default"));
+            JoinGameResponse response = (JoinGameResponse) Client.get().send(new JoinGameRequest("default"));
 
+            configuration = response.configuration;
             state = response.state;
         } catch (IOException e) {
             e.printStackTrace();
@@ -44,7 +49,8 @@ public class GameController extends Controller {
             return;
         }
 
-        map = new Map(10, 10);
+        map = new Map(configuration);
+
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(20), this::update));
 
         timeline.setCycleCount(Animation.INDEFINITE);

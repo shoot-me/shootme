@@ -1,6 +1,7 @@
 package cz.vse.java.shootme.client.game;
 
 import cz.vse.java.shootme.client.services.SceneManager;
+import cz.vse.java.shootme.server.game.Configuration;
 import cz.vse.java.shootme.server.game.entities.Entity;
 import cz.vse.java.shootme.server.game.entities.Player;
 import javafx.scene.image.Image;
@@ -31,9 +32,9 @@ public class Map {
 
     private List<Tile> tiles;
 
-    public Map(int width, int height) {
-        this.width = width;
-        this.height = height;
+    public Map(Configuration configuration) {
+        this.width = configuration.getWidth();
+        this.height = configuration.getHeight();
 
         this.activeKeys = new HashSet<>();
         this.entities = new ArrayList<>();

@@ -13,17 +13,17 @@ public class Game implements Runnable {
 
     protected ScheduledExecutorService executor;
 
-    protected State state;
+    protected Configuration configuration;
 
-    protected String name;
+    protected State state;
 
     protected List<Connection> connections;
 
     protected List<Action> actions;
 
-    public Game(String name) {
+    public Game(Configuration configuration) {
         this.executor = Executors.newScheduledThreadPool(1);
-        this.name = name;
+        this.configuration = configuration;
         this.state = new State();
         this.connections = new ArrayList<>();
         this.actions = new ArrayList<>();
@@ -42,12 +42,12 @@ public class Game implements Runnable {
         executor.scheduleAtFixedRate(this, 0, 10, TimeUnit.MILLISECONDS);
     }
 
-    public State getState() {
-        return state;
+    public Configuration getConfiguration() {
+        return configuration;
     }
 
-    public String getName() {
-        return name;
+    public State getState() {
+        return state;
     }
 
     public List<Connection> getConnections() {
