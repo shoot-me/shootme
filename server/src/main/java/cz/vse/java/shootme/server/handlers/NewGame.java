@@ -1,6 +1,6 @@
 package cz.vse.java.shootme.server.handlers;
 
-import cz.vse.java.shootme.common.requests.NewGameRequest;
+import cz.vse.java.shootme.server.net.requests.NewGameRequest;
 
 public class NewGame {
 

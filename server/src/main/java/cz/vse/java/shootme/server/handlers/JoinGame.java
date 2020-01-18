@@ -3,8 +3,8 @@ package cz.vse.java.shootme.server.handlers;
 import cz.vse.java.shootme.common.game.State;
 import cz.vse.java.shootme.common.game.entities.Player;
 import cz.vse.java.shootme.common.game.util.Vector;
-import cz.vse.java.shootme.common.requests.JoinGameRequest;
-import cz.vse.java.shootme.common.responses.GameUpdateResponse;
+import cz.vse.java.shootme.server.net.requests.JoinGameRequest;
+import cz.vse.java.shootme.server.net.responses.GameUpdateResponse;
 import cz.vse.java.shootme.server.net.Server;
 
 import java.util.Random;

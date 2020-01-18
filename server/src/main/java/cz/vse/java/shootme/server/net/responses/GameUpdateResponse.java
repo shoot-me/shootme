@@ -1,4 +1,4 @@
-package cz.vse.java.shootme.common.responses;
+package cz.vse.java.shootme.server.net.responses;
 
 import cz.vse.java.shootme.common.game.State;
 

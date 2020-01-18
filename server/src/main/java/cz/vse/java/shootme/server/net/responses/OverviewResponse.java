@@ -1,6 +1,6 @@
-package cz.vse.java.shootme.common.responses;
+package cz.vse.java.shootme.server.net.responses;
 
-public class OverviewResponse extends OkResponse {
+public class OverviewResponse extends Response {
 
     public final String username;
 

@@ -7,15 +7,14 @@ import cz.vse.java.shootme.common.game.actions.Action;
 import cz.vse.java.shootme.common.game.actions.KeyPressAction;
 import cz.vse.java.shootme.common.game.entities.Entity;
 import cz.vse.java.shootme.common.game.entities.Player;
-import cz.vse.java.shootme.common.requests.GameUpdateRequest;
-import cz.vse.java.shootme.common.requests.JoinGameRequest;
-import cz.vse.java.shootme.common.responses.GameUpdateResponse;
+import cz.vse.java.shootme.server.net.requests.GameUpdateRequest;
+import cz.vse.java.shootme.server.net.requests.JoinGameRequest;
+import cz.vse.java.shootme.server.net.responses.GameUpdateResponse;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
@@ -25,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class GameController implements Controller {
+public class GameController extends Controller {
 
     @FXML
     public Pane pane;
@@ -36,13 +35,8 @@ public class GameController implements Controller {
 
     private Map map;
 
-    private boolean initialized = false;
-
     @Override
-    public void initialize() {
-        if (initialized) return;
-        initialized = true;
-
+    public void mounted() {
         try {
             GameUpdateResponse response = (GameUpdateResponse) Client.get().sendSync(new JoinGameRequest("default", playerName));
 

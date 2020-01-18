@@ -3,20 +3,20 @@ package cz.vse.java.shootme.client.gui.controllers;
 import cz.vse.java.shootme.client.Util;
 import cz.vse.java.shootme.client.net.Client;
 import cz.vse.java.shootme.client.services.SceneManager;
-import cz.vse.java.shootme.common.requests.OverviewRequest;
-import cz.vse.java.shootme.common.responses.OverviewResponse;
+import cz.vse.java.shootme.server.net.requests.OverviewRequest;
+import cz.vse.java.shootme.server.net.responses.OverviewResponse;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
 
-public class OverviewController implements Controller {
+public class OverviewController extends Controller {
 
     @FXML
     public TextField username;
 
     @Override
-    public void initialize() {
+    public void mounted() {
         OverviewResponse response;
 
         try {

@@ -4,6 +4,7 @@ import jeda00.db.Connection;
 import jeda00.db.Migrations;
 import jeda00.db.models.Role;
 import jeda00.db.models.User;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -56,22 +57,22 @@ public class HasManyTest {
         Role r3 = new Role();
         r3.setName("Assistant");
 
-        assertEquals(0, u1.roles().get().size());
+        Assert.assertEquals(0, u1.roles().get().size());
 
         u1.roles().sync(r1, r2);
 
-        assertEquals(2, u1.roles().get().size());
-        assertEquals("Admin", u1.roles().get().get(0).getName());
-        assertEquals("Teacher", u1.roles().get().get(1).getName());
+        Assert.assertEquals(2, u1.roles().get().size());
+        Assert.assertEquals("Admin", u1.roles().get().get(0).getName());
+        Assert.assertEquals("Teacher", u1.roles().get().get(1).getName());
 
         u1.roles().sync(r3);
 
-        assertEquals(1, u1.roles().get().size());
-        assertEquals("Assistant", u1.roles().get().get(0).getName());
+        Assert.assertEquals(1, u1.roles().get().size());
+        Assert.assertEquals("Assistant", u1.roles().get().get(0).getName());
 
         u1.roles().sync();
 
-        assertEquals(0, u1.roles().get().size());
+        Assert.assertEquals(0, u1.roles().get().size());
     }
 
 }

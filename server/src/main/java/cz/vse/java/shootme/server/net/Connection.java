@@ -1,18 +1,27 @@
 package cz.vse.java.shootme.server.net;
 
 import cz.vse.java.shootme.common.EventBus;
-import cz.vse.java.shootme.common.requests.Request;
+import cz.vse.java.shootme.server.models.User;
+import cz.vse.java.shootme.server.net.requests.Request;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.UUID;
+import java.util.function.Consumer;
 
 public class Connection extends Thread {
+
+    public final String id = UUID.randomUUID().toString();
 
     private Socket socket;
 
     private ObjectInputStream objectInputStream;
 
     private ObjectOutputStream objectOutputStream;
+
+    private Consumer<Connection> onClose;
+
+    private User user;
 
     Connection(Socket socket) throws IOException {
         this.socket = socket;
@@ -27,7 +36,7 @@ public class Connection extends Thread {
             try {
                 Request request = (Request) objectInputStream.readObject();
 
-                request.setObjectOutputStream(objectOutputStream);
+                request.setConnection(this);
 
                 EventBus.get().emit(request);
             } catch (Exception e) {
@@ -37,8 +46,30 @@ public class Connection extends Thread {
 
         try {
             socket.close();
+
+            onClose.accept(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public ObjectInputStream getObjectInputStream() {
+        return objectInputStream;
+    }
+
+    public ObjectOutputStream getObjectOutputStream() {
+        return objectOutputStream;
+    }
+
+    public void setOnClose(Consumer<Connection> onClose) {
+        this.onClose = onClose;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

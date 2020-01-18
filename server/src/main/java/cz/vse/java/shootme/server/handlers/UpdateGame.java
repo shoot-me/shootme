@@ -4,8 +4,8 @@ import cz.vse.java.shootme.common.game.State;
 import cz.vse.java.shootme.common.game.actions.Action;
 import cz.vse.java.shootme.common.game.actions.KeyPressAction;
 import cz.vse.java.shootme.common.game.util.Vector;
-import cz.vse.java.shootme.common.requests.GameUpdateRequest;
-import cz.vse.java.shootme.common.responses.GameUpdateResponse;
+import cz.vse.java.shootme.server.net.requests.GameUpdateRequest;
+import cz.vse.java.shootme.server.net.responses.GameUpdateResponse;
 import cz.vse.java.shootme.server.net.Server;
 
 public class UpdateGame {

@@ -1,9 +1,8 @@
 package cz.vse.java.shootme.server.handlers;
 
-import cz.vse.java.shootme.common.requests.RegisterRequest;
-import cz.vse.java.shootme.common.responses.ErrorResponse;
-import cz.vse.java.shootme.common.responses.OkResponse;
+import cz.vse.java.shootme.server.net.requests.RegisterRequest;
 import cz.vse.java.shootme.server.models.User;
+import cz.vse.java.shootme.server.net.responses.RegisterSuccessfulResponse;
 
 public class RegisterUser {
 
@@ -13,7 +12,7 @@ public class RegisterUser {
         user.setPassword(register.password);
 
         if (user.save()) {
-            register.respondOk();
+            register.respond(new RegisterSuccessfulResponse());
         } else {
             register.respondError("Registration error!");
         }

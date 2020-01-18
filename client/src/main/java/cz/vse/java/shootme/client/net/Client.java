@@ -1,7 +1,7 @@
 package cz.vse.java.shootme.client.net;
 
-import cz.vse.java.shootme.common.requests.Request;
-import cz.vse.java.shootme.common.responses.Response;
+import cz.vse.java.shootme.server.net.requests.Request;
+import cz.vse.java.shootme.server.net.responses.Response;
 
 import java.io.*;
 import java.net.Socket;
@@ -9,6 +9,10 @@ import java.net.Socket;
 public class Client {
 
     private static Client client;
+
+    private String address;
+
+    private int port;
 
     private Socket socket;
 
@@ -59,6 +63,8 @@ public class Client {
     }
 
     public static void connect(String address, int port) {
+        System.out.println("Connecting to: " + address + ":" + port);
+
         if (client != null) {
             try {
                 client.socket.close();

@@ -32,11 +32,24 @@ public class Server extends Thread {
             try {
                 Socket socket = serverSocket.accept();
                 Connection connection = new Connection(socket);
+
+                connection.setOnClose(this::closeConnection);
+
+                connections.put(connection.id, connection);
+
+                System.out.println("Accepting connection: " + connection.id);
+
                 connection.start();
             } catch (IOException e) {
                 System.err.println(e.getMessage());
             }
         }
+    }
+
+    public void closeConnection(Connection connection) {
+        System.out.println("Closing connection: " + connection.id);
+
+        connections.remove(connection.id);
     }
 
     public Game getGame(String name) {

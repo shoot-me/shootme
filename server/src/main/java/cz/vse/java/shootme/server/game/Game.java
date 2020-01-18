@@ -2,7 +2,11 @@ package cz.vse.java.shootme.server.game;
 
 import cz.vse.java.shootme.common.game.State;
 
+import java.util.UUID;
+
 public class Game {
+
+    public final String id = UUID.randomUUID().toString();
 
     protected State state;
 

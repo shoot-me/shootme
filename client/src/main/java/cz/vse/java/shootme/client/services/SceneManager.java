@@ -1,91 +1,69 @@
 package cz.vse.java.shootme.client.services;
 
 
+import cz.vse.java.shootme.common.game.util.Vector;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import cz.vse.java.shootme.client.gui.controllers.Controller;
+import javafx.stage.Stage;
 
 
 import java.io.IOException;
 import java.util.HashMap;
 
-/**
- * Singleton starajici se o jednotlive sceny v aplikaci.
- * Scena je obrazovka (napr prihlaseni, registrace, ...) mezi kterymi uzivatel naviguje.
- * SceneManager jednotlive sceny nacita az kdyz sjou potreba pomoci lazy loadingu.
- */
 public class SceneManager {
 
-
-    /**
-     * Instance singletonu
-     */
     private static SceneManager instance;
 
-    /**
-     * Reference na hlavni scenu. SceneManager doopravdy neprepina jednotlive sceny,
-     * ale teto jedne hlavni scene meni root element. Root element je JavaFX prvek,
-     * ktery je v scene builderu v hiearchii nejvyse a ostatni elementy jsou jeho deti.
-     */
-    private Scene scene;
+    private Stage primaryStage;
 
-    /**
-     * Mapa obrazovek mezi kterymi SceneManager muze prepinat.
-     * Jako klice jsou pouzity stringy identifikujici danou obrazovku (register, login, ...)
-     */
-    private HashMap<String, LazyScrene> screnes;
+    private HashMap<String, LazyScene> scenes;
 
-    /**
-     * Vrati hlavni scenu
-     *
-     * @return
-     */
-    public Scene getScene() {
-        return scene;
-    }
+    private Scene activeScene;
 
-    /**
-     * Nastavi hlavni scenu. Je nutne zavolat pred aktivaci prvni obrazovky.
-     *
-     * @param scene
-     */
-    public void setScene(Scene scene) {
-        this.scene = scene;
-    }
+    private Controller activeController;
 
-    /**
-     * Prida novou obrazovku do seznamu obrazovek. Jeji nacteni a zobrazeni oddali pomoci lazy loadingu.
-     *
-     * @param name
-     * @param fxml
-     * @param controller
-     */
     public void newScreen(String name, String fxml, Controller controller) {
-        screnes.put(name, new LazyScrene(fxml, controller));
+        scenes.put(name, new LazyScene(fxml, controller));
     }
 
-    /**
-     * Aktivuje a zobrazi danou obrazovku.
-     *
-     * @param name
-     * @throws IOException
-     */
     public void activate(String name) {
-        LazyScrene screen = screnes.get(name);
+        if (activeController != null) {
+            activeController.unmounted();
+        }
+
+        LazyScene scene = scenes.get(name);
 
         try {
-            scene.setRoot(screen.get());
+            primaryStage.setScene(scene.get());
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);
         }
 
-        screen.controller.initialize();
+        Vector windowSize = scene.controller.getWindowSize();
+        primaryStage.setWidth(windowSize.x);
+        primaryStage.setHeight(windowSize.y);
+
+        scene.controller.mounted();
+
+        activeScene = scene.scene;
+        activeController = scene.controller;
+
+        primaryStage.show();
+    }
+
+    public void setPrimaryStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+    }
+
+    public Scene getScene() {
+        return activeScene;
     }
 
     private SceneManager() {
-        screnes = new HashMap<>();
+        scenes = new HashMap<>();
     }
 
     public static SceneManager get() {
@@ -96,55 +74,36 @@ public class SceneManager {
         return instance;
     }
 
-    /**
-     * Trida starajici se o lazy loading obrazovek.
-     */
-    private class LazyScrene {
+    private class LazyScene {
 
-        /**
-         * Cesta k fxml souboru ze ktereho se dana obrazovka nacte.
-         */
+        private Scene scene;
+
         private String fxml;
 
-        /**
-         * Controller fxml souboru
-         */
         private Controller controller;
 
-        /**
-         * Instance rootu fxml. Pokud je null, dana obrazovka jeste nebyla nactena.
-         */
         private Parent root;
 
-        public LazyScrene(String fxml, Controller controller) {
+        public LazyScene(String fxml, Controller controller) {
+            this.scene = null;
             this.fxml = fxml;
             this.controller = controller;
             this.root = null;
-
-
         }
 
-        /**
-         * Vrati root element dane obrazovky. Podle potreby ho nacte, ci vrati jiz drive nacteny.
-         *
-         * @return
-         * @throws IOException
-         */
-        public Parent get() throws IOException {
-            // Pokud je root null, obrazovka jeste nebyla nactena a je treba ji nacist.
-            if (root == null) {
-                // Vytvorime novy FXMLLoader
-                FXMLLoader loader = new FXMLLoader();
-                // Nastavime controller obrazovky
-                loader.setController(controller);
+        public Scene get() throws IOException {
+            if (scene != null) return scene;
 
-                // Nastavime FXML soubor obsahujici danou obrazovku
-                loader.setLocation(getClass().getClassLoader().getResource(fxml));
-                // Nacteme root element
-                root = loader.load();
-            }
+            FXMLLoader loader = new FXMLLoader();
+            loader.setController(controller);
 
-            return root;
+            loader.setLocation(getClass().getClassLoader().getResource(fxml));
+            root = loader.load();
+            scene = new Scene(root);
+
+            controller.created();
+
+            return scene;
         }
     }
 }

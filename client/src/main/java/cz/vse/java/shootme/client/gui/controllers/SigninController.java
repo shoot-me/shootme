@@ -3,19 +3,17 @@ package cz.vse.java.shootme.client.gui.controllers;
 import cz.vse.java.shootme.client.Util;
 import cz.vse.java.shootme.client.net.Client;
 import cz.vse.java.shootme.client.services.SceneManager;
-import cz.vse.java.shootme.common.requests.LoginRequest;
-import cz.vse.java.shootme.common.requests.RegisterRequest;
-import cz.vse.java.shootme.common.responses.ErrorResponse;
-import cz.vse.java.shootme.common.responses.LoginSuccessfulResponse;
-import cz.vse.java.shootme.common.responses.OkResponse;
-import cz.vse.java.shootme.common.responses.Response;
+import cz.vse.java.shootme.common.game.util.Vector;
+import cz.vse.java.shootme.server.net.requests.LoginRequest;
+import cz.vse.java.shootme.server.net.requests.RegisterRequest;
+import cz.vse.java.shootme.server.net.responses.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
 
-public class SigninController implements Controller {
+public class SigninController extends Controller {
 
     @FXML
     public TextField address;
@@ -27,7 +25,7 @@ public class SigninController implements Controller {
     public PasswordField password;
 
     @Override
-    public void initialize() {
+    public void mounted() {
         username.requestFocus();
         username.setText("");
         password.setText("");
@@ -41,8 +39,9 @@ public class SigninController implements Controller {
 
         if (response instanceof ErrorResponse) {
             Util.showErrorMessage(((ErrorResponse) response).getMessage());
-            return;
         } else if (response instanceof LoginSuccessfulResponse) {
+            Util.showSuccessMessage("Login successful.");
+
             String token = ((LoginSuccessfulResponse) response).token;
             Client.get().setToken(token);
 
@@ -58,9 +57,13 @@ public class SigninController implements Controller {
 
         if (response instanceof ErrorResponse) {
             Util.showErrorMessage(((ErrorResponse) response).getMessage());
-            return;
-        } else if (response instanceof OkResponse) {
+        } else if (response instanceof RegisterSuccessfulResponse) {
             Util.showSuccessMessage("Register successful.");
         }
+    }
+
+    @Override
+    public Vector getWindowSize() {
+        return new Vector(275, 275);
     }
 }

@@ -1,4 +1,4 @@
-package cz.vse.java.shootme.common.requests;
+package cz.vse.java.shootme.server.net.requests;
 
 import cz.vse.java.shootme.common.game.actions.Action;
 

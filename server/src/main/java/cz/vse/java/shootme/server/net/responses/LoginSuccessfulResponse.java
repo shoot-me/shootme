@@ -1,6 +1,6 @@
-package cz.vse.java.shootme.common.responses;
+package cz.vse.java.shootme.server.net.responses;
 
-public class LoginSuccessfulResponse extends OkResponse {
+public class LoginSuccessfulResponse extends Response {
 
     public final String token;
 

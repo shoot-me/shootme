@@ -6,7 +6,6 @@ import jeda00.db.Transaction;
 import java.sql.Connection;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public abstract class Statement<M extends Model<?>> {
 

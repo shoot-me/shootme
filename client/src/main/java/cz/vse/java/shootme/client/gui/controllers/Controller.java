@@ -1,5 +1,23 @@
 package cz.vse.java.shootme.client.gui.controllers;
 
-public interface Controller {
-    public void initialize();
+import cz.vse.java.shootme.common.game.util.Vector;
+
+public abstract class Controller {
+
+    public void created() {
+
+    }
+
+    public void mounted() {
+
+    }
+
+    public void unmounted() {
+
+    }
+
+    public Vector getWindowSize() {
+        return new Vector(1280, 720);
+    }
+
 }
