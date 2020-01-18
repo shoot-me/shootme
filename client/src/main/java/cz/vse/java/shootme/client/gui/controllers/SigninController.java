@@ -1,5 +1,6 @@
 package cz.vse.java.shootme.client.gui.controllers;
 
+import cz.vse.java.shootme.client.G;
 import cz.vse.java.shootme.client.Util;
 import cz.vse.java.shootme.client.net.Client;
 import cz.vse.java.shootme.client.services.SceneManager;
@@ -40,7 +41,7 @@ public class SigninController extends Controller {
         if (response instanceof ErrorResponse) {
             Util.showErrorMessage(((ErrorResponse) response).message);
         } else if (response instanceof LoginSuccessfulResponse) {
-            Util.showSuccessMessage("Login successful.");
+            G.playerName = username.getText();
 
             SceneManager.get().activate("overview");
         }

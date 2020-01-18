@@ -23,12 +23,6 @@ public class Server extends Thread {
         serverSocket = new ServerSocket(port);
         connections = new ConcurrentHashMap<>();
         games = new ConcurrentHashMap<>();
-
-        Configuration configuration = new Configuration("default", 30, 30);
-        Game defaultGame = new Game(configuration);
-        defaultGame.start();
-
-        games.put("default", defaultGame);
     }
 
     @Override
@@ -57,8 +51,8 @@ public class Server extends Thread {
         connections.remove(connection.id);
     }
 
-    public Game getGame(String name) {
-        return games.get(name);
+    public Map<String, Game> getGames() {
+        return games;
     }
 
     public static Server get() {

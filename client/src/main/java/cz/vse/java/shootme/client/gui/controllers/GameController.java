@@ -1,5 +1,6 @@
 package cz.vse.java.shootme.client.gui.controllers;
 
+import cz.vse.java.shootme.client.G;
 import cz.vse.java.shootme.client.game.Map;
 import cz.vse.java.shootme.client.net.Client;
 import cz.vse.java.shootme.server.game.Configuration;
@@ -39,7 +40,7 @@ public class GameController extends Controller {
     @Override
     public void mounted() {
         try {
-            JoinGameResponse response = (JoinGameResponse) Client.get().send(new JoinGameRequest("default"));
+            JoinGameResponse response = (JoinGameResponse) Client.get().send(new JoinGameRequest(G.gameName));
 
             configuration = response.configuration;
             state = response.state;
@@ -87,7 +88,7 @@ public class GameController extends Controller {
         map.clearEntities();
 
         for (Entity entity : state.getEntities()) {
-            if (entity instanceof Player && ((Player) entity).name.equals("a")) {
+            if (entity instanceof Player && ((Player) entity).name.equals(G.playerName)) {
                 map.setPlayer((Player) entity);
             } else {
                 map.addEntity(entity);

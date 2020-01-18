@@ -19,6 +19,10 @@ public class Configuration implements Serializable {
         this.height = height;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public int getWidth() {
         return width;
     }

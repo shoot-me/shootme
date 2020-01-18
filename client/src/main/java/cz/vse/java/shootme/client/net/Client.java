@@ -10,10 +10,6 @@ public class Client {
 
     private static Client client;
 
-    private String address;
-
-    private int port;
-
     private Socket socket;
 
     private ObjectOutputStream objectOutputStream;
@@ -27,10 +23,6 @@ public class Client {
         objectInputStream = new ObjectInputStream(socket.getInputStream());
     }
 
-    public Socket getSocket() {
-        return socket;
-    }
-
     public Response send(Request request) throws IOException {
         objectOutputStream.writeObject(request);
 
@@ -41,14 +33,6 @@ public class Client {
         }
 
         return null;
-    }
-
-    public ObjectOutputStream getObjectOutputStream() {
-        return objectOutputStream;
-    }
-
-    public ObjectInputStream getObjectInputStream() {
-        return objectInputStream;
     }
 
     public static void connect(String address, int port) {

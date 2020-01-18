@@ -10,7 +10,7 @@ import cz.vse.java.shootme.server.net.responses.JoinGameResponse;
 public class JoinGame {
 
     public JoinGame(JoinGameRequest request) {
-        Game game = Server.get().getGame(request.gameName);
+        Game game = Server.get().getGames().get(request.gameName);
 
         request.getConnection().setGame(game);
         game.getConnections().add(request.getConnection());
