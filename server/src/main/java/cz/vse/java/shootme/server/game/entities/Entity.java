@@ -1,5 +1,6 @@
 package cz.vse.java.shootme.server.game.entities;
 
+import cz.vse.java.shootme.server.game.Game;
 import cz.vse.java.shootme.server.game.util.Vector;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,16 +16,19 @@ public abstract class Entity implements Serializable {
 
     public Vector pos;
 
+    public Vector dir;
+
     public Vector speed;
 
-    public Entity(String image, Vector pos, Vector speed) {
+    public Entity(String image, Vector pos, Vector dir, Vector speed) {
         this.image = image;
         this.pos = pos;
+        this.dir = dir;
         this.speed = speed;
     }
 
-    public void update() {
-        pos.add(speed);
+    public void update(Game game) {
+        pos = pos.add(dir.times(speed));
     }
 
     public ImageView render() {

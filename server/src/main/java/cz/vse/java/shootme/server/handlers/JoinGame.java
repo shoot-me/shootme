@@ -12,7 +12,7 @@ public class JoinGame {
     public JoinGame(JoinGameRequest request) {
         Game game = Server.get().getGames().get(request.gameName);
 
-        Player player = new Player("img/players/player_1.png", new Vector(0, 0), new Vector(0, 0), request.getConnection().getUser().getUsername());
+        Player player = new Player("img/players/player_1.png", new Vector(0, 0), request.getConnection().getUser().getUsername());
 
         request.getConnection().setGame(game);
         request.getConnection().setPlayer(player);

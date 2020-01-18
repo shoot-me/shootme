@@ -16,9 +16,12 @@ public class Vector implements Serializable {
         this.y = y;
     }
 
-    public void add(Vector vector) {
-        x += vector.x;
-        y += vector.y;
+    public Vector add(Vector vector) {
+        return new Vector(x + vector.x, y + vector.y);
+    }
+
+    public Vector times(Vector vector) {
+        return new Vector(x * vector.x, y * vector.y);
     }
 
     @Override

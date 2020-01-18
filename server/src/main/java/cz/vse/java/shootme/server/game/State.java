@@ -22,47 +22,19 @@ public class State implements Serializable {
         entities = new ArrayList<>();
     }
 
-    public void applyActions(List<Action> actions) {
+    public void applyActions(Game game, List<Action> actions) {
         for (Action action : actions) {
             if (action instanceof KeyPressAction) {
-                if (((KeyPressAction) action).code.equals("W")) {
-                    action.player.speed.add(new Vector(0, -5));
-                }
-
-                if (((KeyPressAction) action).code.equals("A")) {
-                    action.player.speed.add(new Vector(-5, 0));
-                }
-
-                if (((KeyPressAction) action).code.equals("S")) {
-                    action.player.speed.add(new Vector(0, 5));
-                }
-
-                if (((KeyPressAction) action).code.equals("D")) {
-                    action.player.speed.add(new Vector(5, 0));
-                }
+                action.player.handleKeyPressAction(game, (KeyPressAction) action);
             } else if (action instanceof KeyReleaseAction) {
-                if (((KeyReleaseAction) action).code.equals("W")) {
-                    action.player.speed.add(new Vector(0, 5));
-                }
-
-                if (((KeyReleaseAction) action).code.equals("A")) {
-                    action.player.speed.add(new Vector(5, 0));
-                }
-
-                if (((KeyReleaseAction) action).code.equals("S")) {
-                    action.player.speed.add(new Vector(0, -5));
-                }
-
-                if (((KeyReleaseAction) action).code.equals("D")) {
-                    action.player.speed.add(new Vector(-5, 0));
-                }
+                action.player.handleKeyReleaseAction(game, (KeyReleaseAction) action);
             }
         }
     }
 
-    public void update() {
+    public void update(Game game) {
         for (Entity entity : entities) {
-            entity.update();
+            entity.update(game);
         }
     }
 

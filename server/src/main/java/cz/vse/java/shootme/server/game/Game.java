@@ -31,9 +31,9 @@ public class Game implements Runnable {
 
     @Override
     public void run() {
-        state.applyActions(actions);
+        state.applyActions(this, actions);
 
-        state.update();
+        state.update(this);
 
         actions.clear();
     }
