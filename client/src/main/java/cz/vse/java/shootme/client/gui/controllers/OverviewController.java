@@ -20,7 +20,7 @@ public class OverviewController extends Controller {
         OverviewResponse response;
 
         try {
-            response = (OverviewResponse) Client.get().sendSync(new OverviewRequest(Client.get().getToken()));
+            response = (OverviewResponse) Client.get().send(new OverviewRequest());
         } catch (IOException e) {
             e.printStackTrace();
             Util.showErrorMessage("Error");
@@ -31,7 +31,7 @@ public class OverviewController extends Controller {
         username.setText(response.username);
     }
 
-    public void onNewGame() {
+    public void onNewGame() throws IOException {
         SceneManager.get().activate("game");
     }
 

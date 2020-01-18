@@ -1,4 +1,4 @@
-package cz.vse.java.shootme.common.game.util;
+package cz.vse.java.shootme.server.game.util;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -16,11 +16,6 @@ public class Vector implements Serializable {
         this.y = y;
     }
 
-    @Override
-    public Vector clone() {
-        return new Vector(x, y);
-    }
-
     public void add(Vector vector) {
         x += vector.x;
         y += vector.y;
@@ -29,8 +24,7 @@ public class Vector implements Serializable {
     @Override
     public String toString() {
         return "Vector{" +
-                "id='" + id + '\'' +
-                ", x=" + x +
+                "x=" + x +
                 ", y=" + y +
                 '}';
     }

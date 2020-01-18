@@ -1,7 +1,8 @@
-package cz.vse.java.shootme.common.game;
+package cz.vse.java.shootme.server.game;
 
-import cz.vse.java.shootme.common.game.entities.Entity;
-import cz.vse.java.shootme.common.game.entities.Player;
+import cz.vse.java.shootme.server.game.actions.Action;
+import cz.vse.java.shootme.server.game.entities.Entity;
+import cz.vse.java.shootme.server.game.entities.Player;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,14 +19,14 @@ public class State implements Serializable {
         entities = new ArrayList<>();
     }
 
-    public State clone() {
-        State state = new State();
+    public void applyActions(List<Action> actions) {
 
+    }
+
+    public void update() {
         for (Entity entity : entities) {
-            state.entities.add(entity.clone());
+            entity.pos.add(entity.speed);
         }
-
-        return state;
     }
 
     public List<Entity> getEntities() {
@@ -44,11 +45,4 @@ public class State implements Serializable {
         return null;
     }
 
-    @Override
-    public String toString() {
-        return "State{" +
-                "id='" + id + '\'' +
-                ", entities=" + entities +
-                '}';
-    }
 }

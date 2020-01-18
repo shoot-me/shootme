@@ -1,7 +1,7 @@
 package cz.vse.java.shootme.client.services;
 
 
-import cz.vse.java.shootme.common.game.util.Vector;
+import cz.vse.java.shootme.server.game.util.Vector;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

@@ -2,11 +2,11 @@ package cz.vse.java.shootme.client.gui.controllers;
 
 import cz.vse.java.shootme.client.game.Map;
 import cz.vse.java.shootme.client.net.Client;
-import cz.vse.java.shootme.common.game.State;
-import cz.vse.java.shootme.common.game.actions.Action;
-import cz.vse.java.shootme.common.game.actions.KeyPressAction;
-import cz.vse.java.shootme.common.game.entities.Entity;
-import cz.vse.java.shootme.common.game.entities.Player;
+import cz.vse.java.shootme.server.game.State;
+import cz.vse.java.shootme.server.game.actions.Action;
+import cz.vse.java.shootme.server.game.actions.KeyPressAction;
+import cz.vse.java.shootme.server.game.entities.Entity;
+import cz.vse.java.shootme.server.game.entities.Player;
 import cz.vse.java.shootme.server.net.requests.GameUpdateRequest;
 import cz.vse.java.shootme.server.net.requests.JoinGameRequest;
 import cz.vse.java.shootme.server.net.responses.GameUpdateResponse;
@@ -22,14 +22,11 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class GameController extends Controller {
 
     @FXML
     public Pane pane;
-
-    private final String playerName = UUID.randomUUID().toString();
 
     private State state;
 
@@ -38,7 +35,7 @@ public class GameController extends Controller {
     @Override
     public void mounted() {
         try {
-            GameUpdateResponse response = (GameUpdateResponse) Client.get().sendSync(new JoinGameRequest("default", playerName));
+            GameUpdateResponse response = (GameUpdateResponse) Client.get().send(new JoinGameRequest("default"));
 
             state = response.state;
         } catch (IOException e) {
@@ -74,9 +71,7 @@ public class GameController extends Controller {
         }
 
         try {
-            GameUpdateResponse response = (GameUpdateResponse) Client.get().sendSync(new GameUpdateRequest("default", playerName, actions));
-
-            System.out.println(response.id);
+            GameUpdateResponse response = (GameUpdateResponse) Client.get().send(new GameUpdateRequest(actions));
 
             state = response.state;
         } catch (IOException e) {
@@ -86,7 +81,7 @@ public class GameController extends Controller {
         map.clearEntities();
 
         for (Entity entity : state.getEntities()) {
-            if (entity instanceof Player && ((Player) entity).name.equals(playerName)) {
+            if (entity instanceof Player && ((Player) entity).name.equals("a")) {
                 map.setPlayer((Player) entity);
             } else {
                 map.addEntity(entity);

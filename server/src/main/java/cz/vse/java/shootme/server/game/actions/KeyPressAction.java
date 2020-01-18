@@ -1,4 +1,4 @@
-package cz.vse.java.shootme.common.game.actions;
+package cz.vse.java.shootme.server.game.actions;
 
 public class KeyPressAction extends Action {
 

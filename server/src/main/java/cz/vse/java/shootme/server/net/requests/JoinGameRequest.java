@@ -4,20 +4,7 @@ public class JoinGameRequest extends Request {
 
     public final String gameName;
 
-    public final String playerName;
-
-    public JoinGameRequest(String gameName, String playerName) {
+    public JoinGameRequest(String gameName) {
         this.gameName = gameName;
-        this.playerName = playerName;
-
-        System.out.println(this);
-    }
-
-    @Override
-    public String toString() {
-        return "JoinGameRequest{" +
-                "gameName='" + gameName + '\'' +
-                ", playerName='" + playerName + '\'' +
-                '}';
     }
 }

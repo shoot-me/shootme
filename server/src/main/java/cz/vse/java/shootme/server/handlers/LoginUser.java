@@ -4,8 +4,6 @@ import cz.vse.java.shootme.server.net.requests.LoginRequest;
 import cz.vse.java.shootme.server.net.responses.LoginSuccessfulResponse;
 import cz.vse.java.shootme.server.models.User;
 
-import java.util.UUID;
-
 public class LoginUser {
 
     public LoginUser(LoginRequest loginRequest) {
@@ -21,13 +19,9 @@ public class LoginUser {
             return;
         }
 
-        String token = UUID.randomUUID().toString();
-        user.setToken(token);
-        user.save();
-
         loginRequest.getConnection().setUser(user);
 
-        loginRequest.respond(new LoginSuccessfulResponse(token));
+        loginRequest.respond(new LoginSuccessfulResponse());
     }
 
 }

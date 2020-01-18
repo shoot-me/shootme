@@ -17,6 +17,7 @@ public abstract class Request implements Serializable {
     public void respond(Response response) {
         try {
             connection.getObjectOutputStream().writeObject(response);
+            connection.getObjectOutputStream().reset();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -23,7 +23,10 @@ public class Server extends Thread {
         connections = new ConcurrentHashMap<>();
         games = new ConcurrentHashMap<>();
 
-        games.put("default", new Game("default"));
+        Game defaultGame = new Game("default");
+        defaultGame.start();
+
+        games.put("default", defaultGame);
     }
 
     @Override
@@ -53,7 +56,7 @@ public class Server extends Thread {
     }
 
     public Game getGame(String name) {
-        return games.computeIfAbsent(name, e -> new Game(name));
+        return games.get(name);
     }
 
     public static Server get() {

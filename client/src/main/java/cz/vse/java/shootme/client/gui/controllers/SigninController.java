@@ -3,7 +3,7 @@ package cz.vse.java.shootme.client.gui.controllers;
 import cz.vse.java.shootme.client.Util;
 import cz.vse.java.shootme.client.net.Client;
 import cz.vse.java.shootme.client.services.SceneManager;
-import cz.vse.java.shootme.common.game.util.Vector;
+import cz.vse.java.shootme.server.game.util.Vector;
 import cz.vse.java.shootme.server.net.requests.LoginRequest;
 import cz.vse.java.shootme.server.net.requests.RegisterRequest;
 import cz.vse.java.shootme.server.net.responses.*;
@@ -35,15 +35,12 @@ public class SigninController extends Controller {
         Client.connect(address.getText(), 8080);
 
         LoginRequest loginRequest = new LoginRequest(username.getText(), password.getText());
-        Response response = Client.get().sendSync(loginRequest);
+        Response response = Client.get().send(loginRequest);
 
         if (response instanceof ErrorResponse) {
-            Util.showErrorMessage(((ErrorResponse) response).getMessage());
+            Util.showErrorMessage(((ErrorResponse) response).message);
         } else if (response instanceof LoginSuccessfulResponse) {
             Util.showSuccessMessage("Login successful.");
-
-            String token = ((LoginSuccessfulResponse) response).token;
-            Client.get().setToken(token);
 
             SceneManager.get().activate("overview");
         }
@@ -53,10 +50,10 @@ public class SigninController extends Controller {
         Client.connect(address.getText(), 8080);
 
         RegisterRequest registerRequest = new RegisterRequest(username.getText(), password.getText());
-        Response response = Client.get().sendSync(registerRequest);
+        Response response = Client.get().send(registerRequest);
 
         if (response instanceof ErrorResponse) {
-            Util.showErrorMessage(((ErrorResponse) response).getMessage());
+            Util.showErrorMessage(((ErrorResponse) response).message);
         } else if (response instanceof RegisterSuccessfulResponse) {
             Util.showSuccessMessage("Register successful.");
         }

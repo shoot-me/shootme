@@ -20,8 +20,6 @@ public class Client {
 
     private ObjectInputStream objectInputStream;
 
-    private String token;
-
     private Client(String address, int port) throws IOException {
         socket = new Socket(address, port);
 
@@ -33,9 +31,8 @@ public class Client {
         return socket;
     }
 
-    public Response sendSync(Request request) throws IOException {
+    public Response send(Request request) throws IOException {
         objectOutputStream.writeObject(request);
-        objectOutputStream.flush();
 
         try {
             return (Response) objectInputStream.readObject();
@@ -52,14 +49,6 @@ public class Client {
 
     public ObjectInputStream getObjectInputStream() {
         return objectInputStream;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 
     public static void connect(String address, int port) {

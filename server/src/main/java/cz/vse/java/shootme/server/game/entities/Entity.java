@@ -1,6 +1,6 @@
-package cz.vse.java.shootme.common.game.entities;
+package cz.vse.java.shootme.server.game.entities;
 
-import cz.vse.java.shootme.common.game.util.Vector;
+import cz.vse.java.shootme.server.game.util.Vector;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -36,15 +36,4 @@ public abstract class Entity implements Serializable {
         return new Image(image);
     }
 
-    public abstract Entity clone();
-
-    @Override
-    public String toString() {
-        return "Entity{" +
-                "id='" + id + '\'' +
-                ", image='" + image + '\'' +
-                ", pos=" + pos +
-                ", speed=" + speed +
-                '}';
-    }
 }
