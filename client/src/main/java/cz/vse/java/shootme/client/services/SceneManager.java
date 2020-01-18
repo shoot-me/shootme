@@ -46,10 +46,10 @@ public class SceneManager {
         primaryStage.setWidth(windowSize.x);
         primaryStage.setHeight(windowSize.y);
 
-        scene.controller.mounted();
-
         activeScene = scene.scene;
         activeController = scene.controller;
+
+        scene.controller.mounted();
 
         primaryStage.show();
     }

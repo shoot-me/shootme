@@ -3,10 +3,12 @@ package cz.vse.java.shootme.client.gui.controllers;
 import cz.vse.java.shootme.client.G;
 import cz.vse.java.shootme.client.game.Map;
 import cz.vse.java.shootme.client.net.Client;
+import cz.vse.java.shootme.client.services.SceneManager;
 import cz.vse.java.shootme.server.game.Configuration;
 import cz.vse.java.shootme.server.game.State;
 import cz.vse.java.shootme.server.game.actions.Action;
 import cz.vse.java.shootme.server.game.actions.KeyPressAction;
+import cz.vse.java.shootme.server.game.actions.KeyReleaseAction;
 import cz.vse.java.shootme.server.game.entities.Entity;
 import cz.vse.java.shootme.server.game.entities.Player;
 import cz.vse.java.shootme.server.net.requests.GameUpdateRequest;
@@ -24,7 +26,10 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class GameController extends Controller {
 
@@ -37,8 +42,26 @@ public class GameController extends Controller {
 
     private Map map;
 
+    private final Set<String> pressedKeys = new HashSet<>();
+
+    private final List<Action> actions = new ArrayList<>();
+
     @Override
     public void mounted() {
+        SceneManager.get().getScene().setOnKeyPressed(keyEvent -> {
+            if (!pressedKeys.contains(keyEvent.getText())) {
+                actions.add(new KeyPressAction(keyEvent.getText()));
+                pressedKeys.add(keyEvent.getText());
+            }
+        });
+
+        SceneManager.get().getScene().setOnKeyReleased(keyEvent -> {
+            if (pressedKeys.contains(keyEvent.getText())) {
+                actions.add(new KeyReleaseAction(keyEvent.getText()));
+                pressedKeys.remove(keyEvent.getText());
+            }
+        });
+
         try {
             JoinGameResponse response = (JoinGameResponse) Client.get().send(new JoinGameRequest(G.gameName));
 
@@ -59,24 +82,6 @@ public class GameController extends Controller {
     }
 
     private void update(ActionEvent actionEvent) {
-        List<Action> actions = new ArrayList<>();
-
-        if (map.isActiveKey(KeyCode.W)) {
-            actions.add(new KeyPressAction("W"));
-        }
-
-        if (map.isActiveKey(KeyCode.A)) {
-            actions.add(new KeyPressAction("A"));
-        }
-
-        if (map.isActiveKey(KeyCode.S)) {
-            actions.add(new KeyPressAction("S"));
-        }
-
-        if (map.isActiveKey(KeyCode.D)) {
-            actions.add(new KeyPressAction("D"));
-        }
-
         try {
             GameUpdateResponse response = (GameUpdateResponse) Client.get().send(new GameUpdateRequest(actions));
 
@@ -84,6 +89,8 @@ public class GameController extends Controller {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        actions.clear();
 
         map.clearEntities();
 

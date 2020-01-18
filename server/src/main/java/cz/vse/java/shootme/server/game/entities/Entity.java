@@ -23,6 +23,10 @@ public abstract class Entity implements Serializable {
         this.speed = speed;
     }
 
+    public void update() {
+        pos.add(speed);
+    }
+
     public ImageView render() {
         ImageView imageView = new ImageView(getImage());
 

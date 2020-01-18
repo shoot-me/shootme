@@ -6,19 +6,14 @@ import cz.vse.java.shootme.server.game.entities.Entity;
 import cz.vse.java.shootme.server.game.entities.Player;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class Map {
 
     public static final double TILE_SIZE = 64;
-
-    private final Set<KeyCode> activeKeys;
 
     private final int width;
 
@@ -36,13 +31,10 @@ public class Map {
         this.width = configuration.getWidth();
         this.height = configuration.getHeight();
 
-        this.activeKeys = new HashSet<>();
+
         this.entities = new ArrayList<>();
         this.removedEntities = new ArrayList<>();
         this.tiles = new ArrayList<>();
-
-        SceneManager.get().getScene().setOnKeyPressed(keyEvent -> activeKeys.add(keyEvent.getCode()));
-        SceneManager.get().getScene().setOnKeyReleased(keyEvent -> activeKeys.remove(keyEvent.getCode()));
 
         for (int i = 0; i < height * width; i++) {
             tiles.add(new Tile(new Image("img/tiles/floor_1.png")));
@@ -134,10 +126,6 @@ public class Map {
 
     public Tile getTile(int x, int y) {
         return tiles.get(y * width + x);
-    }
-
-    public boolean isActiveKey(KeyCode keyCode) {
-        return activeKeys.contains(keyCode);
     }
 
     public int getHeight() {
