@@ -1,6 +1,7 @@
 package cz.vse.java.shootme.server.game;
 
 import cz.vse.java.shootme.server.game.actions.Action;
+import cz.vse.java.shootme.server.game.entities.Entity;
 import cz.vse.java.shootme.server.net.Connection;
 
 import java.util.ArrayList;
@@ -21,12 +22,18 @@ public class Game implements Runnable {
 
     protected List<Action> actions;
 
+    protected List<Entity> addedEntities;
+
+    protected List<Entity> removedEntities;
+
     public Game(Configuration configuration) {
         this.executor = Executors.newScheduledThreadPool(1);
         this.configuration = configuration;
         this.state = new State();
         this.connections = new ArrayList<>();
         this.actions = new ArrayList<>();
+        this.addedEntities = new ArrayList<>();
+        this.removedEntities = new ArrayList<>();
     }
 
     @Override
@@ -36,10 +43,12 @@ public class Game implements Runnable {
         state.update(this);
 
         actions.clear();
+        addedEntities.clear();
+        removedEntities.clear();
     }
 
     public void start() {
-        executor.scheduleAtFixedRate(this, 0, 10, TimeUnit.MILLISECONDS);
+        executor.scheduleAtFixedRate(this, 0, 20, TimeUnit.MILLISECONDS);
     }
 
     public Configuration getConfiguration() {
@@ -56,5 +65,21 @@ public class Game implements Runnable {
 
     public List<Action> getActions() {
         return actions;
+    }
+
+    public List<Entity> getAddedEntities() {
+        return addedEntities;
+    }
+
+    public synchronized void addEntity(Entity entity) {
+        addedEntities.add(entity);
+    }
+
+    public List<Entity> getRemovedEntities() {
+        return removedEntities;
+    }
+
+    public synchronized void removeEntity(Entity entity) {
+        removedEntities.add(entity);
     }
 }

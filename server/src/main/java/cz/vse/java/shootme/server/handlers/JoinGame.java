@@ -16,11 +16,12 @@ public class JoinGame {
 
         request.getConnection().setGame(game);
         request.getConnection().setPlayer(player);
+
         game.getConnections().add(request.getConnection());
 
-        game.getState().getEntities().add(player);
+        game.addEntity(player);
 
-        request.respond(new JoinGameResponse(game.getConfiguration(), game.getState()));
+        request.respond(new JoinGameResponse(game.getConfiguration(), game.getState().copy()));
     }
 
 }

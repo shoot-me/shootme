@@ -24,6 +24,26 @@ public class Vector implements Serializable {
         return new Vector(x * vector.x, y * vector.y);
     }
 
+    public void clampMin(Vector vector) {
+        if (x < vector.x) {
+            x = vector.x;
+        }
+
+        if (y < vector.y) {
+            y = vector.y;
+        }
+    }
+
+    public void clampMax(Vector vector) {
+        if (x > vector.x) {
+            x = vector.x;
+        }
+
+        if (y > vector.y) {
+            y = vector.y;
+        }
+    }
+
     @Override
     public String toString() {
         return "Vector{" +

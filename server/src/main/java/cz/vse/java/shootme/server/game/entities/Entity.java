@@ -28,6 +28,9 @@ public abstract class Entity implements Serializable {
     }
 
     public void update(Game game) {
+        dir.clampMin(new Vector(-1, -1));
+        dir.clampMax(new Vector(1, 1));
+
         pos = pos.add(dir.times(speed));
     }
 
@@ -40,8 +43,29 @@ public abstract class Entity implements Serializable {
         return imageView;
     }
 
+    public boolean intersects(Entity another) {
+        if (pos.x >= another.pos.x && pos.x <= another.pos.x + another.getSize().x) {
+            if (pos.y >= another.pos.y && pos.y <= another.pos.y + another.getSize().y) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void collide(Game game, Entity another) {
+
+    }
+
     public Image getImage() {
         return new Image(image);
     }
 
+    public Vector getSize() {
+        return new Vector(64, 64);
+    }
+
+    public Vector getCenter() {
+        return new Vector(pos.x + getSize().x / 2, pos.y + getSize().y / 2);
+    }
 }

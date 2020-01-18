@@ -24,12 +24,14 @@ public class Client {
     }
 
     public Response send(Request request) throws IOException {
-        objectOutputStream.writeObject(request);
-
         try {
+            objectOutputStream.writeObject(request);
+
             return (Response) objectInputStream.readObject();
-        } catch (ClassNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+
+            System.exit(1);
         }
 
         return null;

@@ -14,10 +14,9 @@ public abstract class Request implements Serializable {
 
     protected Connection connection;
 
-    public void respond(Response response) {
+    public synchronized void respond(Response response) {
         try {
-            connection.getObjectOutputStream().writeObject(response);
-            connection.getObjectOutputStream().reset();
+            connection.writeResponse(response);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -15,7 +15,7 @@ public class UpdateGame {
             game.getActions().add(action);
         }
 
-        request.respond(new GameUpdateResponse(game.getState()));
+        request.respond(new GameUpdateResponse(game.getState().copy()));
     }
 
 }

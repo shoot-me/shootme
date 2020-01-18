@@ -55,7 +55,7 @@ public class Server extends Thread {
         return games;
     }
 
-    public static Server get() {
+    public synchronized static Server get() {
         if (server == null) {
             try {
                 server = new Server(8080);

@@ -5,6 +5,7 @@ import cz.vse.java.shootme.server.game.Game;
 import cz.vse.java.shootme.server.game.entities.Player;
 import cz.vse.java.shootme.server.models.User;
 import cz.vse.java.shootme.server.net.requests.Request;
+import cz.vse.java.shootme.server.net.responses.Response;
 
 import java.io.*;
 import java.net.Socket;
@@ -46,6 +47,8 @@ public class Connection extends Thread {
 
                 EventBus.get().emit(request);
             } catch (Exception e) {
+                e.printStackTrace();
+
                 break;
             }
         }
@@ -59,12 +62,10 @@ public class Connection extends Thread {
         }
     }
 
-    public ObjectInputStream getObjectInputStream() {
-        return objectInputStream;
-    }
-
-    public ObjectOutputStream getObjectOutputStream() {
-        return objectOutputStream;
+    public synchronized void writeResponse(Response response) throws IOException {
+        objectOutputStream.writeObject(response);
+        objectOutputStream.flush();
+        objectOutputStream.reset();
     }
 
     public void setOnClose(Consumer<Connection> onClose) {

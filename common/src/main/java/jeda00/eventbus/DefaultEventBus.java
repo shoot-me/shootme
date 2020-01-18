@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 /**
@@ -16,25 +17,25 @@ public class DefaultEventBus implements EventBus, LogsEvents {
     private Map<Class<?>, List<Object>> sentEvents;
 
     public DefaultEventBus() {
-        handlers = new HashMap<>();
-        sentEvents = new HashMap<>();
+        handlers = new ConcurrentHashMap<>();
+        sentEvents = new ConcurrentHashMap<>();
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> int subscribe(Class<T> event, Consumer<T> handler) {
+    public synchronized <T> int subscribe(Class<T> event, Consumer<T> handler) {
         handlersFor(event).add((Consumer<Object>) handler);
 
         return handler.hashCode();
     }
 
     @Override
-    public <T> boolean unsubscribe(Class<T> event, int id) {
+    public synchronized <T> boolean unsubscribe(Class<T> event, int id) {
         return handlersFor(event).removeIf(h -> h.hashCode() == id);
     }
 
     @Override
-    public <T> void emit(T event) {
+    public synchronized <T> void emit(T event) {
         sentEventsFor(event.getClass()).add(event);
 
         for (Consumer<Object> handler : handlersFor(event.getClass())) {

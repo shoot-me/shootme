@@ -49,16 +49,20 @@ public class GameController extends Controller {
     @Override
     public void mounted() {
         SceneManager.get().getScene().setOnKeyPressed(keyEvent -> {
-            if (!pressedKeys.contains(keyEvent.getText())) {
-                actions.add(new KeyPressAction(keyEvent.getText()));
-                pressedKeys.add(keyEvent.getText());
+            String key = keyEvent.getCode().getName();
+
+            if (!pressedKeys.contains(key)) {
+                actions.add(new KeyPressAction(key));
+                pressedKeys.add(key);
             }
         });
 
         SceneManager.get().getScene().setOnKeyReleased(keyEvent -> {
-            if (pressedKeys.contains(keyEvent.getText())) {
-                actions.add(new KeyReleaseAction(keyEvent.getText()));
-                pressedKeys.remove(keyEvent.getText());
+            String key = keyEvent.getCode().getName();
+
+            if (pressedKeys.contains(key)) {
+                actions.add(new KeyReleaseAction(key));
+                pressedKeys.remove(key);
             }
         });
 
