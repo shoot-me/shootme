@@ -5,6 +5,8 @@ import cz.vse.java.shootme.server.game.Game;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -64,6 +66,10 @@ public class Server extends Thread {
 
     public synchronized Connection getConnection(String id) {
         return connections.get(id);
+    }
+
+    public Collection<Connection> getConnections() {
+        return connections.values();
     }
 
     public synchronized static Server get() {

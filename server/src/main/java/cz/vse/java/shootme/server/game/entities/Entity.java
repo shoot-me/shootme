@@ -4,6 +4,7 @@ import cz.vse.java.shootme.common.net.EntityUpdate;
 import cz.vse.java.shootme.server.game.Game;
 import cz.vse.java.shootme.common.util.Vector;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public abstract class Entity {
@@ -69,5 +70,18 @@ public abstract class Entity {
 
     public Vector getCenter() {
         return new Vector(pos.x + size.x / 2, pos.y + size.y / 2);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Entity entity = (Entity) o;
+        return Objects.equals(id, entity.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

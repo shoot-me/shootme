@@ -8,4 +8,6 @@ public class G {
 
     public static String gameName = "";
 
+    public static String avatar = "knight_orange";
+
 }

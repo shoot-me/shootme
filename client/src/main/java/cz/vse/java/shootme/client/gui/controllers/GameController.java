@@ -47,11 +47,11 @@ public class GameController extends Controller {
     @Override
     public void mounted() {
         try {
-            JoinGameResponse response = (JoinGameResponse) Client.get().send(new JoinGameRequest(G.gameName));
+            JoinGameResponse response = (JoinGameResponse) Client.get().send(new JoinGameRequest(G.gameName, G.avatar));
 
             port = response.port;
             configuration = response.configuration;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
 
             return;

@@ -32,6 +32,7 @@ public class Dagger extends Entity {
         if (another.id.equals(owner)) return;
 
         game.getState().removeEntity(another);
+        game.getState().removeEntity(this);
     }
 
 }

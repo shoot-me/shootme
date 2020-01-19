@@ -21,5 +21,7 @@ public class Main extends Application {
         SceneManager.get().newScreen("game", "gui/fxml/game.fxml", new GameController());
 
         SceneManager.get().activate("signin");
+
+        primaryStage.show();
     }
 }

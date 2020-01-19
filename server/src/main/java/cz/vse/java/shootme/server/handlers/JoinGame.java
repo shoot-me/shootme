@@ -20,7 +20,7 @@ public class JoinGame {
         double x = random.nextInt((game.getConfiguration().getWidth() - 3) * 64) + 64;
         double y = random.nextInt((game.getConfiguration().getHeight() - 3) * 64) + 64;
 
-        Player player = new Player("img/players/player_1.png", new Vector(x, y), playerName);
+        Player player = new Player("img/players/" + request.avatar + ".png", new Vector(x, y), playerName);
 
         game.getState().addEntity(player);
 

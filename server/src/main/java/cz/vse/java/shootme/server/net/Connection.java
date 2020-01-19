@@ -44,11 +44,7 @@ public class Connection extends Thread {
 
                 EventBus.get().emit(request);
             } catch (Exception e) {
-                if (e.getMessage().contains("Connection reset")) {
-                    break;
-                } else {
-                    e.printStackTrace();
-                }
+                break;
             }
         }
 

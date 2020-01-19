@@ -10,10 +10,7 @@ import cz.vse.java.shootme.server.net.requests.OverviewRequest;
 import cz.vse.java.shootme.server.net.responses.NewGameResponse;
 import cz.vse.java.shootme.server.net.responses.OverviewResponse;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
@@ -24,6 +21,9 @@ public class OverviewController extends Controller {
 
     @FXML
     public TextField username;
+
+    @FXML
+    public ComboBox<String> avatar;
 
     @FXML
     public TextField newGame;
@@ -40,6 +40,14 @@ public class OverviewController extends Controller {
     public List<Configuration> configurations = new ArrayList<>();
 
     @Override
+    public void created() {
+        avatar.getItems().add("knight_orange");
+        avatar.getItems().add("knight_pink");
+
+        avatar.getSelectionModel().select(G.avatar);
+    }
+
+    @Override
     public void mounted() {
         onRefresh();
 
@@ -49,7 +57,7 @@ public class OverviewController extends Controller {
     public void onNewGame() {
         try {
             NewGameResponse response = (NewGameResponse) Client.get().send(new NewGameRequest(newGame.getText()));
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             Util.showErrorMessage("Error");
             SceneManager.get().activate("signin");
@@ -67,7 +75,7 @@ public class OverviewController extends Controller {
             OverviewResponse response = (OverviewResponse) Client.get().send(new OverviewRequest());
 
             configurations = response.configurations;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             Util.showErrorMessage("Error");
             SceneManager.get().activate("signin");
@@ -86,6 +94,10 @@ public class OverviewController extends Controller {
         G.gameName = gameview.getSelectionModel().getSelectedItem();
 
         SceneManager.get().activate("game");
+    }
+
+    public void onAvatarSelect() {
+        G.avatar = avatar.getSelectionModel().getSelectedItem();
     }
 
     public void onLogout() throws IOException {

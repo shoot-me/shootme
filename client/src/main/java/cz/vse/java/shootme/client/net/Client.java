@@ -23,9 +23,11 @@ public class Client {
         objectInputStream = new ObjectInputStream(socket.getInputStream());
     }
 
-    public Response send(Request request) throws IOException {
+    public Response send(Request request) {
         try {
             objectOutputStream.writeObject(request);
+            objectOutputStream.flush();
+            objectOutputStream.reset();
 
             return (Response) objectInputStream.readObject();
         } catch (Exception e) {
