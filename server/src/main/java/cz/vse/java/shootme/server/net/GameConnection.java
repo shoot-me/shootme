@@ -45,9 +45,11 @@ public class GameConnection implements Runnable {
             try {
                 Action action = (Action) objectInputStream.readObject();
             } catch (Exception e) {
-                e.printStackTrace();
-
-                break;
+                if (e.getMessage().contains("Connection reset")) {
+                    break;
+                } else {
+                    e.printStackTrace();
+                }
             }
         }
 

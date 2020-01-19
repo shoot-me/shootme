@@ -46,6 +46,8 @@ public class GameServer {
 
                 gameConnections.put(gameConnection.id, gameConnection);
 
+                System.out.println("Accepting game connection: " + gameConnection.id);
+
                 gameConnection.start();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -67,9 +69,11 @@ public class GameServer {
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
-
-                break;
+                if (e.getMessage().contains("Socket closed")) {
+                    break;
+                } else {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -83,6 +87,8 @@ public class GameServer {
     }
 
     public void closeGameConnection(GameConnection gameConnection) {
+        System.out.println("Closing game connection: " + gameConnection.id);
+
         gameConnections.remove(gameConnection.id);
     }
 

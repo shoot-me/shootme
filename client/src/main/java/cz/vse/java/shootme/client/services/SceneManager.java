@@ -2,6 +2,7 @@ package cz.vse.java.shootme.client.services;
 
 
 import cz.vse.java.shootme.common.util.Vector;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -56,6 +57,11 @@ public class SceneManager {
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
+
+        primaryStage.setOnCloseRequest(e -> {
+            Platform.exit();
+            System.exit(0);
+        });
     }
 
     public Scene getScene() {

@@ -7,6 +7,7 @@ import cz.vse.java.shootme.server.net.responses.Response;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -41,9 +42,11 @@ public class Connection extends Thread {
 
                 EventBus.get().emit(request);
             } catch (Exception e) {
-                e.printStackTrace();
-
-                break;
+                if (e.getMessage().contains("Connection reset")) {
+                    break;
+                } else {
+                    e.printStackTrace();
+                }
             }
         }
 
