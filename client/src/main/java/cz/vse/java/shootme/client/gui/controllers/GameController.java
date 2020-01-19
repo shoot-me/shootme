@@ -96,6 +96,7 @@ public class GameController extends Controller {
 
         actions.clear();
 
+        map.setPlayer(null);
         map.clearEntities();
 
         for (Entity entity : state.getEntities()) {
