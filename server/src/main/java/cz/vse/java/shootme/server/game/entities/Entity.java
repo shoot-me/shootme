@@ -20,8 +20,6 @@ public abstract class Entity {
 
     protected Vector size;
 
-    protected Vector center;
-
     protected int lifetime = 0;
 
     public Entity(String image, Vector pos, Vector dir, Vector speed, Vector size) {
@@ -30,9 +28,10 @@ public abstract class Entity {
         this.dir = dir;
         this.speed = speed;
         this.size = size;
-        this.center = new Vector(pos.x + size.x / 2, pos.y + size.y / 2);
         this.lifetime = 0;
     }
+
+    public abstract String getType();
 
     public void update(Game game) {
         lifetime++;
@@ -41,6 +40,9 @@ public abstract class Entity {
         dir = dir.clampMax(new Vector(1, 1));
 
         pos = pos.add(dir.times(speed));
+
+        pos = pos.clampMin(new Vector(0, 0));
+        pos = pos.clampMax(new Vector(game.getConfiguration().getWidth() * 64 - size.x, game.getConfiguration().getHeight() * 64 - size.y));
     }
 
     public boolean intersects(Entity another) {
@@ -58,7 +60,7 @@ public abstract class Entity {
     }
 
     public EntityUpdate export() {
-        return new EntityUpdate(id, pos, dir, speed, size, image);
+        return new EntityUpdate(getType(), id, pos, dir, speed, size, image);
     }
 
     public Vector getSize() {
@@ -66,6 +68,6 @@ public abstract class Entity {
     }
 
     public Vector getCenter() {
-        return center;
+        return new Vector(pos.x + size.x / 2, pos.y + size.y / 2);
     }
 }

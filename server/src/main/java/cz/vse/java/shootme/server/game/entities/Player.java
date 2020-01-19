@@ -18,13 +18,26 @@ public class Player extends Entity {
     }
 
     @Override
+    public String getType() {
+        return "s";
+    }
+
+    @Override
     public void update(Game game) {
         super.update(game);
 
         daggerCooldown += 1;
     }
 
-    public void applyKeyPressAction(KeyPressAction action) {
+    public void shoot(Game game, Vector dir) {
+        if (daggerCooldown > 20) {
+            game.getState().addEntity(new Dagger(id, getCenter(), dir));
+
+            daggerCooldown = 0;
+        }
+    }
+
+    public void applyKeyPressAction(Game game, KeyPressAction action) {
         switch (action.code) {
             case "W":
                 dir = dir.add(new Vector(0, -1));
@@ -38,10 +51,22 @@ public class Player extends Entity {
             case "D":
                 dir = dir.add(new Vector(1, 0));
                 break;
+            case "UP":
+                shoot(game, new Vector(0, -1));
+                break;
+            case "LEFT":
+                shoot(game, new Vector(-1, 0));
+                break;
+            case "DOWN":
+                shoot(game, new Vector(0, 1));
+                break;
+            case "RIGHT":
+                shoot(game, new Vector(1, 0));
+                break;
         }
     }
 
-    public void applyKeyReleaseAction(KeyReleaseAction action) {
+    public void applyKeyReleaseAction(Game game, KeyReleaseAction action) {
         switch (action.code) {
             case "W":
                 dir = dir.add(new Vector(0, 1));

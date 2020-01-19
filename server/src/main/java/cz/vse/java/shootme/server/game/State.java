@@ -30,9 +30,9 @@ public class State {
     public void applyActions(Game game, List<Action> actions) {
         for (Action action : actions) {
             if (action instanceof KeyPressAction) {
-                action.player.applyKeyPressAction((KeyPressAction) action);
+                action.player.applyKeyPressAction(game, (KeyPressAction) action);
             } else if (action instanceof KeyReleaseAction) {
-                action.player.applyKeyReleaseAction((KeyReleaseAction) action);
+                action.player.applyKeyReleaseAction(game, (KeyReleaseAction) action);
             }
         }
     }
@@ -40,7 +40,9 @@ public class State {
     public synchronized void update(Game game) {
         for (Entity entity : entities) {
             entity.update(game);
+        }
 
+        for (Entity entity : entities) {
             for (Entity another : entities) {
                 if (entity != another && entity.intersects(another)) {
                     entity.collide(game, another);
