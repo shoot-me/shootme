@@ -1,15 +1,12 @@
-package cz.vse.java.shootme.server.game.util;
+package cz.vse.java.shootme.common.util;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 public class Vector implements Serializable {
 
-    public final String id = UUID.randomUUID().toString();
+    public final double x;
 
-    public double x;
-
-    public double y;
+    public final double y;
 
     public Vector(double x, double y) {
         this.x = x;
@@ -24,24 +21,34 @@ public class Vector implements Serializable {
         return new Vector(x * vector.x, y * vector.y);
     }
 
-    public void clampMin(Vector vector) {
+    public Vector clampMin(Vector vector) {
+        double clampedX = x;
+        double clampledY = y;
+
         if (x < vector.x) {
-            x = vector.x;
+            clampedX = vector.x;
         }
 
         if (y < vector.y) {
-            y = vector.y;
+            clampledY = vector.y;
         }
+
+        return new Vector(clampedX, clampledY);
     }
 
-    public void clampMax(Vector vector) {
+    public Vector clampMax(Vector vector) {
+        double clampedX = x;
+        double clampledY = y;
+
         if (x > vector.x) {
-            x = vector.x;
+            clampedX = vector.x;
         }
 
         if (y > vector.y) {
-            y = vector.y;
+            clampledY = vector.y;
         }
+
+        return new Vector(clampedX, clampledY);
     }
 
     @Override

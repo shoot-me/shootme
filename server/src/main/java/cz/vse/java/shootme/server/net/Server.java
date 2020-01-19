@@ -1,6 +1,5 @@
 package cz.vse.java.shootme.server.net;
 
-import cz.vse.java.shootme.server.game.Configuration;
 import cz.vse.java.shootme.server.game.Game;
 
 import java.io.IOException;
@@ -12,6 +11,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Server extends Thread {
 
     private static Server server;
+
+    private static int gameServerPort = 10000;
 
     private ServerSocket serverSocket;
 
@@ -40,7 +41,7 @@ public class Server extends Thread {
 
                 connection.start();
             } catch (IOException e) {
-                System.err.println(e.getMessage());
+                e.printStackTrace();
             }
         }
     }
@@ -53,6 +54,16 @@ public class Server extends Thread {
 
     public Map<String, Game> getGames() {
         return games;
+    }
+
+    public synchronized int getGameServerPort() {
+        gameServerPort++;
+
+        return gameServerPort;
+    }
+
+    public synchronized Connection getConnection(String id) {
+        return connections.get(id);
     }
 
     public synchronized static Server get() {

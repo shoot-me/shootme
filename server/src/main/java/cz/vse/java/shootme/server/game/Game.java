@@ -1,16 +1,18 @@
 package cz.vse.java.shootme.server.game;
 
-import cz.vse.java.shootme.server.game.actions.Action;
-import cz.vse.java.shootme.server.game.entities.Entity;
-import cz.vse.java.shootme.server.net.Connection;
+import cz.vse.java.shootme.common.util.Vector;
+import cz.vse.java.shootme.server.game.entities.Dagger;
+import cz.vse.java.shootme.server.net.GameServer;
+import cz.vse.java.shootme.server.net.Server;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class Game implements Runnable {
+public class Game {
+
+    protected GameServer gameServer;
 
     protected ScheduledExecutorService executor;
 
@@ -18,37 +20,38 @@ public class Game implements Runnable {
 
     protected State state;
 
-    protected List<Connection> connections;
+    protected int x = 600;
 
-    protected List<Action> actions;
+    protected int dir = 1;
 
-    protected List<Entity> addedEntities;
-
-    protected List<Entity> removedEntities;
-
-    public Game(Configuration configuration) {
+    public Game(Configuration configuration) throws IOException {
+        this.gameServer = new GameServer(Server.get().getGameServerPort());
         this.executor = Executors.newScheduledThreadPool(1);
         this.configuration = configuration;
         this.state = new State();
-        this.connections = new ArrayList<>();
-        this.actions = new ArrayList<>();
-        this.addedEntities = new ArrayList<>();
-        this.removedEntities = new ArrayList<>();
     }
 
-    @Override
-    public void run() {
-        state.applyActions(this, actions);
+    public void update() {
+        if (x > 800 || x < 400) {
+            dir = dir * -1;
+        }
+
+        x += 20 * dir;
+
+        state.addedEntities.add(new Dagger("", new Vector(x, 0), new Vector(0, 1)));
 
         state.update(this);
 
-        actions.clear();
-        addedEntities.clear();
-        removedEntities.clear();
+        gameServer.pushStateUpdate(state.export());
+
+        state.addedEntities.clear();
+        state.removedEntities.clear();
     }
 
     public void start() {
-        executor.scheduleAtFixedRate(this, 0, 20, TimeUnit.MILLISECONDS);
+        gameServer.start();
+
+        executor.scheduleAtFixedRate(this::update, 0, 20, TimeUnit.MILLISECONDS);
     }
 
     public Configuration getConfiguration() {
@@ -59,27 +62,7 @@ public class Game implements Runnable {
         return state;
     }
 
-    public List<Connection> getConnections() {
-        return connections;
-    }
-
-    public List<Action> getActions() {
-        return actions;
-    }
-
-    public List<Entity> getAddedEntities() {
-        return addedEntities;
-    }
-
-    public synchronized void addEntity(Entity entity) {
-        addedEntities.add(entity);
-    }
-
-    public List<Entity> getRemovedEntities() {
-        return removedEntities;
-    }
-
-    public synchronized void removeEntity(Entity entity) {
-        removedEntities.add(entity);
+    public int getPort() {
+        return gameServer.getPort();
     }
 }

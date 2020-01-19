@@ -15,7 +15,6 @@ public class Main {
 
         EventBus.get().subscribe(NewGameRequest.class, NewGame::new);
         EventBus.get().subscribe(JoinGameRequest.class, JoinGame::new);
-        EventBus.get().subscribe(GameUpdateRequest.class, UpdateGame::new);
 
         Server.get().start();
     }

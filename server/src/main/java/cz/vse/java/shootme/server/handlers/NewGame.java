@@ -6,17 +6,25 @@ import cz.vse.java.shootme.server.net.Server;
 import cz.vse.java.shootme.server.net.requests.NewGameRequest;
 import cz.vse.java.shootme.server.net.responses.NewGameResponse;
 
+import java.io.IOException;
+
 public class NewGame {
 
     public NewGame(NewGameRequest request) {
-        Configuration configuration = new Configuration(request.name, 30, 30);
-        Game game = new Game(configuration);
+        try {
+            Configuration configuration = new Configuration(request.name, 30, 30);
 
-        Server.get().getGames().put(request.name, game);
+            Game game = new Game(configuration);
 
-        game.start();
+            Server.get().getGames().put(request.name, game);
 
-        request.respond(new NewGameResponse());
+            game.start();
+
+            request.respond(new NewGameResponse());
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            request.respondError("Error creating new game");
+        }
     }
-
 }

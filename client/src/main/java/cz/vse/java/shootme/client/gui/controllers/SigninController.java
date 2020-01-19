@@ -4,7 +4,7 @@ import cz.vse.java.shootme.client.G;
 import cz.vse.java.shootme.client.Util;
 import cz.vse.java.shootme.client.net.Client;
 import cz.vse.java.shootme.client.services.SceneManager;
-import cz.vse.java.shootme.server.game.util.Vector;
+import cz.vse.java.shootme.common.util.Vector;
 import cz.vse.java.shootme.server.net.requests.LoginRequest;
 import cz.vse.java.shootme.server.net.requests.RegisterRequest;
 import cz.vse.java.shootme.server.net.responses.*;
@@ -41,6 +41,7 @@ public class SigninController extends Controller {
         if (response instanceof ErrorResponse) {
             Util.showErrorMessage(((ErrorResponse) response).message);
         } else if (response instanceof LoginSuccessfulResponse) {
+            G.connectionId = ((LoginSuccessfulResponse) response).connectionId;
             G.playerName = username.getText();
 
             SceneManager.get().activate("overview");

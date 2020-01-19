@@ -21,7 +21,7 @@ public class LoginUser {
 
         loginRequest.getConnection().setUser(user);
 
-        loginRequest.respond(new LoginSuccessfulResponse());
+        loginRequest.respond(new LoginSuccessfulResponse(loginRequest.getConnection().id));
     }
 
 }

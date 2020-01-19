@@ -1,8 +1,6 @@
 package cz.vse.java.shootme.server.net;
 
 import cz.vse.java.shootme.common.EventBus;
-import cz.vse.java.shootme.server.game.Game;
-import cz.vse.java.shootme.server.game.entities.Player;
 import cz.vse.java.shootme.server.models.User;
 import cz.vse.java.shootme.server.net.requests.Request;
 import cz.vse.java.shootme.server.net.responses.Response;
@@ -25,10 +23,6 @@ public class Connection extends Thread {
     private Consumer<Connection> onClose;
 
     private User user;
-
-    private Game game;
-
-    private Player player;
 
     Connection(Socket socket) throws IOException {
         this.socket = socket;
@@ -78,21 +72,5 @@ public class Connection extends Thread {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Game getGame() {
-        return game;
-    }
-
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
     }
 }

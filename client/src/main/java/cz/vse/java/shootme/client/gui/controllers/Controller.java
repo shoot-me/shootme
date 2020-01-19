@@ -1,6 +1,6 @@
 package cz.vse.java.shootme.client.gui.controllers;
 
-import cz.vse.java.shootme.server.game.util.Vector;
+import cz.vse.java.shootme.common.util.Vector;
 
 public abstract class Controller {
 
