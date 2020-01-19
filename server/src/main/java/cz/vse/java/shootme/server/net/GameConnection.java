@@ -52,21 +52,17 @@ public class GameConnection implements Runnable {
 
                 actions.add(action);
             } catch (Exception e) {
-                if (e.getMessage().contains("Connection reset")) {
-                    break;
-                } else {
-                    e.printStackTrace();
-                }
+                break;
             }
         }
 
         try {
             socket.close();
-
-            onClose.accept(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        onClose.accept(this);
     }
 
     public synchronized List<Action> consumeActions() {

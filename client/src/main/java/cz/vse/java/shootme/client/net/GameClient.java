@@ -45,7 +45,7 @@ public class GameClient {
 
                 stateUpdates.put(stateUpdate);
             } catch (Exception e) {
-                e.printStackTrace();
+                return;
             }
         }
     }
@@ -59,7 +59,7 @@ public class GameClient {
                 objectOutputStream.flush();
                 objectOutputStream.reset();
             } catch (Exception e) {
-                e.printStackTrace();
+                return;
             }
         }
     }
@@ -90,6 +90,16 @@ public class GameClient {
 
         gameClient.receiver.start();
         gameClient.sender.start();
+    }
+
+    public void disconnect() {
+        try {
+            receiver.interrupt();
+            sender.interrupt();
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public BlockingQueue<StateUpdate> getStateUpdates() {

@@ -1,7 +1,5 @@
 package cz.vse.java.shootme.server.game;
 
-import cz.vse.java.shootme.common.util.Vector;
-import cz.vse.java.shootme.server.game.entities.Dagger;
 import cz.vse.java.shootme.server.net.GameServer;
 import cz.vse.java.shootme.server.net.Server;
 

@@ -71,13 +71,8 @@ public class GameServer {
                     gameConnection.getObjectOutputStream().flush();
                     gameConnection.getObjectOutputStream().reset();
                 }
-
             } catch (Exception e) {
-                if (e.getMessage().contains("Socket closed")) {
-                    break;
-                } else {
-                    e.printStackTrace();
-                }
+                continue;
             }
         }
     }
@@ -103,9 +98,9 @@ public class GameServer {
     public void closeGameConnection(GameConnection gameConnection) {
         System.out.println("Closing game connection: " + gameConnection.id);
 
-        game.getState().removeEntity(gameConnection.getPlayer());
-
         gameConnections.remove(gameConnection.id);
+
+        game.getState().removeEntity(gameConnection.getPlayer());
     }
 
     public void start() {

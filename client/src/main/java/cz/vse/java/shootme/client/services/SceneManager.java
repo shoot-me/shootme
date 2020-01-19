@@ -31,6 +31,8 @@ public class SceneManager {
     }
 
     public void activate(String name) {
+        primaryStage.hide();
+
         if (activeController != null) {
             activeController.unmounted();
         }

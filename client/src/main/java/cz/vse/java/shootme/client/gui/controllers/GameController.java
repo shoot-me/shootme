@@ -24,9 +24,7 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class GameController extends Controller {
@@ -75,6 +73,14 @@ public class GameController extends Controller {
         timeline.play();
     }
 
+    @Override
+    public void unmounted() {
+        GameClient.get().disconnect();
+
+        thread.interrupt();
+        timeline.stop();
+    }
+
     public void run() {
         while (true) {
             try {
@@ -82,7 +88,7 @@ public class GameController extends Controller {
 
                 update(stateUpdate);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                return;
             }
         }
     }
@@ -109,7 +115,9 @@ public class GameController extends Controller {
         SceneManager.get().getScene().setOnKeyPressed(keyEvent -> {
             String code = keyEvent.getCode().getName().toUpperCase();
 
-            if (!pressedKeys.contains(code)) {
+            if (code.equals("ESC")) {
+                SceneManager.get().activate("overview");
+            } else if (!pressedKeys.contains(code)) {
                 pressedKeys.add(code);
 
                 try {
