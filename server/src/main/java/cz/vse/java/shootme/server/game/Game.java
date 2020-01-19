@@ -21,7 +21,7 @@ public class Game {
     protected State state;
 
     public Game(Configuration configuration) throws IOException {
-        this.gameServer = new GameServer(Server.get().getGameServerPort());
+        this.gameServer = new GameServer(this, Server.get().getGameServerPort());
         this.executor = Executors.newScheduledThreadPool(1);
         this.configuration = configuration;
         this.state = new State();

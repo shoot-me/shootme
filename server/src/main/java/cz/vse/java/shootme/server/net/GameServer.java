@@ -1,6 +1,7 @@
 package cz.vse.java.shootme.server.net;
 
 import cz.vse.java.shootme.common.net.StateUpdate;
+import cz.vse.java.shootme.server.game.Game;
 import cz.vse.java.shootme.server.game.actions.Action;
 
 import java.io.IOException;
@@ -19,6 +20,8 @@ public class GameServer {
 
     private Thread sender;
 
+    private Game game;
+
     private int port;
 
     private ServerSocket serverSocket;
@@ -27,9 +30,10 @@ public class GameServer {
 
     private BlockingQueue<StateUpdate> stateUpdates;
 
-    public GameServer(int port) throws IOException {
+    public GameServer(Game game, int port) throws IOException {
         this.thread = new Thread(this::run);
         this.sender = new Thread(this::send);
+        this.game = game;
         this.port = port;
         this.serverSocket = new ServerSocket(port);
         this.gameConnections = new ConcurrentHashMap<>();
@@ -98,6 +102,8 @@ public class GameServer {
 
     public void closeGameConnection(GameConnection gameConnection) {
         System.out.println("Closing game connection: " + gameConnection.id);
+
+        game.getState().removeEntity(gameConnection.getPlayer());
 
         gameConnections.remove(gameConnection.id);
     }

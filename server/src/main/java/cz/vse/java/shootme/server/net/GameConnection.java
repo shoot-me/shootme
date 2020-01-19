@@ -102,4 +102,8 @@ public class GameConnection implements Runnable {
     public User getUser() {
         return user;
     }
+
+    public Player getPlayer() {
+        return player;
+    }
 }
