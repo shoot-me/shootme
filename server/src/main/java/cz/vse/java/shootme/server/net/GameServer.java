@@ -1,12 +1,12 @@
 package cz.vse.java.shootme.server.net;
 
 import cz.vse.java.shootme.common.net.StateUpdate;
+import cz.vse.java.shootme.server.game.actions.Action;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -84,6 +84,16 @@ public class GameServer {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Action> consumeActions() {
+        List<Action> actions = new ArrayList<>();
+
+        for (GameConnection gameConnection : gameConnections.values()) {
+            actions.addAll(gameConnection.consumeActions());
+        }
+
+        return actions;
     }
 
     public void closeGameConnection(GameConnection gameConnection) {

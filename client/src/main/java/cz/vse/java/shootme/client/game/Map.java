@@ -46,4 +46,14 @@ public class Map {
     public List<Sprite> getSprites() {
         return sprites;
     }
+
+    public Sprite findSpriteById(String id) {
+        for (Sprite sprite : sprites) {
+            if (sprite.id.equals(id)) {
+                return sprite;
+            }
+        }
+
+        return null;
+    }
 }

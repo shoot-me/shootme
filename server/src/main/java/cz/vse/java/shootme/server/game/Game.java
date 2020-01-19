@@ -20,10 +20,6 @@ public class Game {
 
     protected State state;
 
-    protected int x = 600;
-
-    protected int dir = 1;
-
     public Game(Configuration configuration) throws IOException {
         this.gameServer = new GameServer(Server.get().getGameServerPort());
         this.executor = Executors.newScheduledThreadPool(1);
@@ -32,13 +28,7 @@ public class Game {
     }
 
     public void update() {
-        if (x > 800 || x < 400) {
-            dir = dir * -1;
-        }
-
-        x += 20 * dir;
-
-        state.addedEntities.add(new Dagger("", new Vector(x, 0), new Vector(0, 1)));
+        state.applyActions(this, gameServer.consumeActions());
 
         state.update(this);
 

@@ -12,7 +12,7 @@ public class NewGame {
 
     public NewGame(NewGameRequest request) {
         try {
-            Configuration configuration = new Configuration(request.name, 30, 30);
+            Configuration configuration = new Configuration(request.name, 10, 10);
 
             Game game = new Game(configuration);
 

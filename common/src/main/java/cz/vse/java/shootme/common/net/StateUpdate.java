@@ -9,27 +9,23 @@ public class StateUpdate implements Serializable {
 
     public final String id = UUID.randomUUID().toString();
 
-    public final List<EntityUpdate> addedEntities;
+    public final List<EntityUpdate> entityUpdates;
 
-    public final List<EntityUpdate> updatedEntities;
-
-    public final List<EntityUpdate> removedEntities;
-
-    public StateUpdate(List<EntityUpdate> addedEntities, List<EntityUpdate> updatedEntities, List<EntityUpdate> removedEntities) {
-        this.addedEntities = addedEntities;
-        this.updatedEntities = updatedEntities;
-        this.removedEntities = removedEntities;
+    public StateUpdate(List<EntityUpdate> entityUpdates) {
+        this.entityUpdates = entityUpdates;
     }
 
-    public List<String> addedIds() {
-        return addedEntities.stream().map(e -> e.id).collect(Collectors.toList());
+    public EntityUpdate findEntityUpdateById(String id) {
+        for (EntityUpdate entityUpdate : entityUpdates) {
+            if (entityUpdate.id.equals(id)) {
+                return entityUpdate;
+            }
+        }
+
+        return null;
     }
 
-    public List<String> updatedIds() {
-        return updatedEntities.stream().map(e -> e.id).collect(Collectors.toList());
-    }
-
-    public List<String> removedIds() {
-        return removedEntities.stream().map(e -> e.id).collect(Collectors.toList());
+    public List<String> entityIds() {
+        return entityUpdates.stream().map(e -> e.id).collect(Collectors.toList());
     }
 }

@@ -1,6 +1,7 @@
 package cz.vse.java.shootme.server.net;
 
 import cz.vse.java.shootme.server.game.actions.Action;
+import cz.vse.java.shootme.server.game.entities.Player;
 import cz.vse.java.shootme.server.models.User;
 
 import java.io.IOException;
@@ -30,6 +31,8 @@ public class GameConnection implements Runnable {
 
     private User user;
 
+    private Player player;
+
     public GameConnection(Socket socket) throws IOException {
         this.thread = new Thread(this);
         this.socket = socket;
@@ -44,6 +47,10 @@ public class GameConnection implements Runnable {
         while (true) {
             try {
                 Action action = (Action) objectInputStream.readObject();
+
+                action.player = player;
+
+                actions.add(action);
             } catch (Exception e) {
                 if (e.getMessage().contains("Connection reset")) {
                     break;
@@ -62,10 +69,6 @@ public class GameConnection implements Runnable {
         }
     }
 
-    public synchronized void addAction(Action action) {
-        actions.add(action);
-    }
-
     public synchronized List<Action> consumeActions() {
         List<Action> consumed = new ArrayList<>(actions);
 
@@ -82,6 +85,7 @@ public class GameConnection implements Runnable {
         try {
             String connectionId = (String) objectInputStream.readObject();
             user = Server.get().getConnection(connectionId).getUser();
+            player = Server.get().getConnection(connectionId).getPlayer();
         } catch (Exception e) {
             e.printStackTrace();
 

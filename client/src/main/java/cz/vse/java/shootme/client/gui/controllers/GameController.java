@@ -5,10 +5,13 @@ import cz.vse.java.shootme.client.game.Map;
 import cz.vse.java.shootme.client.game.Sprite;
 import cz.vse.java.shootme.client.net.Client;
 import cz.vse.java.shootme.client.net.GameClient;
+import cz.vse.java.shootme.client.services.SceneManager;
 import cz.vse.java.shootme.common.net.EntityUpdate;
 import cz.vse.java.shootme.common.net.StateUpdate;
 import cz.vse.java.shootme.server.game.Configuration;
-import cz.vse.java.shootme.server.game.State;
+import cz.vse.java.shootme.server.game.actions.Action;
+import cz.vse.java.shootme.server.game.actions.KeyPressAction;
+import cz.vse.java.shootme.server.game.actions.KeyReleaseAction;
 import cz.vse.java.shootme.server.game.entities.Entity;
 import cz.vse.java.shootme.server.net.requests.JoinGameRequest;
 import cz.vse.java.shootme.server.net.responses.JoinGameResponse;
@@ -21,7 +24,10 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class GameController extends Controller {
 
@@ -36,9 +42,9 @@ public class GameController extends Controller {
 
     private Configuration configuration;
 
-    private State state;
-
     private Map map;
+
+    private Set<String> pressedKeys = new HashSet<>();
 
     @Override
     public void mounted() {
@@ -53,9 +59,11 @@ public class GameController extends Controller {
             return;
         }
 
+        registerKeyHandlers();
+
         GameClient.connect("localhost", port, G.connectionId);
 
-        System.out.println("Connected");
+        System.out.println("Connected to a game");
 
         map = new Map(configuration);
 
@@ -80,25 +88,49 @@ public class GameController extends Controller {
     }
 
     public synchronized void update(StateUpdate stateUpdate) {
-        for (EntityUpdate removed : stateUpdate.removedEntities) {
-            map.getSprites().removeIf(e -> e.id.equals(removed.id));
-        }
+        map.getSprites().removeIf(e -> !stateUpdate.entityIds().contains(e.id));
 
-        for (EntityUpdate updated : stateUpdate.updatedEntities) {
-            for (Sprite sprite : map.getSprites()) {
-                if (sprite.id.equals(updated.id)) {
-                    sprite.updateFrom(updated);
-                }
+        for (EntityUpdate entityUpdate : stateUpdate.entityUpdates) {
+            Sprite sprite = map.findSpriteById(entityUpdate.id);
+
+            if (sprite != null) {
+                sprite.updateFrom(entityUpdate);
+            } else {
+                map.getSprites().add(new Sprite(entityUpdate));
             }
-        }
-
-        for (EntityUpdate added : stateUpdate.addedEntities) {
-            map.getSprites().add(new Sprite(added));
         }
     }
 
     public synchronized void render(ActionEvent actionEvent) {
         map.render(pane);
+    }
+
+    private void registerKeyHandlers() {
+        SceneManager.get().getScene().setOnKeyPressed(keyEvent -> {
+            String code = keyEvent.getCode().getName().toUpperCase();
+
+            if (!pressedKeys.contains(code)) {
+                pressedKeys.add(code);
+
+                try {
+                    GameClient.get().getActions().put(new KeyPressAction(code));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        SceneManager.get().getScene().setOnKeyReleased(keyEvent -> {
+            String code = keyEvent.getCode().getName().toUpperCase();
+
+            pressedKeys.remove(code);
+
+            try {
+                GameClient.get().getActions().put(new KeyReleaseAction(code));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
 }

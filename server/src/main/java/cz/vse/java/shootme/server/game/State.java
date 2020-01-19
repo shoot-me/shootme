@@ -6,9 +6,11 @@ import cz.vse.java.shootme.server.game.actions.Action;
 import cz.vse.java.shootme.server.game.actions.KeyPressAction;
 import cz.vse.java.shootme.server.game.actions.KeyReleaseAction;
 import cz.vse.java.shootme.server.game.entities.Entity;
+import cz.vse.java.shootme.server.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class State {
@@ -26,10 +28,16 @@ public class State {
     }
 
     public void applyActions(Game game, List<Action> actions) {
-
+        for (Action action : actions) {
+            if (action instanceof KeyPressAction) {
+                action.player.applyKeyPressAction((KeyPressAction) action);
+            } else if (action instanceof KeyReleaseAction) {
+                action.player.applyKeyReleaseAction((KeyReleaseAction) action);
+            }
+        }
     }
 
-    public void update(Game game) {
+    public synchronized void update(Game game) {
         for (Entity entity : entities) {
             entity.update(game);
 
@@ -44,24 +52,18 @@ public class State {
         entities.removeAll(removedEntities);
     }
 
-    public List<Entity> getAddedEntities() {
-        return addedEntities;
+    public synchronized void addEntity(Entity entity) {
+        addedEntities.add(entity);
     }
 
-    public List<Entity> getEntities() {
-        return entities;
-    }
-
-    public List<Entity> getRemovedEntities() {
-        return removedEntities;
+    public synchronized void removeEntity(Entity entity) {
+        removedEntities.add(entity);
     }
 
     public StateUpdate export() {
-        List<EntityUpdate> added = addedEntities.stream().map(Entity::export).collect(Collectors.toList());
-        List<EntityUpdate> updated = entities.stream().map(Entity::export).collect(Collectors.toList());
-        List<EntityUpdate> removed = removedEntities.stream().map(Entity::export).collect(Collectors.toList());
+        List<EntityUpdate> entityUpdates = entities.stream().map(Entity::export).collect(Collectors.toList());
 
-        return new StateUpdate(added, updated, removed);
+        return new StateUpdate(entityUpdates);
     }
 
 }

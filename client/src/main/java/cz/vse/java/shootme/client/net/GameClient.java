@@ -1,19 +1,22 @@
 package cz.vse.java.shootme.client.net;
 
 import cz.vse.java.shootme.common.net.StateUpdate;
+import cz.vse.java.shootme.server.game.actions.Action;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class GameClient {
 
     private static GameClient gameClient;
 
-    private Thread thread;
+    private Thread receiver;
+
+    private Thread sender;
 
     private Socket socket;
 
@@ -23,20 +26,38 @@ public class GameClient {
 
     private BlockingQueue<StateUpdate> stateUpdates;
 
+    private BlockingQueue<Action> actions;
+
     private GameClient(String address, int port) throws IOException {
-        this.thread = new Thread(this::run);
+        this.receiver = new Thread(this::receive);
+        this.sender = new Thread(this::send);
         this.socket = new Socket(address, port);
         this.objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         this.objectInputStream = new ObjectInputStream(socket.getInputStream());
-        this.stateUpdates = new LinkedBlockingDeque<>();
+        this.stateUpdates = new LinkedBlockingQueue<>();
+        this.actions = new LinkedBlockingQueue<>();
     }
 
-    private void run() {
+    private void receive() {
         while (true) {
             try {
                 StateUpdate stateUpdate = (StateUpdate) objectInputStream.readObject();
 
                 stateUpdates.put(stateUpdate);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void send() {
+        while (true) {
+            try {
+                Action action = actions.take();
+
+                objectOutputStream.writeObject(action);
+                objectOutputStream.flush();
+                objectOutputStream.reset();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -67,11 +88,16 @@ public class GameClient {
             System.exit(1);
         }
 
-        gameClient.thread.start();
+        gameClient.receiver.start();
+        gameClient.sender.start();
     }
 
     public BlockingQueue<StateUpdate> getStateUpdates() {
         return stateUpdates;
+    }
+
+    public BlockingQueue<Action> getActions() {
+        return actions;
     }
 
     public static GameClient get() {

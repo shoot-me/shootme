@@ -18,7 +18,7 @@ public class Dagger extends Entity {
         super.update(game);
 
         if (lifetime > 50) {
-            game.getState().getRemovedEntities().add(this);
+            game.getState().removeEntity(this);
         }
     }
 
