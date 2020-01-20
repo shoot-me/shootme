@@ -8,7 +8,7 @@ public class Dagger extends Entity {
     private final String owner;
 
     public Dagger(String owner, Vector pos, Vector dir) {
-        super("img/items/dagger_1.png", pos, dir, new Vector(10, 10), new Vector(16, 16));
+        super("img/items/dagger_1.png", "", pos, dir, new Vector(10, 10), new Vector(16, 16));
 
         this.owner = owner;
     }

@@ -12,7 +12,7 @@ public class Player extends Entity {
     public int daggerCooldown = 0;
 
     public Player(String image, Vector pos, String name) {
-        super(image, pos, new Vector(0, 0), new Vector(5, 5), new Vector(64, 80));
+        super(image, name, pos, new Vector(0, 0), new Vector(5, 5), new Vector(64, 80));
 
         this.name = name;
     }

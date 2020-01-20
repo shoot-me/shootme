@@ -8,6 +8,8 @@ public class EntityUpdate implements Serializable {
 
     public final String id;
 
+    public final String label;
+
     public final String type;
 
     public final Vector pos;
@@ -20,8 +22,9 @@ public class EntityUpdate implements Serializable {
 
     public final String image;
 
-    public EntityUpdate(String type, String id, Vector pos, Vector dir, Vector speed, Vector size, String image) {
+    public EntityUpdate(String type, String id, String label, Vector pos, Vector dir, Vector speed, Vector size, String image) {
         this.type = type;
+        this.label = label;
         this.id = id;
         this.pos = pos;
         this.dir = dir;

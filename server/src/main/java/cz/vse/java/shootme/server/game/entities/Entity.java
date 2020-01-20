@@ -13,6 +13,8 @@ public abstract class Entity {
 
     protected String image;
 
+    protected String label;
+
     protected Vector pos;
 
     protected Vector dir;
@@ -23,8 +25,9 @@ public abstract class Entity {
 
     protected int lifetime = 0;
 
-    public Entity(String image, Vector pos, Vector dir, Vector speed, Vector size) {
+    public Entity(String image, String label, Vector pos, Vector dir, Vector speed, Vector size) {
         this.image = image;
+        this.label = label;
         this.pos = pos;
         this.dir = dir;
         this.speed = speed;
@@ -61,7 +64,7 @@ public abstract class Entity {
     }
 
     public EntityUpdate export() {
-        return new EntityUpdate(getType(), id, pos, dir, speed, size, image);
+        return new EntityUpdate(getType(), id, label, pos, dir, speed, size, image);
     }
 
     public Vector getSize() {
