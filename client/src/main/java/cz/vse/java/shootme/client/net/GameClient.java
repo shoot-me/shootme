@@ -29,6 +29,8 @@ public class GameClient {
     private BlockingQueue<Action> actions;
 
     private GameClient(String address, int port) throws IOException {
+        System.out.println(address);
+
         this.receiver = new Thread(this::receive);
         this.sender = new Thread(this::send);
         this.socket = new Socket(address, port);

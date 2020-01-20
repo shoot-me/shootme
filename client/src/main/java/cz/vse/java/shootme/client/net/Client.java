@@ -39,7 +39,7 @@ public class Client {
         return null;
     }
 
-    public static void connect(String address, int port) {
+    public static boolean connect(String address, int port) {
         System.out.println("Connecting to: " + address + ":" + port);
 
         if (client != null) {
@@ -54,9 +54,10 @@ public class Client {
         try {
             client = new Client(address, port);
         } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
+            return false;
         }
+
+        return true;
     }
 
     public static Client get() {

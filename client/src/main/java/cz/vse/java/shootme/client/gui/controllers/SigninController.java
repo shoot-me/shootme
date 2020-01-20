@@ -33,8 +33,14 @@ public class SigninController extends Controller {
         password.setText("");
     }
 
-    public void onLogin() throws IOException {
-        Client.connect(address.getText(), 8080);
+    public void onLogin() {
+        G.server = address.getText();
+
+        boolean ok = Client.connect(G.server, 8080);
+        if (!ok) {
+            Util.showErrorMessage("Could not connect to a server");
+            return;
+        }
 
         LoginRequest loginRequest = new LoginRequest(username.getText(), password.getText());
         Response response = Client.get().send(loginRequest);
@@ -50,7 +56,14 @@ public class SigninController extends Controller {
     }
 
     public void onRegister() throws IOException {
-        Client.connect(address.getText(), 8080);
+        G.server = address.getText();
+
+        System.out.println(G.server);
+
+        boolean ok = Client.connect(G.server, 8080);
+        if(!ok) {
+            Util.showErrorMessage("Could not connect to a server");
+        }
 
         RegisterRequest registerRequest = new RegisterRequest(username.getText(), password.getText());
         Response response = Client.get().send(registerRequest);
@@ -60,10 +73,6 @@ public class SigninController extends Controller {
         } else if (response instanceof RegisterSuccessfulResponse) {
             Util.showSuccessMessage("Register successful.");
         }
-    }
-
-    public void onAddressChange() {
-        G.server = address.getText();
     }
 
     @Override
