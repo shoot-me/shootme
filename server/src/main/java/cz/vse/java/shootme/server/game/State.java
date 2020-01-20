@@ -6,6 +6,7 @@ import cz.vse.java.shootme.server.game.actions.Action;
 import cz.vse.java.shootme.server.game.actions.KeyPressAction;
 import cz.vse.java.shootme.server.game.actions.KeyReleaseAction;
 import cz.vse.java.shootme.server.game.entities.Entity;
+import cz.vse.java.shootme.server.game.entities.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,8 +63,12 @@ public class State {
 
     public StateUpdate export() {
         List<EntityUpdate> entityUpdates = entities.stream().map(Entity::export).collect(Collectors.toList());
+        List<String> playerInfo = entities.stream()
+                .filter(e -> e instanceof Player)
+                .map(e -> (Player) e)
+                .map(p -> p.name + ": " + p.getKills())
+                .collect(Collectors.toList());
 
-        return new StateUpdate(entityUpdates);
+        return new StateUpdate(entityUpdates, playerInfo);
     }
-
 }

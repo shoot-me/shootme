@@ -9,7 +9,9 @@ public class Player extends Entity {
 
     public final String name;
 
-    public int daggerCooldown = 0;
+    protected int kills = 0;
+
+    protected int daggerCooldown = 0;
 
     public Player(String image, Vector pos, String name) {
         super(image, name, pos, new Vector(0, 0), new Vector(5, 5), new Vector(64, 80));
@@ -31,7 +33,7 @@ public class Player extends Entity {
 
     public void shoot(Game game, Vector dir) {
         if (daggerCooldown > 20) {
-            game.getState().addEntity(new Dagger(id, getCenter(), dir));
+            game.getState().addEntity(new Dagger(this, getCenter(), dir));
 
             daggerCooldown = 0;
         }
@@ -81,6 +83,14 @@ public class Player extends Entity {
                 dir = dir.add(new Vector(-1, 0));
                 break;
         }
+    }
+
+    public int getKills() {
+        return kills;
+    }
+
+    public void kills(Player player) {
+        kills++;
     }
 
 }

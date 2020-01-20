@@ -5,9 +5,9 @@ import cz.vse.java.shootme.server.game.Game;
 
 public class Dagger extends Entity {
 
-    private final String owner;
+    private final Player owner;
 
-    public Dagger(String owner, Vector pos, Vector dir) {
+    public Dagger(Player owner, Vector pos, Vector dir) {
         super("img/items/dagger_1.png", "", pos, dir, new Vector(10, 10), new Vector(16, 16));
 
         this.owner = owner;
@@ -29,7 +29,11 @@ public class Dagger extends Entity {
 
     @Override
     public void collide(Game game, Entity another) {
-        if (another.id.equals(owner)) return;
+        if (another.id.equals(owner.id)) return;
+
+        if (another instanceof Player) {
+            owner.kills((Player) another);
+        }
 
         game.getState().removeEntity(another);
         game.getState().removeEntity(this);

@@ -11,8 +11,11 @@ public class StateUpdate implements Serializable {
 
     public final List<EntityUpdate> entityUpdates;
 
-    public StateUpdate(List<EntityUpdate> entityUpdates) {
+    public final List<String> playerInfo;
+
+    public StateUpdate(List<EntityUpdate> entityUpdates, List<String> playerInfo) {
         this.entityUpdates = entityUpdates;
+        this.playerInfo = playerInfo;
     }
 
     public EntityUpdate findEntityUpdateById(String id) {

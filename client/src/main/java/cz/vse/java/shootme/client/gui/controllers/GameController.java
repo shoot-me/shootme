@@ -8,6 +8,7 @@ import cz.vse.java.shootme.client.net.GameClient;
 import cz.vse.java.shootme.client.services.SceneManager;
 import cz.vse.java.shootme.common.net.EntityUpdate;
 import cz.vse.java.shootme.common.net.StateUpdate;
+import cz.vse.java.shootme.common.util.Vector;
 import cz.vse.java.shootme.server.game.Configuration;
 import cz.vse.java.shootme.server.game.actions.Action;
 import cz.vse.java.shootme.server.game.actions.KeyPressAction;
@@ -18,8 +19,10 @@ import cz.vse.java.shootme.server.net.responses.JoinGameResponse;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
@@ -31,6 +34,9 @@ public class GameController extends Controller {
 
     @FXML
     public Pane pane;
+
+    @FXML
+    public ListView<String> players;
 
     private Thread thread;
 
@@ -94,6 +100,10 @@ public class GameController extends Controller {
     }
 
     public synchronized void update(StateUpdate stateUpdate) {
+        Platform.runLater(() -> {
+            players.getItems().setAll(stateUpdate.playerInfo);
+        });
+
         map.getSprites().removeIf(e -> !stateUpdate.entityIds().contains(e.id));
 
         for (EntityUpdate entityUpdate : stateUpdate.entityUpdates) {

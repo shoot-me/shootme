@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.Pane?>
 
-
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #000;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" />
+<BorderPane prefHeight="308.0" prefWidth="483.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <center>
+    <Pane fx:id="pane" prefHeight="200.0" prefWidth="376.0" style="-fx-background-color: #000;" />
+  </center>
+  <right>
+    <ListView fx:id="players" disable="true" focusTraversable="false" prefHeight="308.0" prefWidth="200.0" />
+  </right>
+</BorderPane>
