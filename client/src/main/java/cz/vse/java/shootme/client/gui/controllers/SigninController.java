@@ -27,6 +27,7 @@ public class SigninController extends Controller {
 
     @Override
     public void mounted() {
+        address.setText(G.server);
         username.requestFocus();
         username.setText("");
         password.setText("");
@@ -59,6 +60,10 @@ public class SigninController extends Controller {
         } else if (response instanceof RegisterSuccessfulResponse) {
             Util.showSuccessMessage("Register successful.");
         }
+    }
+
+    public void onAddressChange() {
+        G.server = address.getText();
     }
 
     @Override

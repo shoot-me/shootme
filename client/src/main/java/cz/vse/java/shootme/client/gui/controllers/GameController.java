@@ -59,7 +59,7 @@ public class GameController extends Controller {
 
         registerKeyHandlers();
 
-        GameClient.connect("localhost", port, G.connectionId);
+        GameClient.connect(G.server, port, G.connectionId);
 
         System.out.println("Connected to a game");
 

@@ -1,5 +1,6 @@
 package jeda00.db;
 
+import javax.swing.plaf.nimbus.State;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -137,6 +138,24 @@ public class Migrations {
             preparedStatement.setString(1, migration);
             preparedStatement.execute();
         } catch (IOException | SQLException e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean runMigration(String migration, String content) {
+        if (getExecutedMigrations().contains(migration)) return false;
+
+        try {
+            Statement statement = connection.createStatement();
+            statement.execute(content);
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlInsertMigration());
+            preparedStatement.setString(1, migration);
+            preparedStatement.execute();
+        } catch (Exception e) {
             System.err.println(e.getMessage());
             return false;
         }

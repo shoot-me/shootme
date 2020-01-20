@@ -2,6 +2,8 @@ package cz.vse.java.shootme.client;
 
 public class G {
 
+    public static String server = "localhost";
+
     public static String connectionId = "";
 
     public static String playerName = "";
