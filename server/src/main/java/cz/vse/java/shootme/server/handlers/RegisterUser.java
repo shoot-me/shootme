@@ -25,6 +25,7 @@ public class RegisterUser {
 
         em.close();
 
+        //TODO
          if (true) {
              register.respond(new RegisterSuccessfulResponse());
          } else {
