@@ -2,33 +2,53 @@ package cz.vse.java.shootme.server.models;
 
 import jeda00.db.Query;
 
-public class User extends Model<Integer> {
+import javax.persistence.*;
+import java.util.UUID;
+
+@Entity
+@Table(name = "users")
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private int id;
+
+    @Column(name = "username", nullable = false)
+    private String username;
+
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    @Column(name = "token")
+    private String token;
+
+
+    public int getId() {
+        return id;
+    }
 
     public String getUsername() {
-        return getString("username");
+        return username;
     }
 
     public void setUsername(String username) {
-        setString("username", username);
+        this.username = username;
     }
 
     public String getPassword() {
-        return getString("password");
+        return password;
     }
 
     public void setPassword(String password) {
-        setString("password", password);
+        this.password = password;
     }
 
     public String getToken() {
-        return getString("token");
+        return token;
     }
 
     public void setToken(String token) {
-        setString("token", token);
-    }
-
-    public static Query<User> query() {
-        return new Query<>(User.class);
+        this.token = token;
     }
 }

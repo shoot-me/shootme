@@ -11,14 +11,9 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Starting server...");
 
-        Migrations migrations = new Migrations(Database.getConnection());
-        migrations.runMigration("create_users_table", "" +
-                "CREATE TABLE users (\n" +
-                "    id INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
-                "    username TEXT NOT NULL UNIQUE,\n" +
-                "    password TEXT NOT NULL,\n" +
-                "    token TEXT\n" +
-                ");");
+        Database database =new Database();
+        database.createEntityManagerFactory();
+
 
         EventBus.get().subscribe(RegisterRequest.class, RegisterUser::new);
         EventBus.get().subscribe(LoginRequest.class, LoginUser::new);

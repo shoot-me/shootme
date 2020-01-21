@@ -26,6 +26,24 @@
       <artifactId>jbcrypt</artifactId>
       <version>0.3m</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>5.4.10.Final</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.xerial</groupId>
+      <artifactId>sqlite-jdbc</artifactId>
+      <version>3.27.2.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.gwenn</groupId>
+      <artifactId>sqlite-dialect</artifactId>
+      <version>LATEST</version>
+    </dependency>
   </dependencies>
 
   <build>
