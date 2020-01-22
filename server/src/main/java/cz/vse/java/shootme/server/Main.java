@@ -16,6 +16,7 @@ public class Main {
 
         EventBus.get().subscribe(RegisterRequest.class, RegisterUser::new);
         EventBus.get().subscribe(LoginRequest.class, LoginUser::new);
+        EventBus.get().subscribe(ChangeUsernameRequest.class, ChangeUsername::new);
 
         EventBus.get().subscribe(OverviewRequest.class, GetOverview::new);
 

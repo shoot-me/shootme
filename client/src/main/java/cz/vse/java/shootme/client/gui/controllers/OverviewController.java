@@ -5,10 +5,11 @@ import cz.vse.java.shootme.client.Util;
 import cz.vse.java.shootme.client.net.Client;
 import cz.vse.java.shootme.client.services.SceneManager;
 import cz.vse.java.shootme.server.game.Configuration;
+import cz.vse.java.shootme.server.net.requests.ChangeUsernameRequest;
 import cz.vse.java.shootme.server.net.requests.NewGameRequest;
 import cz.vse.java.shootme.server.net.requests.OverviewRequest;
-import cz.vse.java.shootme.server.net.responses.NewGameResponse;
-import cz.vse.java.shootme.server.net.responses.OverviewResponse;
+import cz.vse.java.shootme.server.net.requests.RegisterRequest;
+import cz.vse.java.shootme.server.net.responses.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -36,6 +37,9 @@ public class OverviewController extends Controller {
 
     @FXML
     public Tab gameListTab;
+
+    @FXML
+    public TextField newUsername;
 
     public List<Configuration> configurations = new ArrayList<>();
 
@@ -102,6 +106,23 @@ public class OverviewController extends Controller {
 
     public void onLogout() throws IOException {
         SceneManager.get().activate("signin");
+    }
+
+    public void onNewUsername(){
+        try {
+            ChangeUsernameRequest changeUsernameRequest = new ChangeUsernameRequest(newUsername.getText());
+            Response response = Client.get().send(changeUsernameRequest);
+
+            if (response instanceof ErrorResponse) {
+                Util.showErrorMessage(((ErrorResponse) response).message);
+            } else if (response instanceof RegisterSuccessfulResponse) {
+                Util.showSuccessMessage("Register successful.");
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
 }
