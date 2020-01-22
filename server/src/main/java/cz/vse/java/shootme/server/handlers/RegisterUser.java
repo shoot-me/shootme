@@ -4,8 +4,11 @@ import cz.vse.java.shootme.server.Database;
 import cz.vse.java.shootme.server.net.requests.RegisterRequest;
 import cz.vse.java.shootme.server.models.User;
 import cz.vse.java.shootme.server.net.responses.RegisterSuccessfulResponse;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.util.List;
 
 public class RegisterUser {
 
@@ -14,23 +17,39 @@ public class RegisterUser {
 
         EntityManager em = Database.getEntityManager();
 
-        em.getTransaction().begin();
+        Query query = em.createQuery("from User u where u.username = '" + register.username + "'");
 
-        User user = new User();
-        user.setUsername(register.username);
-        user.setPassword(register.password);
-        em.persist(user);
+        List result = query.getResultList();
 
-        em.getTransaction().commit();
+        if (result.isEmpty()) {
 
-        em.close();
+            em.getTransaction().begin();
 
-        //TODO
-         if (true) {
-             register.respond(new RegisterSuccessfulResponse());
-         } else {
-             register.respondError("Registration error!");
-         }
+            User user = new User();
+            user.setUsername(register.username);
+            user.setPassword(register.password);
+            em.persist(user);
+
+            em.getTransaction().commit();
+
+            em.close();
+
+
+            //TODO zjistit jestli byla transakce úspěsná
+
+            if (true) {
+
+                register.respond(new RegisterSuccessfulResponse());
+            } else {
+                register.respondError("Registration error!");
+                return;
+            }
+
+
+        } else {
+            register.respondError("This username already exists!");
+        }
+
     }
 
 }

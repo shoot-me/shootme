@@ -4,14 +4,13 @@ import cz.vse.java.shootme.server.net.requests.*;
 import cz.vse.java.shootme.server.handlers.*;
 import cz.vse.java.shootme.common.EventBus;
 import cz.vse.java.shootme.server.net.Server;
-import jeda00.db.Migrations;
 
 public class Main {
 
     public static void main(String[] args) {
         System.out.println("Starting server...");
 
-        Database database =new Database();
+        Database database = new Database();
         database.createEntityManagerFactory();
 
 

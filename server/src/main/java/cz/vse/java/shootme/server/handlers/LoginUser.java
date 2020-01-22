@@ -23,9 +23,6 @@ public class LoginUser {
         User user = (User) query.getSingleResult();
 
 
-
-
-
         if (user == null) {
             loginRequest.respondError("Incorrect username or password.");
             return;

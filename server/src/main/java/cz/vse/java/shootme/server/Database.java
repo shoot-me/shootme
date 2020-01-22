@@ -14,9 +14,7 @@ public class Database {
     private static EntityManagerFactory EMF;
 
     public void createEntityManagerFactory() {
-       // if (EMF == null) {
-            EMF = Persistence.createEntityManagerFactory("punit");
-       // }
+        EMF = Persistence.createEntityManagerFactory("punit");
     }
 
     public static EntityManager getEntityManager() {
