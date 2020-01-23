@@ -14,41 +14,25 @@ public class RegisterUser {
 
     public RegisterUser(RegisterRequest register) {
 
-
         EntityManager em = Database.getEntityManager();
+        em.getTransaction().begin();
 
-        Query query = em.createQuery("from User u where u.username = '" + register.username + "'");
-
-        List result = query.getResultList();
-
-        if (result.isEmpty()) {
-
-            em.getTransaction().begin();
-
+        try {
             User user = new User();
             user.setUsername(register.username);
             user.setPassword(register.password);
-            em.persist(user);
 
+            em.persist(user);
             em.getTransaction().commit();
 
-            em.close();
-
-
-            //TODO zjistit jestli byla transakce úspěsná
-
-            if (true) {
-
-                register.respond(new RegisterSuccessfulResponse());
-            } else {
-                register.respondError("Registration error!");
-                return;
-            }
-
-
-        } else {
-            register.respondError("This username already exists!");
+            register.respond(new RegisterSuccessfulResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+            em.getTransaction().rollback();
+            register.respondError("Registration error!");
         }
+
+        em.close();
 
     }
 

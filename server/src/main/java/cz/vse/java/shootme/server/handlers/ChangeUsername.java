@@ -16,25 +16,24 @@ public class ChangeUsername {
 
         EntityManager em = Database.getEntityManager();
 
-        Query query = em.createQuery("from User u where u.username = '" + changeUsernameRequest.username + "'");
 
-        List result = query.getResultList();
+        em.getTransaction().begin();
 
-        if (result.isEmpty()) {
-
-            em.getTransaction().begin();
-
+        try {
             User user = changeUsernameRequest.getConnection().getUser();
             user.setUsername(changeUsernameRequest.username);
 
             em.merge(user);
             em.getTransaction().commit();
-            em.close();
 
             changeUsernameRequest.respond(new ChangeUsernameResponse());
-        } else {
+        } catch (Exception e) {
+            e.printStackTrace();
+            em.getTransaction().rollback();
             changeUsernameRequest.respondError("This username already exists!");
         }
+
+        em.close();
 
 
     }

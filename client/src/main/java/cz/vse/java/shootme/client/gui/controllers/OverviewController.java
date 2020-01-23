@@ -115,8 +115,8 @@ public class OverviewController extends Controller {
 
             if (response instanceof ErrorResponse) {
                 Util.showErrorMessage(((ErrorResponse) response).message);
-            } else if (response instanceof RegisterSuccessfulResponse) {
-                Util.showSuccessMessage("Register successful.");
+            } else if (response instanceof ChangeUsernameResponse) {
+                Util.showSuccessMessage("Username changed successfully.");
             }
 
         } catch (Exception e){
