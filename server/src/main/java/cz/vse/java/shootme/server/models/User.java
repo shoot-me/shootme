@@ -1,9 +1,6 @@
 package cz.vse.java.shootme.server.models;
 
-import jeda00.db.Query;
-
 import javax.persistence.*;
-import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -50,5 +47,9 @@ public class User {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public UserStatistics getStatistics(User user){
+    return null;
     }
 }
