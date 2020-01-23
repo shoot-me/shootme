@@ -16,9 +16,6 @@ public class RegisterUser {
         EntityManager em = Database.getEntityManager();
         em.getTransaction().begin();
 
-        int userId = 0;
-
-
         try {
             User user = new User();
             user.setUsername(register.username);
@@ -28,9 +25,9 @@ public class RegisterUser {
             em.persist(user);
             em.getTransaction().commit();
 
-            userId = user.getId();
+            int userId = user.getId();
 
-
+            CreateStatistics createStatistics = new CreateStatistics(userId);
 
             register.respond(new RegisterSuccessfulResponse());
         } catch (Exception e) {
@@ -40,12 +37,6 @@ public class RegisterUser {
         }
 
         em.close();
-
-        System.out.println(userId);
-
-
-        CreateStatistics createStatistics = new CreateStatistics(userId);
-
 
     }
 
