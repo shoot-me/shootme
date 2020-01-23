@@ -1,6 +1,9 @@
 package cz.vse.java.shootme.server.models;
 
+import cz.vse.java.shootme.server.Database;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -49,7 +52,21 @@ public class User {
         this.token = token;
     }
 
-    public UserStatistics getStatistics(User user){
-    return null;
+    public UserStatistics getStatistics() {
+        EntityManager em = Database.getEntityManager();
+
+        try {
+
+            Query query = em.createQuery("from UserStatistics u where u.userId = " + id);
+            UserStatistics userStatistics = (UserStatistics) query.getSingleResult();
+
+            return userStatistics;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        em.close();
+        return null;
+
     }
 }

@@ -8,12 +8,9 @@ import cz.vse.java.shootme.client.net.GameClient;
 import cz.vse.java.shootme.client.services.SceneManager;
 import cz.vse.java.shootme.common.net.EntityUpdate;
 import cz.vse.java.shootme.common.net.StateUpdate;
-import cz.vse.java.shootme.common.util.Vector;
 import cz.vse.java.shootme.server.game.Configuration;
-import cz.vse.java.shootme.server.game.actions.Action;
 import cz.vse.java.shootme.server.game.actions.KeyPressAction;
 import cz.vse.java.shootme.server.game.actions.KeyReleaseAction;
-import cz.vse.java.shootme.server.game.entities.Entity;
 import cz.vse.java.shootme.server.net.requests.JoinGameRequest;
 import cz.vse.java.shootme.server.net.responses.JoinGameResponse;
 import javafx.animation.Animation;
@@ -26,7 +23,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 

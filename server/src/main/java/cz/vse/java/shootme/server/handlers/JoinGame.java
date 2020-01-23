@@ -5,6 +5,7 @@ import cz.vse.java.shootme.server.game.Game;
 import cz.vse.java.shootme.server.game.entities.Player;
 import cz.vse.java.shootme.server.net.Server;
 import cz.vse.java.shootme.server.net.requests.JoinGameRequest;
+import cz.vse.java.shootme.server.net.requests.UpdateStatisticsRequest;
 import cz.vse.java.shootme.server.net.responses.JoinGameResponse;
 
 import java.util.Random;
@@ -26,7 +27,13 @@ public class JoinGame {
 
         request.getConnection().setPlayer(player);
 
+        UpdateStatistics updateStatistics = new UpdateStatistics(request.getConnection().getUser());
+
+        updateStatistics.userJoinedGame();
+
         request.respond(new JoinGameResponse(game.getPort(), game.getConfiguration()));
+
+
     }
 
 }

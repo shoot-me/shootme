@@ -16,6 +16,11 @@ public class CreateStatistics {
 
             UserStatistics userStatistics = new UserStatistics();
             userStatistics.setUserId(userId);
+            userStatistics.setGamesPlayed(0);
+            userStatistics.setGamesLost(0);
+            userStatistics.setGamesWon(0);
+            userStatistics.setTotalKilled(0);
+            userStatistics.setTotalKills(0);
 
             em.persist(userStatistics);
             em.getTransaction().commit();
