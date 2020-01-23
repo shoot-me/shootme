@@ -5,10 +5,7 @@ import cz.vse.java.shootme.client.Util;
 import cz.vse.java.shootme.client.net.Client;
 import cz.vse.java.shootme.client.services.SceneManager;
 import cz.vse.java.shootme.server.game.Configuration;
-import cz.vse.java.shootme.server.net.requests.ChangeUsernameRequest;
-import cz.vse.java.shootme.server.net.requests.NewGameRequest;
-import cz.vse.java.shootme.server.net.requests.OverviewRequest;
-import cz.vse.java.shootme.server.net.requests.RegisterRequest;
+import cz.vse.java.shootme.server.net.requests.*;
 import cz.vse.java.shootme.server.net.responses.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -40,6 +37,15 @@ public class OverviewController extends Controller {
 
     @FXML
     public TextField newUsername;
+
+    @FXML
+    public TextField currentPassword;
+
+    @FXML
+    public TextField newPassword1;
+
+    @FXML
+    public TextField newPassword2;
 
     public List<Configuration> configurations = new ArrayList<>();
 
@@ -123,6 +129,38 @@ public class OverviewController extends Controller {
             e.printStackTrace();
         }
 
+    }
+
+    public void onNewPassword(){
+
+        if (currentPassword.getText().equals("")){
+            Util.showErrorMessage("Incorrect password.");
+            return;
+        }
+
+        if (newPassword1.getText().equals("")){
+            Util.showErrorMessage("New password does not match.");
+            return;
+        }
+
+        if (newPassword2.getText().equals("")){
+            Util.showErrorMessage("New password does not match.");
+            return;
+        }
+
+        if (!newPassword1.getText().equals(newPassword2.getText())){
+            Util.showErrorMessage("");
+            return;
+        }
+
+        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest(currentPassword.getText(),newPassword2.getText());
+        Response response = Client.get().send(changePasswordRequest);
+
+        if(response instanceof ErrorResponse){
+            Util.showErrorMessage(((ErrorResponse) response).message);
+        } else if(response instanceof  ChangePasswordResponse){
+            Util.showSuccessMessage("Password changed succesfully.");
+        }
     }
 
 }

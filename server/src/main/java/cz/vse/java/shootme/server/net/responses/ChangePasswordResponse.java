@@ -1,4 +1,4 @@
 package cz.vse.java.shootme.server.net.responses;
 
-public class ChangePasswordResponse {
+public class ChangePasswordResponse extends Response {
 }

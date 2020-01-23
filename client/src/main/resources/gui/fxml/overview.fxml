@@ -53,9 +53,9 @@
                         <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Change nick name:" />
                         <TextField fx:id="newUsername" layoutX="141.0" layoutY="20.0" onAction="#onNewUsername" promptText="New nickname" />
                         <Text layoutX="15.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Change password:" />
-                        <TextField layoutX="141.0" layoutY="117.0" promptText="Current password" />
-                        <TextField layoutX="141.0" layoutY="159.0" promptText="New password" />
-                        <TextField layoutX="141.0" layoutY="203.0" promptText="Repeat password" />
+                        <TextField fx:id="currentPassword" layoutX="141.0" layoutY="117.0" onAction="#onNewPassword" promptText="Current password" />
+                        <TextField fx:id="newPassword1" layoutX="141.0" layoutY="159.0" onAction="#onNewPassword" promptText="New password" />
+                        <TextField fx:id="newPassword2" layoutX="141.0" layoutY="203.0" onAction="#onNewPassword" promptText="Repeat password" />
                         <Button layoutX="187.0" layoutY="62.0" mnemonicParsing="false" text="Confirm" />
                         <Button layoutX="187.0" layoutY="241.0" mnemonicParsing="false" text="Confirm" />
                      </children>

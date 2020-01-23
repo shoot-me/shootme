@@ -11,6 +11,7 @@ import java.util.List;
 
 public class ChangeUsername {
 
+    //TODO username cannot be empty!!!!! =D
 
     public ChangeUsername(ChangeUsernameRequest changeUsernameRequest) {
 
