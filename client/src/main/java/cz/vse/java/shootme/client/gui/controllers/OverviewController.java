@@ -5,6 +5,7 @@ import cz.vse.java.shootme.client.Util;
 import cz.vse.java.shootme.client.net.Client;
 import cz.vse.java.shootme.client.services.SceneManager;
 import cz.vse.java.shootme.server.game.Configuration;
+import cz.vse.java.shootme.server.handlers.UpdateStatistics;
 import cz.vse.java.shootme.server.net.requests.*;
 import cz.vse.java.shootme.server.net.responses.*;
 import javafx.fxml.FXML;
@@ -104,6 +105,14 @@ public class OverviewController extends Controller {
         G.gameName = gameview.getSelectionModel().getSelectedItem();
 
         SceneManager.get().activate("game");
+
+        UpdateStatisticsRequest updateStatisticsRequest = new UpdateStatisticsRequest();
+
+        UpdateStatistics updateStatistics = new UpdateStatistics(updateStatisticsRequest);
+
+        updateStatistics.userJoinedGame();
+
+
     }
 
     public void onAvatarSelect() {

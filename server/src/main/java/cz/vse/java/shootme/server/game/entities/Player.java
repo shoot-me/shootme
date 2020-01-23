@@ -4,6 +4,7 @@ import cz.vse.java.shootme.server.game.Game;
 import cz.vse.java.shootme.common.util.Vector;
 import cz.vse.java.shootme.server.game.actions.KeyPressAction;
 import cz.vse.java.shootme.server.game.actions.KeyReleaseAction;
+import cz.vse.java.shootme.server.handlers.UpdateStatistics;
 
 public class Player extends Entity {
 

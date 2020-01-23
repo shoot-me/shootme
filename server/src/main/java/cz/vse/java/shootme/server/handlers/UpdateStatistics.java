@@ -3,7 +3,6 @@ package cz.vse.java.shootme.server.handlers;
 import cz.vse.java.shootme.server.Database;
 import cz.vse.java.shootme.server.models.User;
 import cz.vse.java.shootme.server.models.UserStatistics;
-import cz.vse.java.shootme.server.net.Connection;
 import cz.vse.java.shootme.server.net.requests.UpdateStatisticsRequest;
 
 import javax.persistence.EntityManager;
@@ -13,35 +12,66 @@ public class UpdateStatistics {
     private User user;
     private UserStatistics statistics;
 
-    public  UpdateStatistics(User user){
+    public UpdateStatistics(UpdateStatisticsRequest updateStatisticsRequest) {
+        user = updateStatisticsRequest.getConnection().getUser();
+        statistics = user.getStatistics();
+    }
+
+    public UpdateStatistics(User user) {
         this.user = user;
         statistics = user.getStatistics();
     }
 
-    public void userJoinedGame(){
+    public void userJoinedGame() {
 
         EntityManager em = Database.getEntityManager();
         em.getTransaction().begin();
-        statistics.setGamesPlayed(statistics.getGamesPlayed()+1);
+        statistics.setGamesPlayed(statistics.getGamesPlayed() + 1);
+        em.merge(statistics);
+        em.getTransaction().commit();
+        em.close();
+
+
+    }
+
+    public void playerWasKilled() {
+        EntityManager em = Database.getEntityManager();
+        em.getTransaction().begin();
+        statistics.setTotalKilled(statistics.getTotalKills() + 1);
+        em.merge(statistics);
+        em.getTransaction().commit();
+        em.close();
+
+    }
+
+    public void playerKilled() {
+        EntityManager em = Database.getEntityManager();
+        em.getTransaction().begin();
+        statistics.setTotalKills(statistics.getTotalKills() + 1);
+        em.merge(statistics);
+        em.getTransaction().commit();
+        em.close();
+
+    }
+
+    public void playerLostGame() {
+
+        EntityManager em = Database.getEntityManager();
+        em.getTransaction().begin();
+        statistics.setGamesLost(statistics.getGamesLost() + 1);
         em.merge(statistics);
         em.getTransaction().commit();
         em.close();
     }
 
-    public void playerWasKilled(){
+    public void playerWonGame() {
 
-    }
-
-    public void playerKilled(){
-
-    }
-
-    public void playerLostGame(){
-
-    }
-
-    public void playerWonGame(){
-
+        EntityManager em = Database.getEntityManager();
+        em.getTransaction().begin();
+        statistics.setGamesWon(statistics.getGamesWon() + 1);
+        em.merge(statistics);
+        em.getTransaction().commit();
+        em.close();
     }
 
 }
