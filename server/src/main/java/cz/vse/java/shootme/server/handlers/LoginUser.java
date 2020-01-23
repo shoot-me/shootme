@@ -6,6 +6,7 @@ import cz.vse.java.shootme.server.net.Server;
 import cz.vse.java.shootme.server.net.requests.LoginRequest;
 import cz.vse.java.shootme.server.net.responses.LoginSuccessfulResponse;
 import cz.vse.java.shootme.server.models.User;
+import cz.vse.java.shootme.server.util.Password;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -28,7 +29,7 @@ public class LoginUser {
             return;
         }
 
-        if (!user.getPassword().equals(loginRequest.password)) {
+        if (!Password.checkPassword(loginRequest.password, user.getPassword())) {
             loginRequest.respondError("Incorrect username or password.");
             return;
         }
