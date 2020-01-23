@@ -115,6 +115,12 @@ public class OverviewController extends Controller {
     }
 
     public void onNewUsername(){
+
+        if (newUsername.getText().equals("")){
+            Util.showErrorMessage("Username can not be empty.");
+            return;
+        }
+
         try {
             ChangeUsernameRequest changeUsernameRequest = new ChangeUsernameRequest(newUsername.getText());
             Response response = Client.get().send(changeUsernameRequest);

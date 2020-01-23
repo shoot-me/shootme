@@ -6,8 +6,6 @@ import cz.vse.java.shootme.server.net.requests.ChangeUsernameRequest;
 import cz.vse.java.shootme.server.net.responses.ChangeUsernameResponse;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import java.util.List;
 
 public class ChangeUsername {
 
