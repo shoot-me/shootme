@@ -106,12 +106,9 @@ public class OverviewController extends Controller {
 
         SceneManager.get().activate("game");
 
-        UpdateStatisticsRequest updateStatisticsRequest = new UpdateStatisticsRequest();
-
-        UpdateStatistics updateStatistics = new UpdateStatistics(updateStatisticsRequest);
-
-        updateStatistics.userJoinedGame();
-
+        UpdateStatisticsRequest updateStatisticsRequest = new UpdateStatisticsRequest(UpdateStatisticsRequest.joinGame);
+        Response response = Client.get().send(updateStatisticsRequest);
+        System.out.println("neco");
 
     }
 

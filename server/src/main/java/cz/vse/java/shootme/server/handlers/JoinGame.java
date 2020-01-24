@@ -27,10 +27,6 @@ public class JoinGame {
 
         request.getConnection().setPlayer(player);
 
-        UpdateStatistics updateStatistics = new UpdateStatistics(request.getConnection().getUser());
-        updateStatistics.userJoinedGame();
-
-
         request.respond(new JoinGameResponse(game.getPort(), game.getConfiguration()));
 
 

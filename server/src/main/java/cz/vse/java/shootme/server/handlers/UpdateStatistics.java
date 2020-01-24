@@ -4,6 +4,8 @@ import cz.vse.java.shootme.server.Database;
 import cz.vse.java.shootme.server.models.User;
 import cz.vse.java.shootme.server.models.UserStatistics;
 import cz.vse.java.shootme.server.net.requests.UpdateStatisticsRequest;
+import cz.vse.java.shootme.server.net.responses.UpdateStatisticsResponse;
+import cz.vse.java.shootme.server.statisticService.StatJoinGame;
 
 import javax.persistence.EntityManager;
 
@@ -15,6 +17,14 @@ public class UpdateStatistics {
     public UpdateStatistics(UpdateStatisticsRequest updateStatisticsRequest) {
         user = updateStatisticsRequest.getConnection().getUser();
         statistics = user.getStatistics();
+        if (updateStatisticsRequest.type.equals("joinGame")){
+            new StatJoinGame(statistics);
+            updateStatisticsRequest.respond(new UpdateStatisticsResponse());
+        } else {
+            updateStatisticsRequest.respondError("Cannot update statistics");
+        }
+
+
     }
 
     public UpdateStatistics(User user) {
