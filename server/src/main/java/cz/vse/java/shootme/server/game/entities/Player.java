@@ -4,7 +4,10 @@ import cz.vse.java.shootme.server.game.Game;
 import cz.vse.java.shootme.common.util.Vector;
 import cz.vse.java.shootme.server.game.actions.KeyPressAction;
 import cz.vse.java.shootme.server.game.actions.KeyReleaseAction;
-import cz.vse.java.shootme.server.handlers.UpdateStatistics;
+import cz.vse.java.shootme.server.models.User;
+
+import javax.jnlp.UnavailableServiceException;
+
 
 public class Player extends Entity {
 
@@ -14,10 +17,13 @@ public class Player extends Entity {
 
     protected int daggerCooldown = 0;
 
-    public Player(String image, Vector pos, String name) {
+    private User user;
+
+    public Player(String image, Vector pos, String name, User user) {
         super(image, name, pos, new Vector(0, 0), new Vector(5, 5), new Vector(64, 80));
 
         this.name = name;
+        this.user = user;
     }
 
     @Override
@@ -94,4 +100,7 @@ public class Player extends Entity {
         kills++;
     }
 
+    public User getUser() {
+        return user;
+    }
 }

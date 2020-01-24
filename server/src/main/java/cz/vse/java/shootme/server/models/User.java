@@ -1,6 +1,7 @@
 package cz.vse.java.shootme.server.models;
 
 import cz.vse.java.shootme.server.Database;
+import cz.vse.java.shootme.server.game.entities.Player;
 
 import javax.persistence.*;
 import java.util.List;
@@ -22,7 +23,6 @@ public class User {
 
     @Column(name = "token")
     private String token;
-
 
     public int getId() {
         return id;

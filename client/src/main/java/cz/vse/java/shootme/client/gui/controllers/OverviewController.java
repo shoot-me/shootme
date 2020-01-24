@@ -5,7 +5,6 @@ import cz.vse.java.shootme.client.Util;
 import cz.vse.java.shootme.client.net.Client;
 import cz.vse.java.shootme.client.services.SceneManager;
 import cz.vse.java.shootme.server.game.Configuration;
-import cz.vse.java.shootme.server.handlers.UpdateStatistics;
 import cz.vse.java.shootme.server.net.requests.*;
 import cz.vse.java.shootme.server.net.responses.*;
 import javafx.fxml.FXML;
@@ -108,7 +107,6 @@ public class OverviewController extends Controller {
 
         UpdateStatisticsRequest updateStatisticsRequest = new UpdateStatisticsRequest(UpdateStatisticsRequest.joinGame);
         Response response = Client.get().send(updateStatisticsRequest);
-        System.out.println("neco");
 
     }
 

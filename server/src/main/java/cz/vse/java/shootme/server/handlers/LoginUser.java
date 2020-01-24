@@ -17,9 +17,10 @@ public class LoginUser {
 
         EntityManager em = Database.getEntityManager();
 
-        String hql = "from User U where U.username = '" + loginRequest.username + "'";
+        String hql = "from User U where U.username = :username";
 
         Query query = em.createQuery(hql, User.class);
+        query.setParameter("username",loginRequest.username);
 
         User user = (User) query.getSingleResult();
 

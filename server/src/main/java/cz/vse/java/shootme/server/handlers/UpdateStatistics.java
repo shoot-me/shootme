@@ -6,6 +6,7 @@ import cz.vse.java.shootme.server.models.UserStatistics;
 import cz.vse.java.shootme.server.net.requests.UpdateStatisticsRequest;
 import cz.vse.java.shootme.server.net.responses.UpdateStatisticsResponse;
 import cz.vse.java.shootme.server.statisticService.StatJoinGame;
+import cz.vse.java.shootme.server.statisticService.StatKilled;
 
 import javax.persistence.EntityManager;
 
@@ -17,8 +18,11 @@ public class UpdateStatistics {
     public UpdateStatistics(UpdateStatisticsRequest updateStatisticsRequest) {
         user = updateStatisticsRequest.getConnection().getUser();
         statistics = user.getStatistics();
-        if (updateStatisticsRequest.type.equals("joinGame")){
+        if (updateStatisticsRequest.type.equals("joinGame")) {
             new StatJoinGame(statistics);
+            updateStatisticsRequest.respond(new UpdateStatisticsResponse());
+        } else if (updateStatisticsRequest.type.equals("killed")) {
+            new StatKilled(statistics);
             updateStatisticsRequest.respond(new UpdateStatisticsResponse());
         } else {
             updateStatisticsRequest.respondError("Cannot update statistics");
@@ -47,7 +51,7 @@ public class UpdateStatistics {
     public void playerWasKilled() {
         EntityManager em = Database.getEntityManager();
         em.getTransaction().begin();
-        statistics.setTotalKilled(statistics.getTotalKills() + 1);
+        statistics.setTotalKilled(statistics.getTotalKilled() + 1);
         em.merge(statistics);
         em.getTransaction().commit();
         em.close();
