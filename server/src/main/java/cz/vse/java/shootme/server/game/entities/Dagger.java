@@ -2,13 +2,6 @@ package cz.vse.java.shootme.server.game.entities;
 
 import cz.vse.java.shootme.common.util.Vector;
 import cz.vse.java.shootme.server.game.Game;
-import cz.vse.java.shootme.server.handlers.UpdateStatistics;
-import cz.vse.java.shootme.server.net.Connection;
-import cz.vse.java.shootme.server.net.Server;
-import cz.vse.java.shootme.server.net.requests.Request;
-import cz.vse.java.shootme.server.net.requests.UpdateStatisticsRequest;
-import cz.vse.java.shootme.server.statisticService.StatKilled;
-import cz.vse.java.shootme.server.statisticService.StatKills;
 
 public class Dagger extends Entity {
 
@@ -40,8 +33,6 @@ public class Dagger extends Entity {
 
         if (another instanceof Player) {
             owner.kills((Player) another);
-            new StatKilled(((Player) another).getUser().getStatistics());
-            new StatKills(owner.getUser().getStatistics());
         }
 
         game.getState().removeEntity(another);

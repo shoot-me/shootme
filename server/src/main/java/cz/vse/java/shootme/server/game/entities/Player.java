@@ -6,9 +6,6 @@ import cz.vse.java.shootme.server.game.actions.KeyPressAction;
 import cz.vse.java.shootme.server.game.actions.KeyReleaseAction;
 import cz.vse.java.shootme.server.models.User;
 
-import javax.jnlp.UnavailableServiceException;
-
-
 public class Player extends Entity {
 
     public final String name;

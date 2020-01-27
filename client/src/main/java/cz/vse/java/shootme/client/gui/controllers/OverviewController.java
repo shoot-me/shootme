@@ -104,10 +104,6 @@ public class OverviewController extends Controller {
         G.gameName = gameview.getSelectionModel().getSelectedItem();
 
         SceneManager.get().activate("game");
-
-        UpdateStatisticsRequest updateStatisticsRequest = new UpdateStatisticsRequest(UpdateStatisticsRequest.joinGame);
-        Response response = Client.get().send(updateStatisticsRequest);
-
     }
 
     public void onAvatarSelect() {
@@ -142,7 +138,6 @@ public class OverviewController extends Controller {
     }
 
     public void onNewPassword(){
-
         if (currentPassword.getText().equals("")){
             Util.showErrorMessage("Incorrect password.");
             return;

@@ -3,38 +3,42 @@ package cz.vse.java.shootme.server.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "userstatistics")
-public class UserStatistics {
+@Table(name = "statistics")
+public class Statistics {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private int id;
+    private Integer id;
 
-    @Column(name = "user_id", nullable = false)
-    private int userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 
-    @Column(name = "games_played")
+    @Column(name = "games_played", columnDefinition = "int default 0")
     private int gamesPlayed;
 
-    @Column(name = "games_won")
+    @Column(name = "games_won", columnDefinition = "int default 0")
     private int gamesWon;
 
-    @Column(name = "games_lost")
+    @Column(name = "games_lost", columnDefinition = "int default 0")
     private int gamesLost;
 
-    @Column(name = "total_kills")
+    @Column(name = "total_kills", columnDefinition = "int default 0")
     private int totalKills;
 
-    @Column(name = "total_killed")
+    @Column(name = "total_killed", columnDefinition = "int default 0")
     private int totalKilled;
 
-    public int getUserId() {
-        return userId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public int getGamesPlayed() {
@@ -43,10 +47,6 @@ public class UserStatistics {
 
     public void setGamesPlayed(int gamesPlayed) {
         this.gamesPlayed = gamesPlayed;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public int getGamesWon() {

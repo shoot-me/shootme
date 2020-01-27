@@ -7,7 +7,8 @@
     <persistence-unit name="punit">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-        <class>model.User</class>
+        <class>cz.vse.java.shootme.server.models.User</class>
+        <class>cz.vse.java.shootme.server.models.Statistics</class>
 
         <properties>
             <property name="dialect" value="org.hibernate.dialect.SQLiteDialect" />

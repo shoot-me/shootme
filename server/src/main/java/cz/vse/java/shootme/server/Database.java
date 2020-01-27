@@ -17,7 +17,7 @@ public class Database {
         EMF = Persistence.createEntityManagerFactory("punit");
     }
 
-    public static EntityManager getEntityManager() {
+    public synchronized static EntityManager getEntityManager() {
         EntityManager em = EMF.createEntityManager();
         return em;
     }
