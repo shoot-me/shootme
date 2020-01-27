@@ -57,8 +57,8 @@
                 <TextField fx:id="currentPassword" layoutX="141.0" layoutY="117.0" onAction="#onNewPassword" promptText="Current password" />
                 <TextField fx:id="newPassword1" layoutX="141.0" layoutY="159.0" onAction="#onNewPassword" promptText="New password" />
                 <TextField fx:id="newPassword2" layoutX="141.0" layoutY="203.0" onAction="#onNewPassword" promptText="Repeat password" />
-                <Button layoutX="187.0" layoutY="62.0" mnemonicParsing="false" text="Confirm" />
-                <Button layoutX="187.0" layoutY="241.0" mnemonicParsing="false" text="Confirm" />
+                <Button layoutX="187.0" layoutY="62.0" mnemonicParsing="false" onAction="#onNewUsername" text="Confirm" />
+                <Button layoutX="187.0" layoutY="241.0" mnemonicParsing="false" onAction="#onNewPassword" text="Confirm" />
                 <Text layoutX="14.0" layoutY="339.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Change avatar:" />
                 <ComboBox fx:id="newAvatar" layoutX="141.0" layoutY="324.0" onAction="#onAvatarSelect" prefWidth="165.0" />
               </children>
