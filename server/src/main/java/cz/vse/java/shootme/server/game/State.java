@@ -20,6 +20,8 @@ public class State {
 
     protected List<Entity> removedEntities;
 
+    protected int lifetime = 0;
+
     public State() {
         this.addedEntities = new ArrayList<>();
         this.entities = new ArrayList<>();
@@ -37,6 +39,10 @@ public class State {
     }
 
     public synchronized void update(Game game) {
+        if (!isRunning()) return;
+
+        lifetime++;
+
         for (Entity entity : entities) {
             entity.update(game);
         }
@@ -61,6 +67,10 @@ public class State {
         removedEntities.add(entity);
     }
 
+    public boolean isRunning() {
+        return lifetime < 200;
+    }
+
     public StateUpdate export() {
         List<EntityUpdate> entityUpdates = entities.stream().map(Entity::export).collect(Collectors.toList());
         List<String> playerInfo = entities.stream()
@@ -69,6 +79,6 @@ public class State {
                 .map(p -> p.name + ": " + p.getKills())
                 .collect(Collectors.toList());
 
-        return new StateUpdate(entityUpdates, playerInfo);
+        return new StateUpdate(entityUpdates, playerInfo, isRunning());
     }
 }

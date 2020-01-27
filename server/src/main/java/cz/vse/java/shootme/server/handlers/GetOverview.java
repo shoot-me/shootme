@@ -21,6 +21,7 @@ public class GetOverview {
         OverviewResponse overviewResponse = new OverviewResponse();
 
         List<Configuration> configurations = Server.get().getGames().values().stream()
+                .filter(Game::isRunning)
                 .map(Game::getConfiguration)
                 .collect(Collectors.toList());
 

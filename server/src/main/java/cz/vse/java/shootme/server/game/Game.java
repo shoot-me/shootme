@@ -53,4 +53,8 @@ public class Game {
     public int getPort() {
         return gameServer.getPort();
     }
+
+    public boolean isRunning() {
+        return state.isRunning();
+    }
 }
