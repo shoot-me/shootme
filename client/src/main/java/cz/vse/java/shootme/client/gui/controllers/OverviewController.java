@@ -159,6 +159,8 @@ public class OverviewController extends Controller {
                 Util.showErrorMessage("Could not change username.");
             } else if (response instanceof SuccessResponse) {
                 Util.showSuccessMessage("Username changed successfully.");
+                username.setText(newUsername.getText());
+                G.playerName = newUsername.getText();
             }
 
         } catch (Exception e) {
