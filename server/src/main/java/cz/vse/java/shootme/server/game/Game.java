@@ -1,6 +1,7 @@
 package cz.vse.java.shootme.server.game;
 
 import cz.vse.java.shootme.server.game.entities.Player;
+import cz.vse.java.shootme.server.models.User;
 import cz.vse.java.shootme.server.net.GameServer;
 import cz.vse.java.shootme.server.net.Server;
 
@@ -23,14 +24,11 @@ public class Game {
 
     protected State state;
 
-    protected Map<String, Player> players;
-
     public Game(Configuration configuration) throws IOException {
         this.gameServer = new GameServer(this, Server.get().getGameServerPort());
         this.executor = Executors.newScheduledThreadPool(1);
         this.configuration = configuration;
         this.state = new State();
-        this.players = new HashMap<>();
     }
 
     public void update() {
@@ -48,11 +46,6 @@ public class Game {
         gameServer.start();
 
         executor.scheduleAtFixedRate(this::update, 0, 20, TimeUnit.MILLISECONDS);
-    }
-
-    public void addPlayer(Player player) {
-        players.put(player.name, player);
-        state.addEntity(player);
     }
 
     public Configuration getConfiguration() {

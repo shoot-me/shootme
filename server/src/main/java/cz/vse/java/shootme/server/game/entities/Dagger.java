@@ -31,9 +31,8 @@ public class Dagger extends Entity {
     public void collide(Game game, Entity another) {
         if (another.id.equals(owner.id)) return;
 
-        if (another instanceof Player) {
-            owner.kills((Player) another);
-        }
+        int kills = game.getState().getKills().getOrDefault(owner.name, 0);
+        game.getState().getKills().put(owner.name, kills + 1);
 
         game.getState().removeEntity(another);
         game.getState().removeEntity(this);

@@ -115,7 +115,11 @@ public class OverviewController extends Controller {
     public void onGameSelect(MouseEvent mouseEvent) {
         if (mouseEvent.getClickCount() != 2) return;
 
-        G.gameName = gameview.getSelectionModel().getSelectedItem();
+        String name = gameview.getSelectionModel().getSelectedItem();
+
+        if (name == null || name.equals("")) return;
+
+        G.gameName = name;
 
         SceneManager.get().activate("game");
     }
