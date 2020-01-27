@@ -11,7 +11,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private int id;
+    private Integer id;
 
     @Column(name = "username", nullable = false)
     private String username;
@@ -19,10 +19,13 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Statistics> statistics = new ArrayList<>();
+    @ManyToOne
+    private Skin skin;
 
-    public int getId() {
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Statistic> statistics = new ArrayList<>();
+
+    public Integer getId() {
         return id;
     }
 
@@ -42,7 +45,15 @@ public class User {
         this.password = password;
     }
 
-    public void addStatistic(Statistics statistic) {
+    public Skin getSkin() {
+        return skin;
+    }
+
+    public void setSkin(Skin skin) {
+        this.skin = skin;
+    }
+
+    public void addStatistic(Statistic statistic) {
         statistics.add(statistic);
         statistic.setUser(this);
     }

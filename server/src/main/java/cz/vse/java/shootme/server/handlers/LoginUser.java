@@ -26,8 +26,6 @@ public class LoginUser {
 
             User user = (User) query.getResultStream().findFirst().orElse(null);
 
-            em.getTransaction().commit();
-
             if (user == null) {
                 loginRequest.respondError("Incorrect username or password.");
                 return;
@@ -49,7 +47,6 @@ public class LoginUser {
 
             loginRequest.respond(new LoginSuccessfulResponse(loginRequest.getConnection().id));
         } catch (Exception e) {
-            em.getTransaction().rollback();
             System.err.println(e.getMessage());
         } finally {
             em.close();

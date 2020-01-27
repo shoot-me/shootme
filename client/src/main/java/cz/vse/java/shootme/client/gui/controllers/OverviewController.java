@@ -10,10 +10,13 @@ import cz.vse.java.shootme.server.net.responses.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OverviewController extends Controller {
 
@@ -49,13 +52,7 @@ public class OverviewController extends Controller {
 
     public List<Configuration> configurations = new ArrayList<>();
 
-    @Override
-    public void created() {
-        avatar.getItems().add("knight_orange");
-        avatar.getItems().add("knight_pink");
-
-        avatar.getSelectionModel().select(G.avatar);
-    }
+    public Map<String, String> skins = new HashMap<>();
 
     @Override
     public void mounted() {
@@ -85,6 +82,7 @@ public class OverviewController extends Controller {
             OverviewResponse response = (OverviewResponse) Client.get().send(new OverviewRequest());
 
             configurations = response.configurations;
+            skins = response.skins;
         } catch (Exception e) {
             e.printStackTrace();
             Util.showErrorMessage("Error");
@@ -95,6 +93,12 @@ public class OverviewController extends Controller {
 
         for (Configuration configuration : configurations) {
             gameview.getItems().add(configuration.getName());
+        }
+
+        avatar.getItems().clear();
+
+        for (Map.Entry<String, String> skin : skins.entrySet()) {
+            avatar.getItems().add(skin.getValue());
         }
     }
 
@@ -107,16 +111,24 @@ public class OverviewController extends Controller {
     }
 
     public void onAvatarSelect() {
-        G.avatar = avatar.getSelectionModel().getSelectedItem();
+        if (avatar.getSelectionModel().getSelectedItem() == null) {
+            return;
+        }
+
+        for (Map.Entry<String, String> skin : skins.entrySet()) {
+            if (avatar.getSelectionModel().getSelectedItem().equals(skin.getValue())) {
+                G.avatar = skin.getKey();
+            }
+        }
     }
 
     public void onLogout() throws IOException {
         SceneManager.get().activate("signin");
     }
 
-    public void onNewUsername(){
+    public void onNewUsername() {
 
-        if (newUsername.getText().equals("")){
+        if (newUsername.getText().equals("")) {
             Util.showErrorMessage("Username can not be empty.");
             return;
         }
@@ -131,39 +143,39 @@ public class OverviewController extends Controller {
                 Util.showSuccessMessage("Username changed successfully.");
             }
 
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    public void onNewPassword(){
-        if (currentPassword.getText().equals("")){
+    public void onNewPassword() {
+        if (currentPassword.getText().equals("")) {
             Util.showErrorMessage("Incorrect password.");
             return;
         }
 
-        if (newPassword1.getText().equals("")){
+        if (newPassword1.getText().equals("")) {
             Util.showErrorMessage("New password does not match.");
             return;
         }
 
-        if (newPassword2.getText().equals("")){
+        if (newPassword2.getText().equals("")) {
             Util.showErrorMessage("New password does not match.");
             return;
         }
 
-        if (!newPassword1.getText().equals(newPassword2.getText())){
+        if (!newPassword1.getText().equals(newPassword2.getText())) {
             Util.showErrorMessage("");
             return;
         }
 
-        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest(currentPassword.getText(),newPassword2.getText());
+        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest(currentPassword.getText(), newPassword2.getText());
         Response response = Client.get().send(changePasswordRequest);
 
-        if(response instanceof ErrorResponse){
+        if (response instanceof ErrorResponse) {
             Util.showErrorMessage(((ErrorResponse) response).message);
-        } else if(response instanceof  ChangePasswordResponse){
+        } else if (response instanceof ChangePasswordResponse) {
             Util.showSuccessMessage("Password changed succesfully.");
         }
     }

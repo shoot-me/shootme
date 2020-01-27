@@ -1,37 +1,66 @@
 package cz.vse.java.shootme.server;
 
+import cz.vse.java.shootme.server.models.Skin;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.function.Consumer;
 
 public class Database {
 
-    private static Connection connection;
-
     private static EntityManagerFactory EMF;
 
-    public void createEntityManagerFactory() {
+    public static void init() {
         EMF = Persistence.createEntityManagerFactory("punit");
     }
 
-    public synchronized static EntityManager getEntityManager() {
-        EntityManager em = EMF.createEntityManager();
-        return em;
+    public static void migrate() {
+        EntityManager em = getEntityManager();
+
+        em.getTransaction().begin();
+
+        Skin orange = new Skin();
+        orange.setName("Orange knight");
+        orange.setPath("img/players/knight_orange.png");
+        em.persist(orange);
+
+        Skin pink = new Skin();
+        pink.setName("Pink knight");
+        pink.setPath("img/players/knight_pink.png");
+        em.persist(pink);
+
+        em.getTransaction().commit();
+
+        em.close();
     }
 
-    public static Connection getConnection() {
-        if (connection == null) {
-            try {
-                connection = DriverManager.getConnection("jdbc:sqlite:database.sqlite");
-            } catch (SQLException e) {
-                e.printStackTrace();
-                System.exit(1);
-            }
-        }
+    public synchronized static EntityManager getEntityManager() {
+        return EMF.createEntityManager();
+    }
 
-        return connection;
+
+    public static void transaction(Consumer<EntityManager> callback) {
+        EntityManager entityManager = getEntityManager();
+
+        try {
+            entityManager.getTransaction().begin();
+
+            callback.accept(entityManager);
+
+            entityManager.getTransaction().commit();
+        } catch (Exception e1) {
+            try {
+                entityManager.getTransaction().rollback();
+            } catch (Exception e2) {
+                System.err.println(e2.getMessage());
+            }
+            System.err.println(e1.getMessage());
+        } finally {
+            entityManager.close();
+        }
     }
 }

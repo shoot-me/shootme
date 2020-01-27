@@ -4,14 +4,14 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "statistics")
-public class Statistics {
+public class Statistic {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private User user;
 
     @Column(name = "games_played", columnDefinition = "int default 0")

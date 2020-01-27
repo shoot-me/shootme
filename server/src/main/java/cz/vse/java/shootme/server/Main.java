@@ -5,14 +5,15 @@ import cz.vse.java.shootme.server.handlers.*;
 import cz.vse.java.shootme.common.EventBus;
 import cz.vse.java.shootme.server.net.Server;
 
+import javax.xml.crypto.Data;
+
 public class Main {
 
     public static void main(String[] args) {
         System.out.println("Starting server...");
 
-        Database database = new Database();
-        database.createEntityManagerFactory();
-
+        Database.init();
+        Database.migrate();
 
         EventBus.get().subscribe(RegisterRequest.class, RegisterUser::new);
         EventBus.get().subscribe(LoginRequest.class, LoginUser::new);
