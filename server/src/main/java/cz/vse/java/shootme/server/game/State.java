@@ -90,8 +90,8 @@ public class State {
 
     public StateUpdate export() {
         List<EntityUpdate> entityUpdates = entities.stream().map(Entity::export).collect(Collectors.toList());
-        List<String> playerInfo = users.values().stream()
-                .map(p -> p.getUsername() + ": " + kills.getOrDefault(p.getUsername(), 0))
+        List<String> playerInfo = users.keySet().stream()
+                .map(name -> name + ": " + kills.getOrDefault(name, 0))
                 .collect(Collectors.toList());
 
         return new StateUpdate(entityUpdates, playerInfo, isRunning());
