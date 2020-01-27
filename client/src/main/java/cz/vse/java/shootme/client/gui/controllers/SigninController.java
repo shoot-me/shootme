@@ -56,12 +56,23 @@ public class SigninController extends Controller {
     }
 
     public void onRegister() throws IOException {
+
+        if (username.getText().equals("")) {
+            Util.showErrorMessage("Username or password can not be empty ");
+            return;
+        }
+
+        if (password.getText().equals("")) {
+            Util.showErrorMessage("Username or password can not be empty ");
+            return;
+        }
+
         G.server = address.getText();
 
         System.out.println(G.server);
 
         boolean ok = Client.connect(G.server, 8080);
-        if(!ok) {
+        if (!ok) {
             Util.showErrorMessage("Could not connect to a server");
         }
 
