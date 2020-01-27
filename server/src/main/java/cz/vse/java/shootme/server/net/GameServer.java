@@ -3,6 +3,8 @@ package cz.vse.java.shootme.server.net;
 import cz.vse.java.shootme.common.net.StateUpdate;
 import cz.vse.java.shootme.server.game.Game;
 import cz.vse.java.shootme.server.game.actions.Action;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -30,6 +32,8 @@ public class GameServer {
 
     private BlockingQueue<StateUpdate> stateUpdates;
 
+    private static final Logger logger = LogManager.getLogger(GameServer.class);
+
     public GameServer(Game game, int port) throws IOException {
         this.thread = new Thread(this::run);
         this.sender = new Thread(this::send);
@@ -50,7 +54,7 @@ public class GameServer {
 
                 gameConnections.put(gameConnection.id, gameConnection);
 
-                System.out.println("Accepting game connection: " + gameConnection.id);
+                logger.info("Accepting game connection: " + gameConnection.id);
 
                 gameConnection.start();
             } catch (IOException e) {
@@ -96,7 +100,7 @@ public class GameServer {
     }
 
     public void closeGameConnection(GameConnection gameConnection) {
-        System.out.println("Closing game connection: " + gameConnection.id);
+        logger.info("Closing game connection: " + gameConnection.id);
 
         gameConnections.remove(gameConnection.id);
 

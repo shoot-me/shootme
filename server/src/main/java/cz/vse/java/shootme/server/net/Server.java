@@ -1,6 +1,8 @@
 package cz.vse.java.shootme.server.net;
 
 import cz.vse.java.shootme.server.game.Game;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -22,6 +24,8 @@ public class Server extends Thread {
 
     private Map<String, Game> games;
 
+    private static final Logger logger = LogManager.getLogger(Server.class);
+
     private Server(int port) throws IOException {
         serverSocket = new ServerSocket(port);
         connections = new ConcurrentHashMap<>();
@@ -39,7 +43,7 @@ public class Server extends Thread {
 
                 connections.put(connection.id, connection);
 
-                System.out.println("Accepting connection: " + connection.id);
+                logger.info("Accepting connection: " + connection.id);
 
                 connection.start();
             } catch (IOException e) {
@@ -49,7 +53,7 @@ public class Server extends Thread {
     }
 
     public void closeConnection(Connection connection) {
-        System.out.println("Closing connection: " + connection.id);
+        logger.info("Closing connection: " + connection.id);
 
         connections.remove(connection.id);
     }
