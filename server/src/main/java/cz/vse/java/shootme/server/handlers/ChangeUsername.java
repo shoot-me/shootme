@@ -10,15 +10,16 @@ import javax.persistence.EntityManager;
 public class ChangeUsername {
 
     public ChangeUsername(ChangeUsernameRequest request) {
-
-        boolean ok = Database.transaction(request, em -> {
+        Database.transaction(request, em -> {
             User user = request.getConnection().getUser();
             user.setUsername(request.username);
             em.merge(user);
-        });
 
-        if(ok) {
+            return user;
+        }).ifPresent(user -> {
+            request.getConnection().setUser(user);
+
             request.respondSuccess("Username changed succesfully");
-        }
+        });
     }
 }

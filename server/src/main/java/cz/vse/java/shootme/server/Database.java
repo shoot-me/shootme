@@ -9,7 +9,9 @@ import javax.persistence.Persistence;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class Database {
 
@@ -89,6 +91,32 @@ public class Database {
             request.respondError(e1.getMessage());
 
             return false;
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    public static <T> Optional<T> transaction(Request request, Function<EntityManager, T> callback) {
+        EntityManager entityManager = getEntityManager();
+        T response;
+
+        try {
+            entityManager.getTransaction().begin();
+
+            response = callback.apply(entityManager);
+
+            entityManager.getTransaction().commit();
+
+            return Optional.ofNullable(response);
+        } catch (Exception e1) {
+            try {
+                entityManager.getTransaction().rollback();
+            } catch (Exception e2) {
+                request.respondError(e2.getMessage());
+            }
+            request.respondError(e1.getMessage());
+
+            return Optional.empty();
         } finally {
             entityManager.close();
         }
