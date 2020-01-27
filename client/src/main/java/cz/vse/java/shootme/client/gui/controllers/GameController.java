@@ -149,4 +149,8 @@ public class GameController extends Controller {
         });
     }
 
+    public void onBackToGame(){
+        mounted();
+    }
+
 }
