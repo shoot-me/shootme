@@ -23,7 +23,7 @@ public class JoinGame {
 
         Player player = new Player(request.avatar, new Vector(x, y), playerName, request.getConnection().getUser());
 
-        game.getState().addEntity(player);
+        game.addPlayer(player);
 
         request.getConnection().setPlayer(player);
 

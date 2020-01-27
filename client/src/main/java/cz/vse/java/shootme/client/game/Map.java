@@ -1,8 +1,12 @@
 package cz.vse.java.shootme.client.game;
 
+import cz.vse.java.shootme.common.net.StateUpdate;
 import cz.vse.java.shootme.common.util.Vector;
 import cz.vse.java.shootme.server.game.Configuration;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +14,8 @@ import java.util.List;
 public class Map {
 
     private Configuration configuration;
+
+    private StateUpdate stateUpdate;
 
     private List<Tile> tiles;
 
@@ -29,6 +35,16 @@ public class Map {
 
     public void render(Pane pane) {
         pane.getChildren().clear();
+
+        if(!stateUpdate.running) {
+            Label label = new Label("Game over!");
+            label.setFont(Font.font(24));
+            label.setTextFill(Paint.valueOf("red"));
+            label.setLayoutX(300);
+            label.setLayoutY(100);
+            pane.getChildren().add(label);
+            return;
+        }
 
         for (Tile tile : tiles) {
             tile.render(pane);
@@ -55,5 +71,9 @@ public class Map {
         }
 
         return null;
+    }
+
+    public void setStateUpdate(StateUpdate stateUpdate) {
+        this.stateUpdate = stateUpdate;
     }
 }
