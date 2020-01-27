@@ -12,9 +12,11 @@ public class Statistic {
     private Integer id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
+    @JoinColumn(name = "result_id")
     private Result result;
 
     @Column(name = "kills", columnDefinition = "int default 0")

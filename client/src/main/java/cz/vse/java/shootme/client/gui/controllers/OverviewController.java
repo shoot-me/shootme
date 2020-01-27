@@ -53,6 +53,9 @@ public class OverviewController extends Controller {
     @FXML
     public ComboBox<String> newAvatar;
 
+    @FXML
+    public ListView<String> statistics;
+
     public List<Configuration> configurations = new ArrayList<>();
 
     public Map<String, String> skins = new HashMap<>();
@@ -197,6 +200,17 @@ public class OverviewController extends Controller {
             Util.showErrorMessage(((ErrorResponse) response).message);
         } else if (response instanceof SuccessResponse) {
             Util.showSuccessMessage("Password changed succesfully.");
+        }
+    }
+
+    public void onSelectStatistics() {
+        System.out.println("Getting statistics");
+
+        Response response = Client.get().send(new GetStatisticsRequest());
+        if (response instanceof GetStatisticsResponse) {
+            statistics.getItems().setAll(((GetStatisticsResponse) response).statistics);
+        } else if (response instanceof ErrorResponse) {
+            Util.showErrorMessage(((ErrorResponse) response).message);
         }
     }
 

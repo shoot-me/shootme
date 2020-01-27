@@ -20,6 +20,7 @@ public class User {
     private String password;
 
     @ManyToOne
+    @JoinColumn(name = "skin_id")
     private Skin skin;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
@@ -53,8 +54,7 @@ public class User {
         this.skin = skin;
     }
 
-    public void addStatistic(Statistic statistic) {
-        statistics.add(statistic);
-        statistic.setUser(this);
+    public List<Statistic> getStatistics() {
+        return statistics;
     }
 }

@@ -11,9 +11,9 @@ public class ChangeUsername {
 
     public ChangeUsername(ChangeUsernameRequest request) {
         Database.transaction(request, em -> {
-            User user = request.getConnection().getUser();
+            User user = em.merge(request.getConnection().getUser());
             user.setUsername(request.username);
-            em.merge(user);
+            em.persist(user);
 
             return user;
         }).ifPresent(user -> {

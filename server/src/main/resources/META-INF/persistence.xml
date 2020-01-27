@@ -10,6 +10,7 @@
         <class>cz.vse.java.shootme.server.models.User</class>
         <class>cz.vse.java.shootme.server.models.Statistic</class>
         <class>cz.vse.java.shootme.server.models.Skin</class>
+        <class>cz.vse.java.shootme.server.models.Result</class>
 
         <properties>
             <property name="dialect" value="org.hibernate.dialect.SQLiteDialect"/>

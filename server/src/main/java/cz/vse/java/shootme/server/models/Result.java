@@ -1,6 +1,8 @@
 package cz.vse.java.shootme.server.models;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "results")
@@ -14,6 +16,9 @@ public class Result {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @OneToMany(mappedBy = "result", fetch = FetchType.LAZY)
+    private List<Statistic> statistics = new ArrayList<>();
+
     public Integer getId() {
         return id;
     }
@@ -24,5 +29,9 @@ public class Result {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Statistic> getStatistics() {
+        return statistics;
     }
 }

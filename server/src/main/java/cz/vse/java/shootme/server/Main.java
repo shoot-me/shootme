@@ -22,6 +22,7 @@ public class Main {
         EventBus.get().subscribe(ChangeUsernameRequest.class, ChangeUsername::new);
         EventBus.get().subscribe(ChangePasswordRequest.class, ChangePassword::new);
         EventBus.get().subscribe(UpdateSkinRequest.class, UpdateSkin::new);
+        EventBus.get().subscribe(GetStatisticsRequest.class, GetStatistics::new);
 
         EventBus.get().subscribe(OverviewRequest.class, GetOverview::new);
 
