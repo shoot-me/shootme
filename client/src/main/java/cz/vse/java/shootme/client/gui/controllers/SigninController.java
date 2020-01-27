@@ -69,8 +69,8 @@ public class SigninController extends Controller {
         Response response = Client.get().send(registerRequest);
 
         if (response instanceof ErrorResponse) {
-            Util.showErrorMessage(((ErrorResponse) response).message);
-        } else if (response instanceof RegisterSuccessfulResponse) {
+            Util.showErrorMessage("Could not register user");
+        } else if (response instanceof SuccessResponse) {
             Util.showSuccessMessage("Register successful.");
         }
     }

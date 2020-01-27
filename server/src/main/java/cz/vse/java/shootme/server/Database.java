@@ -44,7 +44,7 @@ public class Database {
     }
 
 
-    public static void transaction(Consumer<EntityManager> callback) {
+    public static boolean transaction(Consumer<EntityManager> callback) {
         EntityManager entityManager = getEntityManager();
 
         try {
@@ -53,6 +53,8 @@ public class Database {
             callback.accept(entityManager);
 
             entityManager.getTransaction().commit();
+
+            return true;
         } catch (Exception e1) {
             try {
                 entityManager.getTransaction().rollback();
@@ -60,12 +62,14 @@ public class Database {
                 System.err.println(e2.getMessage());
             }
             System.err.println(e1.getMessage());
+
+            return false;
         } finally {
             entityManager.close();
         }
     }
 
-    public static void transaction(Request request, Consumer<EntityManager> callback) {
+    public static boolean transaction(Request request, Consumer<EntityManager> callback) {
         EntityManager entityManager = getEntityManager();
 
         try {
@@ -74,6 +78,8 @@ public class Database {
             callback.accept(entityManager);
 
             entityManager.getTransaction().commit();
+
+            return true;
         } catch (Exception e1) {
             try {
                 entityManager.getTransaction().rollback();
@@ -81,6 +87,8 @@ public class Database {
                 request.respondError(e2.getMessage());
             }
             request.respondError(e1.getMessage());
+
+            return false;
         } finally {
             entityManager.close();
         }

@@ -9,31 +9,16 @@ import javax.persistence.EntityManager;
 
 public class ChangeUsername {
 
-    //TODO username cannot be empty!!!!! =D
+    public ChangeUsername(ChangeUsernameRequest request) {
 
-    public ChangeUsername(ChangeUsernameRequest changeUsernameRequest) {
-
-        EntityManager em = Database.getEntityManager();
-
-
-        em.getTransaction().begin();
-
-        try {
-            User user = changeUsernameRequest.getConnection().getUser();
-            user.setUsername(changeUsernameRequest.username);
-
+        boolean ok = Database.transaction(request, em -> {
+            User user = request.getConnection().getUser();
+            user.setUsername(request.username);
             em.merge(user);
-            em.getTransaction().commit();
+        });
 
-            changeUsernameRequest.respond(new ChangeUsernameResponse());
-        } catch (Exception e) {
-            e.printStackTrace();
-            em.getTransaction().rollback();
-            changeUsernameRequest.respondError("This username already exists!");
+        if(ok) {
+            request.respondSuccess("Username changed succesfully");
         }
-
-        em.close();
-
-
     }
 }

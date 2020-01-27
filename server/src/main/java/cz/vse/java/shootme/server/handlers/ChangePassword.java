@@ -11,37 +11,33 @@ import javax.persistence.EntityManager;
 public class ChangePassword {
 
 
-    public ChangePassword(ChangePasswordRequest changePasswordRequest) {
+    public ChangePassword(ChangePasswordRequest request) {
 
-        User user = changePasswordRequest.getConnection().getUser();
+        User user = request.getConnection().getUser();
 
-        if (!Password.checkPassword(changePasswordRequest.oldPassword, user.getPassword())) {
-            changePasswordRequest.respondError("Incorrect password.");
+        if (!Password.checkPassword(request.oldPassword, user.getPassword())) {
+            request.respondError("Incorrect password.");
             return;
         }
 
-        if (Password.checkPassword(changePasswordRequest.newPassword, user.getPassword())) {
-            changePasswordRequest.respondError("Old password can not be the same.");
+        if (Password.checkPassword(request.newPassword, user.getPassword())) {
+            request.respondError("Old password can not be the same.");
             return;
         }
 
-        EntityManager em = Database.getEntityManager();
-        em.getTransaction().begin();
+        boolean ok = Database.transaction(request, em -> {
 
-        try {
-            user.setPassword(Password.hashPassword(changePasswordRequest.newPassword));
+            user.setPassword(Password.hashPassword(request.newPassword));
 
             em.merge(user);
-            em.getTransaction().commit();
 
-            changePasswordRequest.respond(new ChangePasswordResponse());
-        } catch (Exception e) {
-            e.printStackTrace();
-            em.getTransaction().rollback();
-            changePasswordRequest.respondError("Could not change password!");
+
+        });
+
+        if (ok) {
+            request.respondSuccess("Password changed succesfully");
         }
 
-        em.close();
 
     }
 }

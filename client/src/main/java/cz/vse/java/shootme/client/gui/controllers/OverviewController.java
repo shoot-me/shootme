@@ -11,7 +11,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.util.Pair;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -153,8 +152,8 @@ public class OverviewController extends Controller {
             Response response = Client.get().send(changeUsernameRequest);
 
             if (response instanceof ErrorResponse) {
-                Util.showErrorMessage(((ErrorResponse) response).message);
-            } else if (response instanceof ChangeUsernameResponse) {
+                Util.showErrorMessage("Could not change username.");
+            } else if (response instanceof SuccessResponse) {
                 Util.showSuccessMessage("Username changed successfully.");
             }
 
@@ -171,17 +170,17 @@ public class OverviewController extends Controller {
         }
 
         if (newPassword1.getText().equals("")) {
-            Util.showErrorMessage("New password does not match.");
+            Util.showErrorMessage("Passwords do not match or empty");
             return;
         }
 
         if (newPassword2.getText().equals("")) {
-            Util.showErrorMessage("New password does not match.");
+            Util.showErrorMessage("Passwords do not match or empty");
             return;
         }
 
         if (!newPassword1.getText().equals(newPassword2.getText())) {
-            Util.showErrorMessage("");
+            Util.showErrorMessage("Passwords do not match or empty");
             return;
         }
 
@@ -190,7 +189,7 @@ public class OverviewController extends Controller {
 
         if (response instanceof ErrorResponse) {
             Util.showErrorMessage(((ErrorResponse) response).message);
-        } else if (response instanceof ChangePasswordResponse) {
+        } else if (response instanceof SuccessResponse) {
             Util.showSuccessMessage("Password changed succesfully.");
         }
     }

@@ -13,7 +13,7 @@ import javax.persistence.Query;
 public class RegisterUser {
 
     public RegisterUser(RegisterRequest register) {
-        Database.transaction(register, em -> {
+        boolean ok = Database.transaction(register, em -> {
             User user = new User();
             user.setUsername(register.username);
             String hashedPassword = Password.hashPassword(register.password);
@@ -24,9 +24,14 @@ public class RegisterUser {
             user.setSkin(skin);
 
             em.persist(user);
-            em.getTransaction().commit();
-
-            register.respond(new RegisterSuccessfulResponse());
         });
+
+        System.out.println(ok);
+        if (ok) {
+            register.respondSuccess("Register succesfull");
+        }
+
     }
+
+
 }
