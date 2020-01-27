@@ -85,7 +85,7 @@ public class State {
     }
 
     public boolean isRunning() {
-        return lifetime < 20000;
+        return lifetime < 1000;
     }
 
     public StateUpdate export() {

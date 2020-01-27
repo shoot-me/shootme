@@ -3,6 +3,8 @@ package cz.vse.java.shootme.server.net;
 import cz.vse.java.shootme.common.net.StateUpdate;
 import cz.vse.java.shootme.server.game.Game;
 import cz.vse.java.shootme.server.game.actions.Action;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -13,6 +15,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class GameServer {
+
+    private static final Logger logger = LogManager.getLogger(GameServer.class);
 
     public static final String id = UUID.randomUUID().toString();
 
@@ -41,6 +45,8 @@ public class GameServer {
     }
 
     public void run() {
+        logger.info("Start game server {}", id);
+
         while (true) {
             try {
                 Socket socket = serverSocket.accept();
@@ -50,7 +56,7 @@ public class GameServer {
 
                 gameConnections.put(gameConnection.id, gameConnection);
 
-                System.out.println("Accepting game connection: " + gameConnection.id);
+                logger.info("Accepting game connection {}", gameConnection.id);
 
                 gameConnection.start();
             } catch (IOException e) {
@@ -59,6 +65,8 @@ public class GameServer {
                 break;
             }
         }
+
+        logger.info("Stop game server {}", id);
     }
 
     public void send() {
@@ -96,11 +104,15 @@ public class GameServer {
     }
 
     public void closeGameConnection(GameConnection gameConnection) {
-        System.out.println("Closing game connection: " + gameConnection.id);
+        logger.info("Closing game connection {}", gameConnection.id);
 
         gameConnections.remove(gameConnection.id);
 
         game.getState().removeEntity(gameConnection.getPlayer());
+
+        if (!game.isRunning() && gameConnections.size() == 0) {
+            game.save();
+        }
     }
 
     public void start() {

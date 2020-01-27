@@ -14,20 +14,14 @@ public class Statistic {
     @ManyToOne
     private User user;
 
-    @Column(name = "games_played", columnDefinition = "int default 0")
-    private int gamesPlayed;
+    @ManyToOne
+    private Result result;
 
-    @Column(name = "games_won", columnDefinition = "int default 0")
-    private int gamesWon;
+    @Column(name = "kills", columnDefinition = "int default 0")
+    private int kills;
 
-    @Column(name = "games_lost", columnDefinition = "int default 0")
-    private int gamesLost;
-
-    @Column(name = "total_kills", columnDefinition = "int default 0")
-    private int totalKills;
-
-    @Column(name = "total_killed", columnDefinition = "int default 0")
-    private int totalKilled;
+    @Column(name = "deaths", columnDefinition = "int default 0")
+    private int deaths;
 
     public Integer getId() {
         return id;
@@ -41,45 +35,27 @@ public class Statistic {
         this.user = user;
     }
 
-    public int getGamesPlayed() {
-        return gamesPlayed;
+    public Result getResult() {
+        return result;
     }
 
-    public void setGamesPlayed(int gamesPlayed) {
-        this.gamesPlayed = gamesPlayed;
+    public void setResult(Result result) {
+        this.result = result;
     }
 
-    public int getGamesWon() {
-        return gamesWon;
+    public int getKills() {
+        return kills;
     }
 
-    public void setGamesWon(int gamesWon) {
-        this.gamesWon = gamesWon;
+    public void setKills(int kills) {
+        this.kills = kills;
     }
 
-    public int getGamesLost() {
-        return gamesLost;
+    public int getDeaths() {
+        return deaths;
     }
 
-    public void setGamesLost(int gamesLost) {
-        this.gamesLost = gamesLost;
+    public void setDeaths(int deaths) {
+        this.deaths = deaths;
     }
-
-    public int getTotalKills() {
-        return totalKills;
-    }
-
-    public void setTotalKills(int totalKills) {
-        this.totalKills = totalKills;
-    }
-
-    public int getTotalKilled() {
-        return totalKilled;
-    }
-
-    public void setTotalKilled(int totalKilled) {
-        this.totalKilled = totalKilled;
-    }
-
-
 }

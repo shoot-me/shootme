@@ -102,6 +102,8 @@ public class GameClient {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        System.out.println("Disconnected game connection");
     }
 
     public BlockingQueue<StateUpdate> getStateUpdates() {
