@@ -3,6 +3,7 @@ package cz.vse.java.shootme.server.handlers;
 import cz.vse.java.shootme.common.util.Vector;
 import cz.vse.java.shootme.server.game.Game;
 import cz.vse.java.shootme.server.game.entities.Player;
+import cz.vse.java.shootme.server.models.User;
 import cz.vse.java.shootme.server.net.Server;
 import cz.vse.java.shootme.server.net.requests.JoinGameRequest;
 import cz.vse.java.shootme.server.net.requests.UpdateStatisticsRequest;
@@ -15,6 +16,7 @@ public class JoinGame {
     private Random random = new Random();
 
     public JoinGame(JoinGameRequest request) {
+        User user = request.getConnection().getUser();
         Game game = Server.get().getGames().get(request.gameName);
 
         String playerName = request.getConnection().getUser().getUsername();
@@ -23,6 +25,7 @@ public class JoinGame {
 
         Player player = new Player(request.avatar, new Vector(x, y), playerName, request.getConnection().getUser());
 
+        game.getState().getUsers().put(user.getUsername(), user);
         game.getState().addEntity(player);
 
         request.getConnection().setPlayer(player);

@@ -100,6 +100,8 @@ public class GameController extends Controller {
             players.getItems().setAll(stateUpdate.playerInfo);
         });
 
+        map.setStateUpdate(stateUpdate);
+
         map.getSprites().removeIf(e -> !stateUpdate.entityIds().contains(e.id));
 
         for (EntityUpdate entityUpdate : stateUpdate.entityUpdates) {

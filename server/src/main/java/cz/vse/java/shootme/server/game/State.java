@@ -7,12 +7,19 @@ import cz.vse.java.shootme.server.game.actions.KeyPressAction;
 import cz.vse.java.shootme.server.game.actions.KeyReleaseAction;
 import cz.vse.java.shootme.server.game.entities.Entity;
 import cz.vse.java.shootme.server.game.entities.Player;
+import cz.vse.java.shootme.server.models.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class State {
+
+    protected Map<String, User> users;
+
+    protected Map<String, Integer> kills;
 
     protected List<Entity> addedEntities;
 
@@ -23,6 +30,8 @@ public class State {
     protected int lifetime = 0;
 
     public State() {
+        this.users = new HashMap<>();
+        this.kills = new HashMap<>();
         this.addedEntities = new ArrayList<>();
         this.entities = new ArrayList<>();
         this.removedEntities = new ArrayList<>();
@@ -59,6 +68,14 @@ public class State {
         entities.removeAll(removedEntities);
     }
 
+    public synchronized Map<String, User> getUsers() {
+        return users;
+    }
+
+    public synchronized Map<String, Integer> getKills() {
+        return kills;
+    }
+
     public synchronized void addEntity(Entity entity) {
         addedEntities.add(entity);
     }
@@ -68,15 +85,13 @@ public class State {
     }
 
     public boolean isRunning() {
-        return lifetime < 200;
+        return lifetime < 20000;
     }
 
     public StateUpdate export() {
         List<EntityUpdate> entityUpdates = entities.stream().map(Entity::export).collect(Collectors.toList());
-        List<String> playerInfo = entities.stream()
-                .filter(e -> e instanceof Player)
-                .map(e -> (Player) e)
-                .map(p -> p.name + ": " + p.getKills())
+        List<String> playerInfo = users.values().stream()
+                .map(p -> p.getUsername() + ": " + kills.getOrDefault(p.getUsername(), 0))
                 .collect(Collectors.toList());
 
         return new StateUpdate(entityUpdates, playerInfo, isRunning());
