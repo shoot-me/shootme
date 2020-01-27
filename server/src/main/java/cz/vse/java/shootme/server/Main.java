@@ -4,13 +4,15 @@ import cz.vse.java.shootme.server.net.requests.*;
 import cz.vse.java.shootme.server.handlers.*;
 import cz.vse.java.shootme.common.EventBus;
 import cz.vse.java.shootme.server.net.Server;
-
-import javax.xml.crypto.Data;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Main {
 
+    static final Logger logger = LogManager.getLogger(Main.class);
+
     public static void main(String[] args) {
-        System.out.println("Starting server...");
+        logger.info("Starting server");
 
         Database.init();
         Database.migrate();

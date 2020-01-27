@@ -3,6 +3,8 @@ package cz.vse.java.shootme.server.net;
 import cz.vse.java.shootme.server.game.actions.Action;
 import cz.vse.java.shootme.server.game.entities.Player;
 import cz.vse.java.shootme.server.models.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -14,6 +16,8 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 public class GameConnection implements Runnable {
+
+    private static final Logger logger = LogManager.getLogger(GameConnection.class);
 
     public final String id = UUID.randomUUID().toString();
 
@@ -44,6 +48,8 @@ public class GameConnection implements Runnable {
 
     @Override
     public void run() {
+        logger.info("Start game connection {}", id);
+
         while (true) {
             try {
                 Action action = (Action) objectInputStream.readObject();
@@ -63,6 +69,8 @@ public class GameConnection implements Runnable {
         }
 
         onClose.accept(this);
+
+        logger.info("Stop game connection {}", id);
     }
 
     public synchronized List<Action> consumeActions() {

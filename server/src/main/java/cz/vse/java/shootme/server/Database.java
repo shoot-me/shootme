@@ -2,26 +2,31 @@ package cz.vse.java.shootme.server;
 
 import cz.vse.java.shootme.server.models.Skin;
 import cz.vse.java.shootme.server.net.requests.Request;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class Database {
 
+    private static final Logger logger = LogManager.getLogger(Database.class);
+
     private static EntityManagerFactory EMF;
 
     public static void init() {
+        logger.info("Initializing database");
+
         EMF = Persistence.createEntityManagerFactory("punit");
     }
 
     public static void migrate() {
+        logger.info("Migrating database");
+
         EntityManager em = getEntityManager();
 
         em.getTransaction().begin();
@@ -61,9 +66,9 @@ public class Database {
             try {
                 entityManager.getTransaction().rollback();
             } catch (Exception e2) {
-                System.err.println(e2.getMessage());
+                logger.error("Transaction rollback failed", e2);
             }
-            System.err.println(e1.getMessage());
+            logger.error("Transaction failed", e1);
 
             return false;
         } finally {
