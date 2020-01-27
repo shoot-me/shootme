@@ -13,10 +13,10 @@ public class Skin {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "path", nullable = false)
+    @Column(name = "path", nullable = false, unique = true)
     private String path;
 
     @OneToMany(mappedBy = "skin", fetch = FetchType.LAZY)

@@ -8,6 +8,8 @@ import org.apache.logging.log4j.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -27,23 +29,17 @@ public class Database {
     public static void migrate() {
         logger.info("Migrating database");
 
-        EntityManager em = getEntityManager();
+        Database.transaction(em -> {
+            Skin orange = new Skin();
+            orange.setName("Orange knight");
+            orange.setPath("img/players/knight_orange.png");
+            em.persist(orange);
 
-        em.getTransaction().begin();
-
-        Skin orange = new Skin();
-        orange.setName("Orange knight");
-        orange.setPath("img/players/knight_orange.png");
-        em.persist(orange);
-
-        Skin pink = new Skin();
-        pink.setName("Pink knight");
-        pink.setPath("img/players/knight_pink.png");
-        em.persist(pink);
-
-        em.getTransaction().commit();
-
-        em.close();
+            Skin pink = new Skin();
+            pink.setName("Pink knight");
+            pink.setPath("img/players/knight_pink.png");
+            em.persist(pink);
+        });
     }
 
     public synchronized static EntityManager getEntityManager() {
@@ -66,9 +62,9 @@ public class Database {
             try {
                 entityManager.getTransaction().rollback();
             } catch (Exception e2) {
-                logger.error("Transaction rollback failed", e2);
+                logger.error("Transaction rollback failed: {}", e2.getMessage());
             }
-            logger.error("Transaction failed", e1);
+            logger.error("Transaction failed: {}", e1.getMessage());
 
             return false;
         } finally {
