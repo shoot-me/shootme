@@ -7,6 +7,7 @@ import cz.vse.java.shootme.client.services.SceneManager;
 import cz.vse.java.shootme.server.game.Configuration;
 import cz.vse.java.shootme.server.net.requests.*;
 import cz.vse.java.shootme.server.net.responses.*;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -24,7 +25,7 @@ public class OverviewController extends Controller {
     public TextField username;
 
     @FXML
-    public ComboBox<String> avatar;
+    public TextField avatar;
 
     @FXML
     public TextField newGame;
@@ -49,6 +50,9 @@ public class OverviewController extends Controller {
 
     @FXML
     public TextField newPassword2;
+
+    @FXML
+    public ComboBox<String> newAvatar;
 
     public List<Configuration> configurations = new ArrayList<>();
 
@@ -83,6 +87,7 @@ public class OverviewController extends Controller {
 
             configurations = response.configurations;
             skins = response.skins;
+            G.avatar = response.avatar;
         } catch (Exception e) {
             e.printStackTrace();
             Util.showErrorMessage("Error");
@@ -95,10 +100,15 @@ public class OverviewController extends Controller {
             gameview.getItems().add(configuration.getName());
         }
 
-        avatar.getItems().clear();
+        newAvatar.getItems().clear();
+        newAvatar.getItems().add("");
 
         for (Map.Entry<String, String> skin : skins.entrySet()) {
-            avatar.getItems().add(skin.getValue());
+            newAvatar.getItems().add(skin.getValue());
+
+            if (G.avatar.equals(skin.getKey())) {
+                avatar.setText(skin.getValue());
+            }
         }
     }
 
@@ -111,15 +121,20 @@ public class OverviewController extends Controller {
     }
 
     public void onAvatarSelect() {
-        if (avatar.getSelectionModel().getSelectedItem() == null) {
-            return;
+        String name = newAvatar.getSelectionModel().getSelectedItem();
+
+        if (name == null) return;
+
+        Response response = Client.get().send(new UpdateSkinRequest(name));
+        if (response instanceof ErrorResponse) {
+            Util.showErrorMessage(((ErrorResponse) response).message);
+        } else if (response instanceof SuccessResponse) {
+            Util.showSuccessMessage(((SuccessResponse) response).message);
+        } else {
+            Util.showErrorMessage("Bad response from server!");
         }
 
-        for (Map.Entry<String, String> skin : skins.entrySet()) {
-            if (avatar.getSelectionModel().getSelectedItem().equals(skin.getValue())) {
-                G.avatar = skin.getKey();
-            }
-        }
+        Platform.runLater(this::onRefresh);
     }
 
     public void onLogout() throws IOException {

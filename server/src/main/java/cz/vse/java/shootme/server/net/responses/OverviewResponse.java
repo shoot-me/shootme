@@ -13,4 +13,6 @@ public class OverviewResponse extends Response {
 
     public final Map<String, String> skins = new HashMap<>();
 
+    public String avatar = "";
+
 }

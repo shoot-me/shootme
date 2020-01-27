@@ -1,6 +1,7 @@
 package cz.vse.java.shootme.server;
 
 import cz.vse.java.shootme.server.models.Skin;
+import cz.vse.java.shootme.server.net.requests.Request;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -59,6 +60,27 @@ public class Database {
                 System.err.println(e2.getMessage());
             }
             System.err.println(e1.getMessage());
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    public static void transaction(Request request, Consumer<EntityManager> callback) {
+        EntityManager entityManager = getEntityManager();
+
+        try {
+            entityManager.getTransaction().begin();
+
+            callback.accept(entityManager);
+
+            entityManager.getTransaction().commit();
+        } catch (Exception e1) {
+            try {
+                entityManager.getTransaction().rollback();
+            } catch (Exception e2) {
+                request.respondError(e2.getMessage());
+            }
+            request.respondError(e1.getMessage());
         } finally {
             entityManager.close();
         }

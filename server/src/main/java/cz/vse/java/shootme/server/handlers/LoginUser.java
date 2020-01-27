@@ -13,43 +13,33 @@ import javax.persistence.Query;
 
 public class LoginUser {
 
-    public LoginUser(LoginRequest loginRequest) {
-        EntityManager em = Database.getEntityManager();
-
-        try {
-            em.getTransaction().begin();
-
-            String hql = "from User U where U.username = :username";
-
-            Query query = em.createQuery(hql, User.class);
-            query.setParameter("username", loginRequest.username);
+    public LoginUser(LoginRequest request) {
+        Database.transaction(request, em -> {
+            Query query = em.createQuery("from User U where U.username = :username", User.class);
+            query.setParameter("username", request.username);
 
             User user = (User) query.getResultStream().findFirst().orElse(null);
 
             if (user == null) {
-                loginRequest.respondError("Incorrect username or password.");
+                request.respondError("Incorrect username or password.");
                 return;
             }
 
-            if (!Password.checkPassword(loginRequest.password, user.getPassword())) {
-                loginRequest.respondError("Incorrect username or password.");
+            if (!Password.checkPassword(request.password, user.getPassword())) {
+                request.respondError("Incorrect username or password.");
                 return;
             }
 
             for (Connection connection : Server.get().getConnections()) {
                 if (connection.getUser() != null && user.getUsername().equals(connection.getUser().getUsername())) {
-                    loginRequest.respondError("Already logged in!");
+                    request.respondError("Already logged in!");
                     return;
                 }
             }
 
-            loginRequest.getConnection().setUser(user);
+            request.getConnection().setUser(user);
 
-            loginRequest.respond(new LoginSuccessfulResponse(loginRequest.getConnection().id));
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        } finally {
-            em.close();
-        }
+            request.respond(new LoginSuccessfulResponse(request.getConnection().id));
+        });
     }
 }
