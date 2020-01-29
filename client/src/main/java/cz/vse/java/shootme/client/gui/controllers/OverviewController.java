@@ -56,6 +56,12 @@ public class OverviewController extends Controller {
     @FXML
     public ListView<String> statistics;
 
+    @FXML
+    public TextField configName;
+
+    @FXML
+    public TextField configDuration;
+
     public List<Configuration> configurations = new ArrayList<>();
 
     public Map<String, String> skins = new HashMap<>();
@@ -211,6 +217,27 @@ public class OverviewController extends Controller {
             statistics.getItems().setAll(((GetStatisticsResponse) response).statistics);
         } else if (response instanceof ErrorResponse) {
             Util.showErrorMessage(((ErrorResponse) response).message);
+        }
+    }
+
+    public void onConfigCreate() {
+        String name = configName.getText();
+        int duration = 0;
+
+        try {
+            duration = Integer.parseInt(configDuration.getText());
+        } catch (Exception e) {
+            Util.showErrorMessage("Invalid duration!");
+            return;
+        }
+
+        Response response = Client.get().send(new CreateConfigRequest(name, duration));
+        if (response instanceof SuccessResponse) {
+            Util.showSuccessMessage(((SuccessResponse) response).message);
+        } else if (response instanceof ErrorResponse) {
+            Util.showErrorMessage(((ErrorResponse) response).message);
+        } else {
+            Util.showErrorMessage("Error");
         }
     }
 
