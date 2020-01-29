@@ -62,6 +62,9 @@ public class OverviewController extends Controller {
     @FXML
     public TextField configDuration;
 
+    @FXML
+    public ListView<String> configList;
+
     public List<Configuration> configurations = new ArrayList<>();
 
     public Map<String, String> skins = new HashMap<>();
@@ -238,6 +241,14 @@ public class OverviewController extends Controller {
             Util.showErrorMessage(((ErrorResponse) response).message);
         } else {
             Util.showErrorMessage("Error");
+        }
+
+        GetConfigurationsResponse configurationsResponse = (GetConfigurationsResponse) Client.get().send(new GetConfigurationsRequest());
+
+        configList.getItems().clear();
+
+        for (Map.Entry<Integer, String> configuration : configurationsResponse.configurations.entrySet()) {
+            configList.getItems().add(configuration.getValue());
         }
     }
 
