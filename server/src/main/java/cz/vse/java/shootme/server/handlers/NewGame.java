@@ -8,6 +8,9 @@ import cz.vse.java.shootme.server.net.responses.NewGameResponse;
 
 import java.io.IOException;
 
+/**
+ * Create new game
+ */
 public class NewGame {
 
     public NewGame(NewGameRequest request) {

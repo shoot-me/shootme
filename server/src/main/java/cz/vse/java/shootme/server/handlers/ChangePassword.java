@@ -8,6 +8,9 @@ import cz.vse.java.shootme.server.util.Password;
 
 import javax.persistence.EntityManager;
 
+/**
+ * Method to change user's password
+ */
 public class ChangePassword {
 
 

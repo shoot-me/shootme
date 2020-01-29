@@ -7,6 +7,9 @@ import cz.vse.java.shootme.server.net.responses.ChangeUsernameResponse;
 
 import javax.persistence.EntityManager;
 
+/**
+ * Change username, cannot be empty
+ */
 public class ChangeUsername {
 
     public ChangeUsername(ChangeUsernameRequest request) {

@@ -4,6 +4,9 @@ import cz.vse.java.shootme.server.Database;
 import cz.vse.java.shootme.server.models.Configuration;
 import cz.vse.java.shootme.server.net.requests.CreateConfigRequest;
 
+/**
+ * Create configuration for game
+ */
 public class CreateConfig {
 
     public CreateConfig(CreateConfigRequest request) {

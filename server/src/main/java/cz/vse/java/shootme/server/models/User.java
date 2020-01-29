@@ -26,6 +26,9 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Statistic> statistics = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Friend> friends = new ArrayList<>();
+
     public Integer getId() {
         return id;
     }
@@ -56,5 +59,9 @@ public class User {
 
     public List<Statistic> getStatistics() {
         return statistics;
+    }
+
+    public List<Friend> getFriends() {
+        return friends;
     }
 }

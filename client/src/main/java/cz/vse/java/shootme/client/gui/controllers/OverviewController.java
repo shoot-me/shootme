@@ -21,6 +21,9 @@ import java.util.Map;
 public class OverviewController extends Controller {
 
     @FXML
+    public TextField friendUser;
+
+    @FXML
     public TextField username;
 
     @FXML
@@ -64,6 +67,9 @@ public class OverviewController extends Controller {
 
     @FXML
     public ListView<String> configList;
+
+    @FXML
+    public ListView<String> friendlist;
 
     public List<Configuration> configurations = new ArrayList<>();
 
@@ -251,5 +257,52 @@ public class OverviewController extends Controller {
             configList.getItems().add(configuration.getValue());
         }
     }
+
+
+
+    public void onFindUser(){
+
+        Response response = Client.get().send(new SetFriendRequest(friendUser.getText()));
+
+        if(response instanceof SuccessResponse){
+            Util.showSuccessMessage("User added as a friend");
+        } else if (response instanceof ErrorResponse) {
+            Util.showErrorMessage(((ErrorResponse) response).message);
+        }
+
+        Response response1 = Client.get().send(new GetFriendsRequest());
+
+        if(response1 instanceof ErrorResponse) {
+            Util.showErrorMessage(((ErrorResponse) response1).message);
+        } else if(response1 instanceof GetFriendsResponse) {
+            friendlist.getItems().clear();
+
+            for (Map.Entry<Integer, String> friend : ((GetFriendsResponse) response1).friends.entrySet()){
+                friendlist.getItems().add(friend.getValue());
+            }
+        }
+
+
+
+
+    }
+
+    public void onRefreshFriendlist(){
+        Response response1 = Client.get().send(new GetFriendsRequest());
+
+        if(response1 instanceof ErrorResponse) {
+            Util.showErrorMessage(((ErrorResponse) response1).message);
+        } else if(response1 instanceof GetFriendsResponse) {
+            friendlist.getItems().clear();
+
+            for (Map.Entry<Integer, String> friend : ((GetFriendsResponse) response1).friends.entrySet()){
+                friendlist.getItems().add(friend.getValue());
+            }
+        }
+
+
+    }
+
+
 
 }

@@ -25,6 +25,8 @@ public class Main {
         EventBus.get().subscribe(GetStatisticsRequest.class, GetStatistics::new);
         EventBus.get().subscribe(CreateConfigRequest.class, CreateConfig::new);
         EventBus.get().subscribe(GetConfigurationsRequest.class, GetConfigurations::new);
+        EventBus.get().subscribe(SetFriendRequest.class,SetFriend::new);
+        EventBus.get().subscribe(GetFriendsRequest.class,GetFriends::new);
 
         EventBus.get().subscribe(OverviewRequest.class, GetOverview::new);
 

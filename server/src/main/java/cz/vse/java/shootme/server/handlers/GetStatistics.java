@@ -9,6 +9,7 @@ import cz.vse.java.shootme.server.net.responses.GetStatisticsResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 public class GetStatistics {
 
     public GetStatistics(GetStatisticsRequest request) {

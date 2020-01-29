@@ -11,6 +11,9 @@ import cz.vse.java.shootme.server.util.Password;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+/**
+ * Method to login user
+ */
 public class LoginUser {
 
     public LoginUser(LoginRequest request) {

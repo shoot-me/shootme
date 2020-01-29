@@ -10,6 +10,9 @@ import cz.vse.java.shootme.server.util.Password;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+/**
+ * Method to register user
+ */
 public class RegisterUser {
 
     public RegisterUser(RegisterRequest register) {
@@ -26,7 +29,6 @@ public class RegisterUser {
             em.persist(user);
         });
 
-        System.out.println(ok);
         if (ok) {
             register.respondSuccess("Register succesfull");
         }
