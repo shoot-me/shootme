@@ -7,6 +7,9 @@ import cz.vse.java.shootme.server.net.requests.UpdateSkinRequest;
 
 import javax.persistence.Query;
 
+/**
+ * Method to set skin for user
+ */
 public class UpdateSkin {
 
     public UpdateSkin(UpdateSkinRequest request) {
