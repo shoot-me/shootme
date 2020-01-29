@@ -1,6 +1,8 @@
 package cz.vse.java.shootme.server.models;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,9 @@ public class Result {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "date_time", nullable = false)
+    private LocalDateTime dateTime;
+
     @OneToMany(mappedBy = "result", fetch = FetchType.LAZY)
     private List<Statistic> statistics = new ArrayList<>();
 
@@ -29,6 +34,14 @@ public class Result {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
     public List<Statistic> getStatistics() {

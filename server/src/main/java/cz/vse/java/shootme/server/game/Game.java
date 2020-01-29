@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,12 +59,18 @@ public class Game {
     public void save() {
         logger.info("Saving game {}", configuration.name);
 
-        Database.transaction(em -> {
-            Result result = new Result();
-            result.setName(configuration.name);
-            em.persist(result);
+        Result result = Database.transaction(em -> {
+            Result r = new Result();
+            r.setName(configuration.name);
+            r.setDateTime(LocalDateTime.now());
+            em.persist(r);
 
-            for (User user : state.getUsers().values()) {
+            return r;
+        }).get();
+
+
+        for (User user : state.getUsers().values()) {
+            Database.transaction(em -> {
                 em.merge(user);
 
                 int kills = state.getKills().getOrDefault(user.getUsername(), 0);
@@ -73,8 +80,8 @@ public class Game {
                 statistic.setResult(result);
                 statistic.setKills(kills);
                 em.persist(statistic);
-            }
-        });
+            });
+        }
     }
 
     public Configuration getConfiguration() {

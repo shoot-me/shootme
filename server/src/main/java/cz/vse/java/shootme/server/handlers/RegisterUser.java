@@ -13,14 +13,18 @@ import javax.persistence.Query;
 public class RegisterUser {
 
     public RegisterUser(RegisterRequest register) {
-        boolean ok = Database.transaction(register, em -> {
+        Skin skin = Database.transaction(em -> {
+            Query query = em.createQuery("from Skin", Skin.class);
+            return (Skin) query.getResultStream().findFirst().orElse(null);
+        }).get();
+
+        boolean ok = Database.transaction(em -> {
             User user = new User();
             user.setUsername(register.username);
             String hashedPassword = Password.hashPassword(register.password);
             user.setPassword(hashedPassword);
 
-            Query query = em.createQuery("from Skin", Skin.class);
-            Skin skin = (Skin) query.getResultStream().findFirst().orElse(null);
+
             user.setSkin(skin);
 
             em.persist(user);
@@ -29,6 +33,8 @@ public class RegisterUser {
         System.out.println(ok);
         if (ok) {
             register.respondSuccess("Register succesfull");
+        } else {
+            register.respondError("Register failed");
         }
 
     }

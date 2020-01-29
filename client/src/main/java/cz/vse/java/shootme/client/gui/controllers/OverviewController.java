@@ -252,4 +252,22 @@ public class OverviewController extends Controller {
         }
     }
 
+    public void onNewest() {
+        Response response = Client.get().send(new GetStatisticsRequest("ASC"));
+        if (response instanceof GetStatisticsResponse) {
+            statistics.getItems().setAll(((GetStatisticsResponse) response).statistics);
+        } else if (response instanceof ErrorResponse) {
+            Util.showErrorMessage(((ErrorResponse) response).message);
+        }
+    }
+
+    public void onOldest() {
+        Response response = Client.get().send(new GetStatisticsRequest("DESC"));
+        if (response instanceof GetStatisticsResponse) {
+            statistics.getItems().setAll(((GetStatisticsResponse) response).statistics);
+        } else if (response instanceof ErrorResponse) {
+            Util.showErrorMessage(((ErrorResponse) response).message);
+        }
+    }
+
 }

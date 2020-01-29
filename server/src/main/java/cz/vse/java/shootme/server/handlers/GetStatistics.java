@@ -12,17 +12,27 @@ import java.util.stream.Collectors;
 public class GetStatistics {
 
     public GetStatistics(GetStatisticsRequest request) {
-        Database.transaction(request, em -> {
+        List<String> lines = Database.transaction(em -> {
             User user = em.merge(request.getConnection().getUser());
 
             List<Statistic> statistics = user.getStatistics();
 
-            List<String> lines = statistics.stream()
-                    .map(statistic -> statistic.getResult().getName() + " - kills: " + statistic.getKills())
-                    .collect(Collectors.toList());
+            if(request.order.equals("ASC")) {
+                statistics.sort((a, b) -> a.getResult().getDateTime().isBefore(b.getResult().getDateTime()) ? -1 : 1);
+            } else {
+                statistics.sort((a, b) -> a.getResult().getDateTime().isAfter(b.getResult().getDateTime()) ? -1 : 1);
+            }
 
+            return statistics.stream()
+                    .map(statistic -> statistic.getResult().getDateTime().toString() + " - " + statistic.getResult().getName() + " - kills: " + statistic.getKills())
+                    .collect(Collectors.toList());
+        }).orElse(null);
+
+        if (lines != null) {
             request.respond(new GetStatisticsResponse(lines));
-        });
+        } else {
+            request.respondError("Error");
+        }
     }
 
 }

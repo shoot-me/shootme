@@ -122,4 +122,30 @@ public class Database {
             entityManager.close();
         }
     }
+
+    public static <T> Optional<T> transaction(Function<EntityManager, T> callback) {
+        EntityManager entityManager = getEntityManager();
+        T response;
+
+        try {
+            entityManager.getTransaction().begin();
+
+            response = callback.apply(entityManager);
+
+            entityManager.getTransaction().commit();
+
+            return Optional.ofNullable(response);
+        } catch (Exception e1) {
+            try {
+                entityManager.getTransaction().rollback();
+            } catch (Exception e2) {
+                logger.error("Transaction rollback failed: {}", e2.getMessage());
+            }
+            logger.error("Transaction failed: {}", e1.getMessage());
+
+            return Optional.empty();
+        } finally {
+            entityManager.close();
+        }
+    }
 }
